@@ -1,5 +1,6 @@
 package io.github.joeyparrish.fbop.ui.screens.parent
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -11,11 +12,16 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import io.github.joeyparrish.fbop.R
 import io.github.joeyparrish.fbop.data.model.*
 import io.github.joeyparrish.fbop.data.repository.ConfigRepository
 import io.github.joeyparrish.fbop.data.repository.FirebaseRepository
+import io.github.joeyparrish.fbop.ui.theme.AppTheme
 import io.github.joeyparrish.fbop.ui.theme.MoneyPositive
 import io.github.joeyparrish.fbop.ui.theme.MoneyNegative
 import kotlinx.coroutines.flow.combine
@@ -152,12 +158,25 @@ fun ParentHomeScreen(
             }
         }
     ) { paddingValues ->
-        PullToRefreshBox(
-            isRefreshing = isRefreshing,
-            onRefresh = { refresh() },
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
+        ) {
+            // Watermark background
+            Image(
+                painter = painterResource(id = R.drawable.piggy_bank),
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .alpha(AppTheme.watermarkAlpha),
+                contentScale = ContentScale.Fit
+            )
+
+            PullToRefreshBox(
+                isRefreshing = isRefreshing,
+                onRefresh = { refresh() },
+                modifier = Modifier.fillMaxSize()
         ) {
             if (isLoading) {
                 // Loading state
@@ -210,6 +229,7 @@ fun ParentHomeScreen(
                     }
                 }
             }
+        }
         }
     }
 }
