@@ -37,6 +37,7 @@ fun ParentHomeScreen(
 
     var family by remember { mutableStateOf<Family?>(null) }
     var childrenWithBalances by remember { mutableStateOf<List<ChildWithBalance>>(emptyList()) }
+    var isLoading by remember { mutableStateOf(true) }
     var isRefreshing by remember { mutableStateOf(false) }
     var showMenu by remember { mutableStateOf(false) }
     var isOwner by remember { mutableStateOf(false) }
@@ -60,6 +61,7 @@ fun ParentHomeScreen(
                 ChildWithBalance(child, balance, transactions)
             }
             childrenWithBalances = withBalances
+            isLoading = false
         }
     }
 
@@ -131,7 +133,15 @@ fun ParentHomeScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            if (childrenWithBalances.isEmpty()) {
+            if (isLoading) {
+                // Loading state
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            } else if (childrenWithBalances.isEmpty()) {
                 // Empty state
                 Column(
                     modifier = Modifier
