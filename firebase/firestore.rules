@@ -196,9 +196,9 @@ service cloud.firestore {
       allow create: if isAuthenticated() &&
         isOwnerOfFamily(request.resource.data.familyId);
 
-      // Only the family owner can delete
+      // Any parent of the family can delete (e.g. joining parent consumes the code)
       allow delete: if isAuthenticated() &&
-        isOwnerOfFamily(resource.data.familyId);
+        isParentOfFamily(resource.data.familyId);
 
       // No updates - delete and recreate
       allow update: if false;

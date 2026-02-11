@@ -188,17 +188,20 @@ class FirebaseRepository {
             email = user.email ?: ""
         )
 
-        // Add parent and delete the invite code
-        db.runBatch { batch ->
-            batch.set(
-                db.collection("families")
-                    .document(familyId)
-                    .collection("parents")
-                    .document(user.uid),
-                parent
-            )
-            batch.delete(db.collection("inviteCodes").document(inviteCode.uppercase()))
-        }.await()
+        // Add parent first
+        db.collection("families")
+            .document(familyId)
+            .collection("parents")
+            .document(user.uid)
+            .set(parent)
+            .await()
+
+        // Then delete the invite code (now allowed since we're a parent)
+        try {
+            db.collection("inviteCodes").document(inviteCode.uppercase()).delete().await()
+        } catch (e: Exception) {
+            // Non-fatal: invite code will expire on its own
+        }
     }
 
     private fun generateShortCode(): String {
