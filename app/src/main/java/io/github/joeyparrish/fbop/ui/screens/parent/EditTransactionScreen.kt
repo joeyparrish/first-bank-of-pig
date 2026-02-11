@@ -13,7 +13,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.google.firebase.Timestamp
 import io.github.joeyparrish.fbop.data.model.Transaction
+import io.github.joeyparrish.fbop.data.model.datePickerMillisToLocalDate
 import io.github.joeyparrish.fbop.data.model.formatCurrency
+import io.github.joeyparrish.fbop.data.model.localDateToDatePickerMillis
 import io.github.joeyparrish.fbop.data.model.parseCurrency
 import io.github.joeyparrish.fbop.data.repository.ConfigRepository
 import io.github.joeyparrish.fbop.data.repository.FirebaseRepository
@@ -63,7 +65,7 @@ fun EditTransactionScreen(
                     amountText = "${cents / 100}.${(cents % 100).toString().padStart(2, '0')}"
                     description = tx.description
                     selectedDate = tx.date.toDate()
-                    datePickerState.selectedDateMillis = selectedDate.time
+                    datePickerState.selectedDateMillis = localDateToDatePickerMillis(selectedDate)
                 }
                 isLoading = false
             }
@@ -147,7 +149,7 @@ fun EditTransactionScreen(
                 TextButton(
                     onClick = {
                         datePickerState.selectedDateMillis?.let {
-                            selectedDate = Date(it)
+                            selectedDate = datePickerMillisToLocalDate(it)
                         }
                         showDatePicker = false
                     }

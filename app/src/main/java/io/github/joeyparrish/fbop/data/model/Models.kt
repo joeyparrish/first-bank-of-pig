@@ -162,3 +162,47 @@ fun parseCurrency(input: String): Long? {
         null
     }
 }
+
+/**
+ * Convert UTC millis from DatePicker to a local Date.
+ * DatePicker returns midnight UTC, but we want to preserve the calendar date
+ * in the local timezone.
+ */
+fun datePickerMillisToLocalDate(utcMillis: Long): java.util.Date {
+    // Parse the UTC millis as a calendar date in UTC
+    val utcCalendar = java.util.Calendar.getInstance(java.util.TimeZone.getTimeZone("UTC"))
+    utcCalendar.timeInMillis = utcMillis
+
+    // Create a new date at noon local time for the same calendar date
+    // (noon avoids edge cases with DST transitions)
+    val localCalendar = java.util.Calendar.getInstance()
+    localCalendar.set(
+        utcCalendar.get(java.util.Calendar.YEAR),
+        utcCalendar.get(java.util.Calendar.MONTH),
+        utcCalendar.get(java.util.Calendar.DAY_OF_MONTH),
+        12, 0, 0
+    )
+    localCalendar.set(java.util.Calendar.MILLISECOND, 0)
+
+    return localCalendar.time
+}
+
+/**
+ * Convert a local Date to UTC millis for DatePicker.
+ */
+fun localDateToDatePickerMillis(date: java.util.Date): Long {
+    val localCalendar = java.util.Calendar.getInstance()
+    localCalendar.time = date
+
+    // Create UTC midnight for the same calendar date
+    val utcCalendar = java.util.Calendar.getInstance(java.util.TimeZone.getTimeZone("UTC"))
+    utcCalendar.set(
+        localCalendar.get(java.util.Calendar.YEAR),
+        localCalendar.get(java.util.Calendar.MONTH),
+        localCalendar.get(java.util.Calendar.DAY_OF_MONTH),
+        0, 0, 0
+    )
+    utcCalendar.set(java.util.Calendar.MILLISECOND, 0)
+
+    return utcCalendar.timeInMillis
+}
