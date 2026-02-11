@@ -111,10 +111,15 @@ fun KidHomeScreen(
 
     // Also observe for real-time updates
     LaunchedEffect(familyId, childId) {
-        if (firebaseRepository.isSignedIn) {
-            firebaseRepository.observeTransactions(familyId, childId).collect {
-                transactions = it
+        try {
+            if (firebaseRepository.isSignedIn) {
+                firebaseRepository.observeTransactions(familyId, childId).collect {
+                    transactions = it
+                }
             }
+        } catch (e: Exception) {
+            // Data no longer exists or access denied
+            accessRevoked = true
         }
     }
 

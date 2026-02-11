@@ -53,24 +53,34 @@ fun ParentHomeScreen(
 
     // Observe family data
     LaunchedEffect(familyId) {
-        firebaseRepository.observeFamily(familyId).collect { f ->
-            family = f
-            isOwner = f?.ownerUid == firebaseRepository.currentUser?.uid
+        try {
+            firebaseRepository.observeFamily(familyId).collect { f ->
+                family = f
+                isOwner = f?.ownerUid == firebaseRepository.currentUser?.uid
+            }
+        } catch (e: Exception) {
+            // Family no longer exists or access denied - clear config
+            configRepository.clear()
         }
     }
 
     // Observe children and their transactions
     LaunchedEffect(familyId) {
-        firebaseRepository.observeChildren(familyId).collect { children ->
-            // For each child, get their transactions and compute balance
-            val withBalances = children.map { child ->
-                val transactions = firebaseRepository.getTransactions(familyId, child.id)
-                    .getOrDefault(emptyList())
-                val balance = transactions.sumOf { it.amount }
-                ChildWithBalance(child, balance, transactions)
+        try {
+            firebaseRepository.observeChildren(familyId).collect { children ->
+                // For each child, get their transactions and compute balance
+                val withBalances = children.map { child ->
+                    val transactions = firebaseRepository.getTransactions(familyId, child.id)
+                        .getOrDefault(emptyList())
+                    val balance = transactions.sumOf { it.amount }
+                    ChildWithBalance(child, balance, transactions)
+                }
+                childrenWithBalances = withBalances
+                isLoading = false
             }
-            childrenWithBalances = withBalances
-            isLoading = false
+        } catch (e: Exception) {
+            // Family no longer exists or access denied - clear config
+            configRepository.clear()
         }
     }
 
