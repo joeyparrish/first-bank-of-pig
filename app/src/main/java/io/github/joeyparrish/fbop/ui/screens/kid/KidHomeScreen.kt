@@ -306,14 +306,6 @@ private fun KidBalanceHeader(
                 .padding(32.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.piggy_bank),
-                contentDescription = "Piggy bank",
-                modifier = Modifier.size(80.dp)
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
             Text(
                 text = "Your Balance",
                 style = MaterialTheme.typography.titleLarge,
