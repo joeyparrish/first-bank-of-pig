@@ -1,0 +1,190 @@
+rules_version = '2';
+
+// =============================================================================
+// Firestore Security Rules for First Bank of Pig
+// =============================================================================
+//
+// Data structure:
+//   /families/{familyId}/
+//     name: string
+//     ownerUid: string
+//     createdAt: timestamp
+//     parents/{parentUid}/
+//       email: string
+//       joinedAt: timestamp
+//     invites/{inviteId}/
+//       code: string
+//       expiresAt: timestamp
+//       createdBy: string (parentUid)
+//     children/{childId}/
+//       name: string
+//       createdAt: timestamp
+//       transactions/{txId}/
+//         amount: number (cents, positive or negative)
+//         description: string
+//         date: timestamp (user-specified date)
+//         createdAt: timestamp
+//         modifiedAt: timestamp
+//
+// Access patterns:
+//   - Parents (authenticated via Google): full read/write to their family
+//   - Kids (authenticated anonymously): read-only to their specific child doc
+//   - Owner only: can manage invites and remove other parents
+// =============================================================================
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // -------------------------------------------------------------------------
+    // Helper functions
+    // -------------------------------------------------------------------------
+
+    // Check if the user is authenticated (any method)
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Check if the user is a parent of this family
+    function isParentOfFamily(familyId) {
+      return isAuthenticated() &&
+        exists(/databases/$(database)/documents/families/$(familyId)/parents/$(request.auth.uid));
+    }
+
+    // Check if the user is the owner of this family
+    function isOwnerOfFamily(familyId) {
+      return isAuthenticated() &&
+        get(/databases/$(database)/documents/families/$(familyId)).data.ownerUid == request.auth.uid;
+    }
+
+    // -------------------------------------------------------------------------
+    // Family document rules
+    // -------------------------------------------------------------------------
+
+    match /families/{familyId} {
+      // Parents can read their family
+      allow read: if isParentOfFamily(familyId);
+
+      // Any authenticated user can create a family (they become the owner)
+      allow create: if isAuthenticated() &&
+        request.resource.data.ownerUid == request.auth.uid;
+
+      // Only parents can update family details (name, etc.)
+      // Cannot change ownerUid
+      allow update: if isParentOfFamily(familyId) &&
+        request.resource.data.ownerUid == resource.data.ownerUid;
+
+      // Only owner can delete the family
+      allow delete: if isOwnerOfFamily(familyId);
+
+      // ---------------------------------------------------------------------
+      // Parents subcollection
+      // ---------------------------------------------------------------------
+
+      match /parents/{parentUid} {
+        // Parents can see other parents in their family
+        allow read: if isParentOfFamily(familyId);
+
+        // Owner can add/remove parents
+        // A parent can also add themselves (when joining via invite)
+        allow create: if isOwnerOfFamily(familyId) ||
+          (isAuthenticated() && parentUid == request.auth.uid);
+
+        // Only owner can remove parents (except owner can't remove themselves)
+        allow delete: if isOwnerOfFamily(familyId) &&
+          parentUid != request.auth.uid;
+
+        // Parents can update their own record
+        allow update: if isAuthenticated() && parentUid == request.auth.uid;
+      }
+
+      // ---------------------------------------------------------------------
+      // Invites subcollection
+      // ---------------------------------------------------------------------
+
+      match /invites/{inviteId} {
+        // Only owner can read invites
+        allow read: if isOwnerOfFamily(familyId);
+
+        // Only owner can create invites
+        allow create: if isOwnerOfFamily(familyId);
+
+        // Only owner can delete invites
+        allow delete: if isOwnerOfFamily(familyId);
+
+        // Invites should not be updated, only created/deleted
+        allow update: if false;
+      }
+
+      // ---------------------------------------------------------------------
+      // Children subcollection
+      // ---------------------------------------------------------------------
+
+      match /children/{childId} {
+        // Parents can read all children
+        // Kid devices can read their specific child (they know the familyId and childId)
+        allow read: if isParentOfFamily(familyId) || isAuthenticated();
+
+        // Only parents can create/update/delete children
+        allow create, update, delete: if isParentOfFamily(familyId);
+
+        // -----------------------------------------------------------------
+        // Transactions subcollection
+        // -----------------------------------------------------------------
+
+        match /transactions/{txId} {
+          // Parents can read all transactions
+          // Kid devices can read transactions for their child
+          allow read: if isParentOfFamily(familyId) || isAuthenticated();
+
+          // Only parents can create/update/delete transactions
+          allow create, update, delete: if isParentOfFamily(familyId);
+        }
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // Invite lookup collection (for finding invite by code)
+    // -------------------------------------------------------------------------
+    // This is a top-level collection that maps invite codes to family IDs
+    // Structure: /inviteCodes/{code} -> { familyId, expiresAt }
+
+    match /inviteCodes/{code} {
+      // Anyone authenticated can read (to look up an invite code)
+      allow read: if isAuthenticated();
+
+      // Only family owners can create invite codes
+      // The client must also create the invite in the family's invites subcollection
+      allow create: if isAuthenticated() &&
+        isOwnerOfFamily(request.resource.data.familyId);
+
+      // Only the family owner can delete
+      allow delete: if isAuthenticated() &&
+        isOwnerOfFamily(resource.data.familyId);
+
+      // No updates - delete and recreate
+      allow update: if false;
+    }
+
+    // -------------------------------------------------------------------------
+    // Child lookup collection (for kid devices to find their data)
+    // -------------------------------------------------------------------------
+    // Structure: /childLookup/{lookupCode} -> { familyId, childId }
+    // The lookupCode is what gets encoded in the QR code for kid devices
+
+    match /childLookup/{lookupCode} {
+      // Anyone authenticated can read (kid devices look up their code)
+      allow read: if isAuthenticated();
+
+      // Only parents can create lookup codes for their children
+      allow create: if isAuthenticated() &&
+        isParentOfFamily(request.resource.data.familyId);
+
+      // Only parents can delete
+      allow delete: if isAuthenticated() &&
+        isParentOfFamily(resource.data.familyId);
+
+      // No updates
+      allow update: if false;
+    }
+  }
+}
