@@ -274,9 +274,6 @@ export PATH=$PATH:$ANDROID_HOME/platform-tools
 ```bash
 cd /path/to/piggy-bank
 
-# Generate Gradle wrapper if not present
-gradle wrapper --gradle-version 8.9
-
 # Verify wrapper works
 ./gradlew --version
 ```
