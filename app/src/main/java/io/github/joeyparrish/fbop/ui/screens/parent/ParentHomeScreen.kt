@@ -36,7 +36,8 @@ fun ParentHomeScreen(
     onAddChild: () -> Unit,
     onInviteParent: () -> Unit,
     onManageParents: () -> Unit,
-    onThemeModeChanged: (ThemeMode) -> Unit
+    onThemeModeChanged: (ThemeMode) -> Unit,
+    onFamilyNotFound: () -> Unit
 ) {
     val config = configRepository.getConfig()
     val familyId = config.familyId ?: return
@@ -59,8 +60,9 @@ fun ParentHomeScreen(
                 isOwner = f?.ownerUid == firebaseRepository.currentUser?.uid
             }
         } catch (e: Exception) {
-            // Family no longer exists or access denied - clear config
+            // Family no longer exists or access denied - clear config and restart
             configRepository.clear()
+            onFamilyNotFound()
         }
     }
 
@@ -79,8 +81,9 @@ fun ParentHomeScreen(
                 isLoading = false
             }
         } catch (e: Exception) {
-            // Family no longer exists or access denied - clear config
+            // Family no longer exists or access denied - clear config and restart
             configRepository.clear()
+            onFamilyNotFound()
         }
     }
 
