@@ -64,12 +64,13 @@ fun KidSetupScreen(
 
             val lookup = lookupResult.getOrThrow()
 
-            // Register this device for access
+            // Register this device for access (lookup code validated server-side)
             val deviceName = "${Build.MANUFACTURER} ${Build.MODEL}".trim()
             firebaseRepository.registerDevice(
                 familyId = lookup.familyId,
                 childId = lookup.childId,
-                deviceName = deviceName
+                deviceName = deviceName,
+                lookupCode = lookup.lookupCode
             ).onFailure { e ->
                 errorMessage = "Failed to register device: ${e.message}"
                 isLoading = false
