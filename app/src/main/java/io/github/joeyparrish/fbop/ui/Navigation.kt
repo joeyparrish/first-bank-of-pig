@@ -43,6 +43,9 @@ sealed class Screen(val route: String) {
     object ChildQrCode : Screen("child_qr_code/{childId}") {
         fun createRoute(childId: String) = "child_qr_code/$childId"
     }
+    object ManageDevices : Screen("manage_devices/{childId}") {
+        fun createRoute(childId: String) = "manage_devices/$childId"
+    }
 
     // Kid mode
     object KidHome : Screen("kid_home")
@@ -158,7 +161,8 @@ fun AppNavigation(
                 onEditTransaction = { txId ->
                     navController.navigate(Screen.EditTransaction.createRoute(childId, txId))
                 },
-                onShowQrCode = { navController.navigate(Screen.ChildQrCode.createRoute(childId)) }
+                onShowQrCode = { navController.navigate(Screen.ChildQrCode.createRoute(childId)) },
+                onManageDevices = { navController.navigate(Screen.ManageDevices.createRoute(childId)) }
             )
         }
 
@@ -251,6 +255,19 @@ fun AppNavigation(
             )
         }
 
+        composable(
+            route = Screen.ManageDevices.route,
+            arguments = listOf(navArgument("childId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val childId = backStackEntry.arguments?.getString("childId") ?: return@composable
+            ManageDevicesScreen(
+                childId = childId,
+                firebaseRepository = firebaseRepository,
+                configRepository = configRepository,
+                onBack = { navController.popBackStack() }
+            )
+        }
+
         // =====================================================================
         // Kid Mode
         // =====================================================================
@@ -259,7 +276,12 @@ fun AppNavigation(
             KidHomeScreen(
                 firebaseRepository = firebaseRepository,
                 configRepository = configRepository,
-                onThemeModeChanged = onThemeModeChanged
+                onThemeModeChanged = onThemeModeChanged,
+                onAccessRevoked = {
+                    navController.navigate(Screen.ModeSelection.route) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
             )
         }
     }
