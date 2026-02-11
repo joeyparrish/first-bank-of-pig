@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark mode application theme -->
+    <style name="Theme.FirstBankOfPig" parent="android:Theme.Material.NoActionBar">
+        <!-- Status bar -->
+        <item name="android:statusBarColor">@color/pink_400</item>
+        <item name="android:navigationBarColor">@color/neutral_900</item>
+
+        <!-- Window background -->
+        <item name="android:windowBackground">@color/neutral_900</item>
+    </style>
+</resources>
