@@ -30,7 +30,8 @@ android {
         }
         debug {
             isMinifyEnabled = false
-            applicationIdSuffix = ".debug"
+            // Note: No applicationIdSuffix so Firebase google-services.json works
+            // without registering a separate debug app
             versionNameSuffix = "-debug"
         }
     }
