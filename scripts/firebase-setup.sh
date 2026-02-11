@@ -129,8 +129,14 @@ gcloud config set project "$PROJECT_ID"
 echo_step "Linking billing account"
 
 if [ -n "$BILLING_ACCOUNT" ]; then
-    echo "Linking billing account: $BILLING_ACCOUNT"
-    gcloud billing projects link "$PROJECT_ID" --billing-account="$BILLING_ACCOUNT"
+    # Check if billing is already linked
+    CURRENT_BILLING=$(gcloud billing projects describe "$PROJECT_ID" --format="value(billingAccountName)" 2>/dev/null || true)
+    if [ -n "$CURRENT_BILLING" ]; then
+        echo "Billing already linked: $CURRENT_BILLING. Skipping."
+    else
+        echo "Linking billing account: $BILLING_ACCOUNT"
+        gcloud billing projects link "$PROJECT_ID" --billing-account="$BILLING_ACCOUNT"
+    fi
 else
     echo "No billing account specified. Skipping."
     echo "Note: The Firebase Spark (free) tier is sufficient for this app."
@@ -143,8 +149,13 @@ fi
 
 echo_step "Adding Firebase to the project"
 
-# This enables Firebase services on the GCP project
-firebase projects:addfirebase "$PROJECT_ID"
+# Check if Firebase is already enabled on this project
+if firebase projects:list --json 2>/dev/null | grep -q "\"projectId\": \"$PROJECT_ID\""; then
+    echo "Firebase already enabled for $PROJECT_ID. Skipping."
+else
+    echo "Adding Firebase to project..."
+    firebase projects:addfirebase "$PROJECT_ID"
+fi
 
 # -----------------------------------------------------------------------------
 # Step 6: Enable required APIs
@@ -175,14 +186,16 @@ echo_step "Creating Firestore database"
 # Once created, location cannot be changed.
 # See: https://firebase.google.com/docs/firestore/locations
 
-echo "Creating Firestore database in nam5 (North America multi-region)..."
-echo "Note: If you get an error about the database already existing, that's fine."
-
-gcloud firestore databases create \
-    --project="$PROJECT_ID" \
-    --location="nam5" \
-    --type="firestore-native" \
-    2>/dev/null || echo "Database may already exist, continuing..."
+# Check if Firestore database already exists
+if gcloud firestore databases describe --project="$PROJECT_ID" &>/dev/null; then
+    echo "Firestore database already exists. Skipping creation."
+else
+    echo "Creating Firestore database in nam5 (North America multi-region)..."
+    gcloud firestore databases create \
+        --project="$PROJECT_ID" \
+        --location="nam5" \
+        --type="firestore-native"
+fi
 
 # -----------------------------------------------------------------------------
 # Step 8: Enable Google Sign-In authentication
@@ -213,12 +226,17 @@ echo_step "Registering Android app"
 
 echo "Registering Android app: $ANDROID_PACKAGE"
 
-firebase apps:create android "$ANDROID_PACKAGE" \
-    --project="$PROJECT_ID" \
-    --display-name="First Bank of Pig" \
-    || echo "App may already be registered, continuing..."
+# Check if Android app already exists
+if firebase apps:list --project="$PROJECT_ID" 2>/dev/null | grep -q "ANDROID"; then
+    echo "Android app already registered. Skipping creation."
+else
+    firebase apps:create \
+        --project="$PROJECT_ID" \
+        -a "$ANDROID_PACKAGE" \
+        android "First Bank of Pig"
+fi
 
-# Download google-services.json
+# Download google-services.json (always do this to ensure it's up to date)
 echo ""
 echo "Downloading google-services.json..."
 firebase apps:sdkconfig android \
