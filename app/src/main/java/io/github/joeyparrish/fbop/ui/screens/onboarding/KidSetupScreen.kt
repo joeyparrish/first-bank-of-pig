@@ -2,6 +2,7 @@ package io.github.joeyparrish.fbop.ui.screens.onboarding
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
@@ -54,19 +55,34 @@ fun KidSetupScreen(
                 }
 
             // Look up the child
-            firebaseRepository.lookupChild(code)
-                .onSuccess { lookup ->
-                    configRepository.setKidMode(
-                        familyId = lookup.familyId,
-                        childId = lookup.childId,
-                        lookupCode = lookup.lookupCode
-                    )
-                    onSuccess()
-                }
-                .onFailure { e ->
-                    errorMessage = "Invalid code: ${e.message}"
-                    isLoading = false
-                }
+            val lookupResult = firebaseRepository.lookupChild(code)
+            if (lookupResult.isFailure) {
+                errorMessage = "Invalid code: ${lookupResult.exceptionOrNull()?.message}"
+                isLoading = false
+                return@launch
+            }
+
+            val lookup = lookupResult.getOrThrow()
+
+            // Register this device for access
+            val deviceName = "${Build.MANUFACTURER} ${Build.MODEL}".trim()
+            firebaseRepository.registerDevice(
+                familyId = lookup.familyId,
+                childId = lookup.childId,
+                deviceName = deviceName
+            ).onFailure { e ->
+                errorMessage = "Failed to register device: ${e.message}"
+                isLoading = false
+                return@launch
+            }
+
+            // Save config and proceed
+            configRepository.setKidMode(
+                familyId = lookup.familyId,
+                childId = lookup.childId,
+                lookupCode = lookup.lookupCode
+            )
+            onSuccess()
         }
     }
 

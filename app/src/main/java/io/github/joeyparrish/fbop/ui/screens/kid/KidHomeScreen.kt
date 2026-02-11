@@ -33,7 +33,8 @@ import java.util.*
 fun KidHomeScreen(
     firebaseRepository: FirebaseRepository,
     configRepository: ConfigRepository,
-    onThemeModeChanged: (ThemeMode) -> Unit
+    onThemeModeChanged: (ThemeMode) -> Unit,
+    onAccessRevoked: () -> Unit
 ) {
     val config = configRepository.getConfig()
     val familyId = config.familyId ?: return
@@ -48,10 +49,11 @@ fun KidHomeScreen(
     var showMenu by remember { mutableStateOf(false) }
     var showThemeDialog by remember { mutableStateOf(false) }
     var currentThemeMode by remember { mutableStateOf(configRepository.getThemeMode()) }
+    var accessRevoked by remember { mutableStateOf(false) }
 
     val balance = transactions.sumOf { it.amount }
 
-    fun refresh() {
+    fun checkAccessAndLoad() {
         scope.launch {
             isRefreshing = true
             errorMessage = null
@@ -65,6 +67,20 @@ fun KidHomeScreen(
                         return@launch
                     }
             }
+
+            // Check if this device still has access
+            val hasAccess = firebaseRepository.checkDeviceAccess(familyId, childId)
+                .getOrDefault(false)
+
+            if (!hasAccess) {
+                accessRevoked = true
+                isLoading = false
+                isRefreshing = false
+                return@launch
+            }
+
+            // Update last accessed timestamp
+            firebaseRepository.updateLastAccessed(familyId, childId)
 
             // Load child info
             firebaseRepository.getChild(familyId, childId)
@@ -85,9 +101,9 @@ fun KidHomeScreen(
         }
     }
 
-    // Initial load
+    // Initial load and access check
     LaunchedEffect(Unit) {
-        refresh()
+        checkAccessAndLoad()
     }
 
     // Also observe for real-time updates
@@ -97,6 +113,23 @@ fun KidHomeScreen(
                 transactions = it
             }
         }
+    }
+
+    // Show access revoked dialog
+    if (accessRevoked) {
+        AlertDialog(
+            onDismissRequest = { },
+            title = { Text("Access Revoked") },
+            text = { Text("Your access to this account has been removed. Please contact your parent to set up access again.") },
+            confirmButton = {
+                Button(onClick = {
+                    configRepository.clear()
+                    onAccessRevoked()
+                }) {
+                    Text("OK")
+                }
+            }
+        )
     }
 
     if (showThemeDialog) {
@@ -150,7 +183,7 @@ fun KidHomeScreen(
     ) { paddingValues ->
         PullToRefreshBox(
             isRefreshing = isRefreshing,
-            onRefresh = { refresh() },
+            onRefresh = { checkAccessAndLoad() },
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)

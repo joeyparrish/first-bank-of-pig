@@ -33,7 +33,8 @@ fun ChildDetailScreen(
     onEditChild: () -> Unit,
     onAddTransaction: () -> Unit,
     onEditTransaction: (String) -> Unit,
-    onShowQrCode: () -> Unit
+    onShowQrCode: () -> Unit,
+    onManageDevices: () -> Unit
 ) {
     val config = configRepository.getConfig()
     val familyId = config.familyId ?: return
@@ -113,6 +114,16 @@ fun ChildDetailScreen(
                             },
                             leadingIcon = {
                                 Icon(Icons.Default.Edit, contentDescription = null)
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text("Manage Devices") },
+                            onClick = {
+                                showMenu = false
+                                onManageDevices()
+                            },
+                            leadingIcon = {
+                                Icon(Icons.Default.PhoneAndroid, contentDescription = null)
                             }
                         )
                     }

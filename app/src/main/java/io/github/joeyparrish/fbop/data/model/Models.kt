@@ -101,6 +101,18 @@ data class ChildLookup(
 )
 
 /**
+ * Represents a registered kid device with access to a child's data.
+ * The document ID is the device's anonymous auth UID.
+ */
+data class DeviceAccess(
+    @DocumentId
+    val uid: String = "",
+    val deviceName: String = "",
+    val registeredAt: Timestamp? = null,
+    val lastAccessedAt: Timestamp? = null
+)
+
+/**
  * Local app configuration stored in SharedPreferences.
  * Determines how the app behaves on this device.
  */

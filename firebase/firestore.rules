@@ -19,6 +19,10 @@ rules_version = '2';
 //     children/{childId}/
 //       name: string
 //       createdAt: timestamp
+//       devices/{deviceUid}/  (deviceUid = anonymous auth UID)
+//         deviceName: string
+//         registeredAt: timestamp
+//         lastAccessedAt: timestamp
 //       transactions/{txId}/
 //         amount: number (cents, positive or negative)
 //         description: string
@@ -29,6 +33,7 @@ rules_version = '2';
 // Access patterns:
 //   - Parents (authenticated via Google): full read/write to their family
 //   - Kids (authenticated anonymously): read-only to their specific child doc
+//     ONLY if they have a registered device record
 //   - Owner only: can manage invites and remove other parents
 // =============================================================================
 
@@ -54,6 +59,12 @@ service cloud.firestore {
     function isOwnerOfFamily(familyId) {
       return isAuthenticated() &&
         get(/databases/$(database)/documents/families/$(familyId)).data.ownerUid == request.auth.uid;
+    }
+
+    // Check if the user has registered device access for this child
+    function hasDeviceAccess(familyId, childId) {
+      return isAuthenticated() &&
+        exists(/databases/$(database)/documents/families/$(familyId)/children/$(childId)/devices/$(request.auth.uid));
     }
 
     // -------------------------------------------------------------------------
@@ -121,11 +132,37 @@ service cloud.firestore {
 
       match /children/{childId} {
         // Parents can read all children
-        // Kid devices can read their specific child (they know the familyId and childId)
-        allow read: if isParentOfFamily(familyId) || isAuthenticated();
+        // Kid devices with registered access can read their specific child
+        allow read: if isParentOfFamily(familyId) || hasDeviceAccess(familyId, childId);
 
         // Only parents can create/update/delete children
         allow create, update, delete: if isParentOfFamily(familyId);
+
+        // -----------------------------------------------------------------
+        // Devices subcollection (registered kid devices)
+        // -----------------------------------------------------------------
+
+        match /devices/{deviceUid} {
+          // Parents can read all devices
+          allow read: if isParentOfFamily(familyId);
+
+          // A device can register itself (deviceUid must match auth uid)
+          // Must use server timestamp for registeredAt and lastAccessedAt
+          allow create: if isAuthenticated() &&
+            deviceUid == request.auth.uid &&
+            request.resource.data.registeredAt == request.time &&
+            request.resource.data.lastAccessedAt == request.time;
+
+          // Only the device itself can update its lastAccessedAt
+          // Must use server timestamp and can only update lastAccessedAt
+          allow update: if isAuthenticated() &&
+            deviceUid == request.auth.uid &&
+            request.resource.data.lastAccessedAt == request.time &&
+            request.resource.data.diff(resource.data).affectedKeys().hasOnly(['lastAccessedAt']);
+
+          // Parents can delete device access (to revoke)
+          allow delete: if isParentOfFamily(familyId);
+        }
 
         // -----------------------------------------------------------------
         // Transactions subcollection
@@ -133,8 +170,8 @@ service cloud.firestore {
 
         match /transactions/{txId} {
           // Parents can read all transactions
-          // Kid devices can read transactions for their child
-          allow read: if isParentOfFamily(familyId) || isAuthenticated();
+          // Kid devices with registered access can read transactions
+          allow read: if isParentOfFamily(familyId) || hasDeviceAccess(familyId, childId);
 
           // Only parents can create/update/delete transactions
           allow create, update, delete: if isParentOfFamily(familyId);
@@ -170,6 +207,8 @@ service cloud.firestore {
     // -------------------------------------------------------------------------
     // Structure: /childLookup/{lookupCode} -> { familyId, childId }
     // The lookupCode is what gets encoded in the QR code for kid devices
+    // Note: This is used for initial device setup only. After setup,
+    // the device must register in the child's devices subcollection.
 
     match /childLookup/{lookupCode} {
       // Anyone authenticated can read (kid devices look up their code)

@@ -3,6 +3,7 @@ package io.github.joeyparrish.fbop.data.repository
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import io.github.joeyparrish.fbop.data.model.*
@@ -421,5 +422,128 @@ class FirebaseRepository {
             .await()
             .documents
             .mapNotNull { it.toObject(Transaction::class.java) }
+    }
+
+    // =========================================================================
+    // Device Access Operations
+    // =========================================================================
+
+    /**
+     * Register this device for access to a child's data.
+     * The device UID (anonymous auth) is used as the document ID.
+     */
+    suspend fun registerDevice(
+        familyId: String,
+        childId: String,
+        deviceName: String
+    ): Result<Unit> = runCatching {
+        val user = currentUser ?: throw Exception("Not signed in")
+
+        db.collection("families")
+            .document(familyId)
+            .collection("children")
+            .document(childId)
+            .collection("devices")
+            .document(user.uid)
+            .set(
+                mapOf(
+                    "deviceName" to deviceName,
+                    "registeredAt" to FieldValue.serverTimestamp(),
+                    "lastAccessedAt" to FieldValue.serverTimestamp()
+                )
+            ).await()
+    }
+
+    /**
+     * Check if this device has access to a child's data.
+     * Returns true if the device is registered, false otherwise.
+     */
+    suspend fun checkDeviceAccess(familyId: String, childId: String): Result<Boolean> = runCatching {
+        val user = currentUser ?: return@runCatching false
+
+        val doc = db.collection("families")
+            .document(familyId)
+            .collection("children")
+            .document(childId)
+            .collection("devices")
+            .document(user.uid)
+            .get()
+            .await()
+
+        doc.exists()
+    }
+
+    /**
+     * Update the lastAccessedAt timestamp for this device.
+     * Uses server timestamp to prevent client manipulation.
+     */
+    suspend fun updateLastAccessed(familyId: String, childId: String): Result<Unit> = runCatching {
+        val user = currentUser ?: throw Exception("Not signed in")
+
+        db.collection("families")
+            .document(familyId)
+            .collection("children")
+            .document(childId)
+            .collection("devices")
+            .document(user.uid)
+            .update("lastAccessedAt", FieldValue.serverTimestamp())
+            .await()
+    }
+
+    /**
+     * Get all registered devices for a child (for parent management).
+     */
+    suspend fun getDevicesForChild(familyId: String, childId: String): Result<List<DeviceAccess>> = runCatching {
+        db.collection("families")
+            .document(familyId)
+            .collection("children")
+            .document(childId)
+            .collection("devices")
+            .orderBy("registeredAt", Query.Direction.DESCENDING)
+            .get()
+            .await()
+            .documents
+            .mapNotNull { it.toObject(DeviceAccess::class.java) }
+    }
+
+    /**
+     * Observe registered devices for a child (for real-time updates in parent UI).
+     */
+    fun observeDevicesForChild(familyId: String, childId: String): Flow<List<DeviceAccess>> = callbackFlow {
+        val listener = db.collection("families")
+            .document(familyId)
+            .collection("children")
+            .document(childId)
+            .collection("devices")
+            .orderBy("registeredAt", Query.Direction.DESCENDING)
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    close(error)
+                    return@addSnapshotListener
+                }
+                val devices = snapshot?.documents?.mapNotNull {
+                    it.toObject(DeviceAccess::class.java)
+                } ?: emptyList()
+                trySend(devices)
+            }
+        awaitClose { listener.remove() }
+    }
+
+    /**
+     * Delete a device's access (revoke access from parent UI).
+     */
+    suspend fun deleteDeviceAccess(
+        familyId: String,
+        childId: String,
+        deviceUid: String
+    ): Result<Unit> = runCatching {
+        db.collection("families")
+            .document(familyId)
+            .collection("children")
+            .document(childId)
+            .collection("devices")
+            .document(deviceUid)
+            .delete()
+            .await()
     }
 }
