@@ -142,7 +142,12 @@ fun AppNavigation(
                 onAddChild = { navController.navigate(Screen.AddChild.route) },
                 onInviteParent = { navController.navigate(Screen.InviteParent.route) },
                 onManageParents = { navController.navigate(Screen.ManageParents.route) },
-                onThemeModeChanged = onThemeModeChanged
+                onThemeModeChanged = onThemeModeChanged,
+                onFamilyNotFound = {
+                    navController.navigate(Screen.ModeSelection.route) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
             )
         }
 
