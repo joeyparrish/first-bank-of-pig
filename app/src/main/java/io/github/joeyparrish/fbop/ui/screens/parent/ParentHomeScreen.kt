@@ -44,6 +44,7 @@ fun ParentHomeScreen(
     val scope = rememberCoroutineScope()
 
     var family by remember { mutableStateOf<Family?>(null) }
+    var familyLoaded by remember { mutableStateOf(false) }
     var childrenWithBalances by remember { mutableStateOf<List<ChildWithBalance>>(emptyList()) }
     var isLoading by remember { mutableStateOf(true) }
     var isRefreshing by remember { mutableStateOf(false) }
@@ -54,36 +55,31 @@ fun ParentHomeScreen(
 
     // Observe family data
     LaunchedEffect(familyId) {
-        try {
-            firebaseRepository.observeFamily(familyId).collect { f ->
+        firebaseRepository.observeFamily(familyId).collect { f ->
+            if (f == null && familyLoaded) {
+                // Family was loaded before but now doesn't exist - clear config and restart
+                configRepository.clear()
+                onFamilyNotFound()
+            } else if (f != null) {
                 family = f
-                isOwner = f?.ownerUid == firebaseRepository.currentUser?.uid
+                familyLoaded = true
+                isOwner = f.ownerUid == firebaseRepository.currentUser?.uid
             }
-        } catch (e: Exception) {
-            // Family no longer exists or access denied - clear config and restart
-            configRepository.clear()
-            onFamilyNotFound()
         }
     }
 
     // Observe children and their transactions
     LaunchedEffect(familyId) {
-        try {
-            firebaseRepository.observeChildren(familyId).collect { children ->
-                // For each child, get their transactions and compute balance
-                val withBalances = children.map { child ->
-                    val transactions = firebaseRepository.getTransactions(familyId, child.id)
-                        .getOrDefault(emptyList())
-                    val balance = transactions.sumOf { it.amount }
-                    ChildWithBalance(child, balance, transactions)
-                }
-                childrenWithBalances = withBalances
-                isLoading = false
+        firebaseRepository.observeChildren(familyId).collect { children ->
+            // For each child, get their transactions and compute balance
+            val withBalances = children.map { child ->
+                val transactions = firebaseRepository.getTransactions(familyId, child.id)
+                    .getOrDefault(emptyList())
+                val balance = transactions.sumOf { it.amount }
+                ChildWithBalance(child, balance, transactions)
             }
-        } catch (e: Exception) {
-            // Family no longer exists or access denied - clear config and restart
-            configRepository.clear()
-            onFamilyNotFound()
+            childrenWithBalances = withBalances
+            isLoading = false
         }
     }
 
