@@ -180,7 +180,6 @@ ANDROID_PACKAGE="io.github.joeyparrish.fbop"
 ### Step 2: Run the Setup Script
 
 ```bash
-chmod +x scripts/firebase-setup.sh
 ./scripts/firebase-setup.sh
 ```
 
