@@ -11,6 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.google.firebase.Timestamp
+import io.github.joeyparrish.fbop.data.model.datePickerMillisToLocalDate
+import io.github.joeyparrish.fbop.data.model.localDateToDatePickerMillis
 import io.github.joeyparrish.fbop.data.model.parseCurrency
 import io.github.joeyparrish.fbop.data.repository.ConfigRepository
 import io.github.joeyparrish.fbop.data.repository.FirebaseRepository
@@ -35,13 +37,14 @@ fun AddTransactionScreen(
     var amountText by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
     var selectedDate by remember { mutableStateOf(Date()) }
+    var dateManuallyChanged by remember { mutableStateOf(false) }
     var showDatePicker by remember { mutableStateOf(false) }
     var isLoading by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
 
     val dateFormat = remember { SimpleDateFormat("MMM d, yyyy", Locale.getDefault()) }
     val datePickerState = rememberDatePickerState(
-        initialSelectedDateMillis = selectedDate.time
+        initialSelectedDateMillis = localDateToDatePickerMillis(selectedDate)
     )
 
     fun save() {
@@ -57,12 +60,15 @@ fun AddTransactionScreen(
             isLoading = true
             errorMessage = null
 
+            // Use current time if date wasn't changed, otherwise use selected date (local noon)
+            val dateToSave = if (dateManuallyChanged) selectedDate else Date()
+
             firebaseRepository.createTransaction(
                 familyId = familyId,
                 childId = childId,
                 amountCents = finalAmount,
                 description = description.trim(),
-                date = Timestamp(selectedDate)
+                date = Timestamp(dateToSave)
             )
                 .onSuccess { onSuccess() }
                 .onFailure { e ->
@@ -79,7 +85,8 @@ fun AddTransactionScreen(
                 TextButton(
                     onClick = {
                         datePickerState.selectedDateMillis?.let {
-                            selectedDate = Date(it)
+                            selectedDate = datePickerMillisToLocalDate(it)
+                            dateManuallyChanged = true
                         }
                         showDatePicker = false
                     }
