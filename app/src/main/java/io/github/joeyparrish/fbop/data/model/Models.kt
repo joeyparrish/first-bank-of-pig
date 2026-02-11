@@ -117,6 +117,12 @@ enum class AppMode {
     KID
 }
 
+enum class ThemeMode {
+    SYSTEM,
+    LIGHT,
+    DARK
+}
+
 /**
  * Child with computed balance, used for display.
  */

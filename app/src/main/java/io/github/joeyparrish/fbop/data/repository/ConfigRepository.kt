@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import io.github.joeyparrish.fbop.data.model.AppConfig
 import io.github.joeyparrish.fbop.data.model.AppMode
+import io.github.joeyparrish.fbop.data.model.ThemeMode
 
 class ConfigRepository(context: Context) {
     private val prefs: SharedPreferences = context.getSharedPreferences(
@@ -51,11 +52,29 @@ class ConfigRepository(context: Context) {
         prefs.edit().clear().apply()
     }
 
+    fun getThemeMode(): ThemeMode {
+        val modeString = prefs.getString(KEY_THEME_MODE, null)
+        return modeString?.let {
+            try {
+                ThemeMode.valueOf(it)
+            } catch (e: IllegalArgumentException) {
+                ThemeMode.SYSTEM
+            }
+        } ?: ThemeMode.SYSTEM
+    }
+
+    fun setThemeMode(mode: ThemeMode) {
+        prefs.edit()
+            .putString(KEY_THEME_MODE, mode.name)
+            .apply()
+    }
+
     companion object {
         private const val PREFS_NAME = "fbop_config"
         private const val KEY_MODE = "mode"
         private const val KEY_FAMILY_ID = "family_id"
         private const val KEY_CHILD_ID = "child_id"
         private const val KEY_LOOKUP_CODE = "lookup_code"
+        private const val KEY_THEME_MODE = "theme_mode"
     }
 }
