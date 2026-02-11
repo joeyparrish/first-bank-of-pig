@@ -144,7 +144,9 @@ service cloud.firestore {
 
         match /devices/{deviceUid} {
           // Parents can read all devices
-          allow read: if isParentOfFamily(familyId);
+          // A device can read its own record (to check if it has access)
+          allow read: if isParentOfFamily(familyId) ||
+            (isAuthenticated() && deviceUid == request.auth.uid);
 
           // A device can register itself (deviceUid must match auth uid)
           // Must use server timestamp for registeredAt and lastAccessedAt
