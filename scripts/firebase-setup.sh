@@ -169,11 +169,13 @@ echo "APIs enabled successfully."
 
 echo_step "Creating Firestore database"
 
-# Create Firestore in Native mode in us-central1
-# You can change the region if desired. Once created, it cannot be changed.
+# Create Firestore in Native mode
+# nam5 = North America multi-region (higher availability, slightly higher cost)
+# Or use a single region like us-central1 for lower latency/cost
+# Once created, location cannot be changed.
 # See: https://firebase.google.com/docs/firestore/locations
 
-echo "Creating Firestore database in us-central1..."
+echo "Creating Firestore database in nam5 (North America multi-region)..."
 echo "Note: If you get an error about the database already existing, that's fine."
 
 gcloud firestore databases create \
@@ -263,20 +265,6 @@ read -p "Press Enter after adding your SHA-1 fingerprint..."
 
 echo_step "Deploying Firestore security rules"
 
-# Initialize Firebase in the project directory if not already done
-if [ ! -f "firebase.json" ]; then
-    echo "Creating firebase.json..."
-    cat > firebase.json << 'EOF'
-{
-  "firestore": {
-    "rules": "firebase/firestore.rules",
-    "indexes": "firebase/firestore.indexes.json"
-  }
-}
-EOF
-fi
-
-# Deploy rules
 echo "Deploying Firestore rules..."
 firebase deploy --only firestore:rules --project="$PROJECT_ID"
 
@@ -298,7 +286,6 @@ echo "  Auth:           https://console.firebase.google.com/project/$PROJECT_ID/
 echo ""
 echo "Files created:"
 echo "  - app/google-services.json (Firebase config for Android)"
-echo "  - firebase.json (Firebase project config)"
 echo ""
 echo "Next steps:"
 echo "  1. Open the project in Android Studio"
