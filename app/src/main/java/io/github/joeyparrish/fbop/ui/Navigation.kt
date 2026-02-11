@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import io.github.joeyparrish.fbop.data.model.AppMode
+import io.github.joeyparrish.fbop.data.model.ThemeMode
 import io.github.joeyparrish.fbop.data.repository.ConfigRepository
 import io.github.joeyparrish.fbop.data.repository.FirebaseRepository
 import io.github.joeyparrish.fbop.ui.screens.kid.KidHomeScreen
@@ -51,7 +52,8 @@ sealed class Screen(val route: String) {
 fun AppNavigation(
     navController: NavHostController,
     configRepository: ConfigRepository,
-    firebaseRepository: FirebaseRepository
+    firebaseRepository: FirebaseRepository,
+    onThemeModeChanged: (ThemeMode) -> Unit
 ) {
     val config = configRepository.getConfig()
 
@@ -136,7 +138,8 @@ fun AppNavigation(
                 },
                 onAddChild = { navController.navigate(Screen.AddChild.route) },
                 onInviteParent = { navController.navigate(Screen.InviteParent.route) },
-                onManageParents = { navController.navigate(Screen.ManageParents.route) }
+                onManageParents = { navController.navigate(Screen.ManageParents.route) },
+                onThemeModeChanged = onThemeModeChanged
             )
         }
 
@@ -255,7 +258,8 @@ fun AppNavigation(
         composable(Screen.KidHome.route) {
             KidHomeScreen(
                 firebaseRepository = firebaseRepository,
-                configRepository = configRepository
+                configRepository = configRepository,
+                onThemeModeChanged = onThemeModeChanged
             )
         }
     }

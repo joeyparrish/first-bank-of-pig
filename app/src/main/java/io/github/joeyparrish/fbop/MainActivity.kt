@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.compose.rememberNavController
 import io.github.joeyparrish.fbop.data.model.AppMode
+import io.github.joeyparrish.fbop.data.model.ThemeMode
 import io.github.joeyparrish.fbop.data.repository.ConfigRepository
 import io.github.joeyparrish.fbop.data.repository.FirebaseRepository
 import io.github.joeyparrish.fbop.ui.AppNavigation
@@ -31,11 +32,14 @@ class MainActivity : FragmentActivity() {
         firebaseRepository = FirebaseRepository()
 
         setContent {
-            FirstBankOfPigTheme {
+            var themeMode by remember { mutableStateOf(configRepository.getThemeMode()) }
+
+            FirstBankOfPigTheme(themeMode = themeMode) {
                 MainScreen(
                     activity = this,
                     configRepository = configRepository,
-                    firebaseRepository = firebaseRepository
+                    firebaseRepository = firebaseRepository,
+                    onThemeModeChanged = { themeMode = it }
                 )
             }
         }
@@ -46,7 +50,8 @@ class MainActivity : FragmentActivity() {
 fun MainScreen(
     activity: FragmentActivity,
     configRepository: ConfigRepository,
-    firebaseRepository: FirebaseRepository
+    firebaseRepository: FirebaseRepository,
+    onThemeModeChanged: (ThemeMode) -> Unit
 ) {
     val config = configRepository.getConfig()
     val navController = rememberNavController()
@@ -132,7 +137,8 @@ fun MainScreen(
             AppNavigation(
                 navController = navController,
                 configRepository = configRepository,
-                firebaseRepository = firebaseRepository
+                firebaseRepository = firebaseRepository,
+                onThemeModeChanged = onThemeModeChanged
             )
         }
         // Parent mode but not authenticated - show lock screen

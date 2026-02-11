@@ -1,10 +1,13 @@
 package io.github.joeyparrish.fbop.ui.screens.kid
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.*
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
@@ -26,7 +29,8 @@ import java.util.*
 @Composable
 fun KidHomeScreen(
     firebaseRepository: FirebaseRepository,
-    configRepository: ConfigRepository
+    configRepository: ConfigRepository,
+    onThemeModeChanged: (ThemeMode) -> Unit
 ) {
     val config = configRepository.getConfig()
     val familyId = config.familyId ?: return
@@ -38,6 +42,9 @@ fun KidHomeScreen(
     var isLoading by remember { mutableStateOf(true) }
     var isRefreshing by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
+    var showMenu by remember { mutableStateOf(false) }
+    var showThemeDialog by remember { mutableStateOf(false) }
+    var currentThemeMode by remember { mutableStateOf(configRepository.getThemeMode()) }
 
     val balance = transactions.sumOf { it.amount }
 
@@ -89,6 +96,19 @@ fun KidHomeScreen(
         }
     }
 
+    if (showThemeDialog) {
+        ThemeModeDialog(
+            currentMode = currentThemeMode,
+            onDismiss = { showThemeDialog = false },
+            onModeSelected = { mode ->
+                currentThemeMode = mode
+                configRepository.setThemeMode(mode)
+                onThemeModeChanged(mode)
+                showThemeDialog = false
+            }
+        )
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -99,8 +119,29 @@ fun KidHomeScreen(
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimary
-                )
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                    actionIconContentColor = MaterialTheme.colorScheme.onPrimary
+                ),
+                actions = {
+                    IconButton(onClick = { showMenu = true }) {
+                        Icon(Icons.Default.MoreVert, contentDescription = "Menu")
+                    }
+                    DropdownMenu(
+                        expanded = showMenu,
+                        onDismissRequest = { showMenu = false }
+                    ) {
+                        DropdownMenuItem(
+                            text = { Text("Theme") },
+                            onClick = {
+                                showMenu = false
+                                showThemeDialog = true
+                            },
+                            leadingIcon = {
+                                Icon(Icons.Default.Palette, contentDescription = null)
+                            }
+                        )
+                    }
+                }
             )
         }
     ) { paddingValues ->
@@ -303,4 +344,47 @@ private fun KidTransactionRow(transaction: Transaction) {
     }
 
     HorizontalDivider(modifier = Modifier.padding(start = 80.dp))
+}
+
+@Composable
+private fun ThemeModeDialog(
+    currentMode: ThemeMode,
+    onDismiss: () -> Unit,
+    onModeSelected: (ThemeMode) -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Theme") },
+        text = {
+            Column {
+                ThemeMode.entries.forEach { mode ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { onModeSelected(mode) }
+                            .padding(vertical = 12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = mode == currentMode,
+                            onClick = { onModeSelected(mode) }
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = when (mode) {
+                                ThemeMode.SYSTEM -> "System default"
+                                ThemeMode.LIGHT -> "Light"
+                                ThemeMode.DARK -> "Dark"
+                            }
+                        )
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Cancel")
+            }
+        }
+    )
 }

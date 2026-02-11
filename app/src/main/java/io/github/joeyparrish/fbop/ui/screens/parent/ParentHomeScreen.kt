@@ -29,7 +29,8 @@ fun ParentHomeScreen(
     onChildClick: (String) -> Unit,
     onAddChild: () -> Unit,
     onInviteParent: () -> Unit,
-    onManageParents: () -> Unit
+    onManageParents: () -> Unit,
+    onThemeModeChanged: (ThemeMode) -> Unit
 ) {
     val config = configRepository.getConfig()
     val familyId = config.familyId ?: return
@@ -40,7 +41,9 @@ fun ParentHomeScreen(
     var isLoading by remember { mutableStateOf(true) }
     var isRefreshing by remember { mutableStateOf(false) }
     var showMenu by remember { mutableStateOf(false) }
+    var showThemeDialog by remember { mutableStateOf(false) }
     var isOwner by remember { mutableStateOf(false) }
+    var currentThemeMode by remember { mutableStateOf(configRepository.getThemeMode()) }
 
     // Observe family data
     LaunchedEffect(familyId) {
@@ -72,6 +75,19 @@ fun ParentHomeScreen(
             kotlinx.coroutines.delay(500)
             isRefreshing = false
         }
+    }
+
+    if (showThemeDialog) {
+        ThemeModeDialog(
+            currentMode = currentThemeMode,
+            onDismiss = { showThemeDialog = false },
+            onModeSelected = { mode ->
+                currentThemeMode = mode
+                configRepository.setThemeMode(mode)
+                onThemeModeChanged(mode)
+                showThemeDialog = false
+            }
+        )
     }
 
     Scaffold(
@@ -113,6 +129,16 @@ fun ParentHomeScreen(
                                 }
                             )
                         }
+                        DropdownMenuItem(
+                            text = { Text("Theme") },
+                            onClick = {
+                                showMenu = false
+                                showThemeDialog = true
+                            },
+                            leadingIcon = {
+                                Icon(Icons.Default.Palette, contentDescription = null)
+                            }
+                        )
                     }
                 }
             )
@@ -245,4 +271,47 @@ private fun ChildCard(
             )
         }
     }
+}
+
+@Composable
+private fun ThemeModeDialog(
+    currentMode: ThemeMode,
+    onDismiss: () -> Unit,
+    onModeSelected: (ThemeMode) -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Theme") },
+        text = {
+            Column {
+                ThemeMode.entries.forEach { mode ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { onModeSelected(mode) }
+                            .padding(vertical = 12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        RadioButton(
+                            selected = mode == currentMode,
+                            onClick = { onModeSelected(mode) }
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = when (mode) {
+                                ThemeMode.SYSTEM -> "System default"
+                                ThemeMode.LIGHT -> "Light"
+                                ThemeMode.DARK -> "Dark"
+                            }
+                        )
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Cancel")
+            }
+        }
+    )
 }
