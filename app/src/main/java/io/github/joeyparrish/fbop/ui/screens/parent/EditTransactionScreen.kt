@@ -65,7 +65,9 @@ fun EditTransactionScreen(
                     amountText = "${cents / 100}.${(cents % 100).toString().padStart(2, '0')}"
                     description = tx.description
                     selectedDate = tx.date.toDate()
-                    datePickerState.selectedDateMillis = localDateToDatePickerMillis(selectedDate)
+                    val dateMillis = localDateToDatePickerMillis(selectedDate)
+                    datePickerState.selectedDateMillis = dateMillis
+                    datePickerState.displayedMonthMillis = dateMillis
                 }
                 isLoading = false
             }
