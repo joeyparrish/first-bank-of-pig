@@ -72,4 +72,4 @@ Balance is computed client-side by summing transactions.
 
 ## License
 
-MIT
+[MIT](LICENSE.md)
