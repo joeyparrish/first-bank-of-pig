@@ -1,5 +1,6 @@
 package io.github.joeyparrish.fbop.ui.screens.kid
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,7 +16,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import io.github.joeyparrish.fbop.R
 import io.github.joeyparrish.fbop.data.model.*
 import io.github.joeyparrish.fbop.data.repository.ConfigRepository
 import io.github.joeyparrish.fbop.data.repository.FirebaseRepository
@@ -248,21 +251,11 @@ private fun KidBalanceHeader(
                 .padding(32.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Placeholder for pig graphic
-            // TODO: Replace with fun pig image
-            Surface(
-                modifier = Modifier.size(80.dp),
-                shape = MaterialTheme.shapes.extraLarge,
-                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
-            ) {
-                Box(contentAlignment = Alignment.Center) {
-                    Text(
-                        text = "PIG",
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                }
-            }
+            Image(
+                painter = painterResource(id = R.drawable.piggy_bank),
+                contentDescription = "Piggy bank",
+                modifier = Modifier.size(80.dp)
+            )
 
             Spacer(modifier = Modifier.height(16.dp))
 
