@@ -35,6 +35,7 @@ fun KidHomeScreen(
 
     var child by remember { mutableStateOf<Child?>(null) }
     var transactions by remember { mutableStateOf<List<Transaction>>(emptyList()) }
+    var isLoading by remember { mutableStateOf(true) }
     var isRefreshing by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
 
@@ -69,6 +70,7 @@ fun KidHomeScreen(
                     errorMessage = "Failed to load transactions: ${e.message}"
                 }
 
+            isLoading = false
             isRefreshing = false
         }
     }
@@ -109,16 +111,24 @@ fun KidHomeScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                // Balance header - large and prominent for kids
-                item {
-                    KidBalanceHeader(
-                        childName = child?.name ?: "",
-                        balance = balance
-                    )
+            if (isLoading) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
                 }
+            } else {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    // Balance header - large and prominent for kids
+                    item {
+                        KidBalanceHeader(
+                            childName = child?.name ?: "",
+                            balance = balance
+                        )
+                    }
 
                 // Error message if any
                 if (errorMessage != null) {
@@ -150,7 +160,7 @@ fun KidHomeScreen(
                     )
                 }
 
-                if (transactions.isEmpty() && !isRefreshing) {
+                if (transactions.isEmpty()) {
                     item {
                         Box(
                             modifier = Modifier
@@ -176,6 +186,7 @@ fun KidHomeScreen(
                 item {
                     Spacer(modifier = Modifier.height(32.dp))
                 }
+            }
             }
         }
     }

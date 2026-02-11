@@ -41,6 +41,7 @@ fun ChildDetailScreen(
 
     var child by remember { mutableStateOf<Child?>(null) }
     var transactions by remember { mutableStateOf<List<Transaction>>(emptyList()) }
+    var isLoading by remember { mutableStateOf(true) }
     var isRefreshing by remember { mutableStateOf(false) }
     var showMenu by remember { mutableStateOf(false) }
 
@@ -56,6 +57,7 @@ fun ChildDetailScreen(
     LaunchedEffect(familyId, childId) {
         firebaseRepository.observeTransactions(familyId, childId).collect {
             transactions = it
+            isLoading = false
         }
     }
 
@@ -133,41 +135,49 @@ fun ChildDetailScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                // Balance header
-                item {
-                    BalanceHeader(balance = balance)
+            if (isLoading) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
                 }
-
-                // Transactions section header
-                item {
-                    Text(
-                        text = "Transaction History",
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-                    )
-                }
-
-                if (transactions.isEmpty()) {
+            } else {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    // Balance header
                     item {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(32.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = "No transactions yet.\nTap + to add the first one!",
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                textAlign = TextAlign.Center
-                            )
-                        }
+                        BalanceHeader(balance = balance)
                     }
-                } else {
+
+                    // Transactions section header
+                    item {
+                        Text(
+                            text = "Transaction History",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.onBackground,
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                        )
+                    }
+
+                    if (transactions.isEmpty()) {
+                        item {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(32.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = "No transactions yet.\nTap + to add the first one!",
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    textAlign = TextAlign.Center
+                                )
+                            }
+                        }
+                    } else {
                     items(transactions) { transaction ->
                         TransactionRow(
                             transaction = transaction,
@@ -180,6 +190,7 @@ fun ChildDetailScreen(
                 item {
                     Spacer(modifier = Modifier.height(80.dp))
                 }
+            }
             }
         }
     }
