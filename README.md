@@ -2,6 +2,8 @@
 
 A simple Android piggy bank app for tracking kids' savings. Features parent mode for managing transactions and kid mode for viewing balances.
 
+**See [docs/SETUP.md](docs/SETUP.md) for complete setup and build instructions.**
+
 ## Features
 
 - **Parent Mode**: Create family, add children, manage transactions (deposits/withdrawals), invite other parents
