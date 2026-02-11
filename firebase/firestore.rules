@@ -95,10 +95,13 @@ service cloud.firestore {
         // Parents can see other parents in their family
         allow read: if isParentOfFamily(familyId);
 
-        // Owner can add/remove parents
-        // A parent can also add themselves (when joining via invite)
+        // Owner can add parents directly
+        // Others must provide a valid, unexpired invite code for this family
         allow create: if isOwnerOfFamily(familyId) ||
-          (isAuthenticated() && parentUid == request.auth.uid);
+          (isAuthenticated() && parentUid == request.auth.uid &&
+           exists(/databases/$(database)/documents/inviteCodes/$(request.resource.data.inviteCode)) &&
+           get(/databases/$(database)/documents/inviteCodes/$(request.resource.data.inviteCode)).data.familyId == familyId &&
+           get(/databases/$(database)/documents/inviteCodes/$(request.resource.data.inviteCode)).data.expiresAt > request.time);
 
         // Only owner can remove parents (except owner can't remove themselves)
         allow delete: if isOwnerOfFamily(familyId) &&
@@ -149,11 +152,15 @@ service cloud.firestore {
             (isAuthenticated() && deviceUid == request.auth.uid);
 
           // A device can register itself (deviceUid must match auth uid)
+          // Must provide a valid lookup code for this family/child
           // Must use server timestamp for registeredAt and lastAccessedAt
           allow create: if isAuthenticated() &&
             deviceUid == request.auth.uid &&
             request.resource.data.registeredAt == request.time &&
-            request.resource.data.lastAccessedAt == request.time;
+            request.resource.data.lastAccessedAt == request.time &&
+            exists(/databases/$(database)/documents/childLookup/$(request.resource.data.lookupCode)) &&
+            get(/databases/$(database)/documents/childLookup/$(request.resource.data.lookupCode)).data.familyId == familyId &&
+            get(/databases/$(database)/documents/childLookup/$(request.resource.data.lookupCode)).data.childId == childId;
 
           // Only the device itself can update its lastAccessedAt
           // Must use server timestamp and can only update lastAccessedAt
@@ -188,8 +195,10 @@ service cloud.firestore {
     // Structure: /inviteCodes/{code} -> { familyId, expiresAt }
 
     match /inviteCodes/{code} {
-      // Anyone authenticated can read (to look up an invite code)
-      allow read: if isAuthenticated();
+      // Anyone authenticated can look up a specific invite code by ID
+      // But listing/querying all codes is restricted to prevent enumeration
+      allow get: if isAuthenticated();
+      allow list: if false;
 
       // Only family owners can create invite codes
       // The client must also create the invite in the family's invites subcollection
@@ -213,8 +222,10 @@ service cloud.firestore {
     // the device must register in the child's devices subcollection.
 
     match /childLookup/{lookupCode} {
-      // Anyone authenticated can read (kid devices look up their code)
-      allow read: if isAuthenticated();
+      // Anyone authenticated can look up a specific code by ID
+      // But listing/querying all codes is restricted to prevent enumeration
+      allow get: if isAuthenticated();
+      allow list: if false;
 
       // Only parents can create lookup codes for their children
       allow create: if isAuthenticated() &&

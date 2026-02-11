@@ -25,6 +25,7 @@ data class Parent(
     @DocumentId
     val uid: String = "",
     val email: String = "",
+    val inviteCode: String? = null, // Required for joining parents, validated server-side
     @ServerTimestamp
     val joinedAt: Timestamp? = null
 )
@@ -108,6 +109,7 @@ data class DeviceAccess(
     @DocumentId
     val uid: String = "",
     val deviceName: String = "",
+    val lookupCode: String = "", // Validated server-side against childLookup collection
     val registeredAt: Timestamp? = null,
     val lastAccessedAt: Timestamp? = null
 )

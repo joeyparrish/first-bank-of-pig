@@ -185,10 +185,11 @@ class FirebaseRepository {
 
         val parent = Parent(
             uid = user.uid,
-            email = user.email ?: ""
+            email = user.email ?: "",
+            inviteCode = inviteCode.uppercase()
         )
 
-        // Add parent first
+        // Add parent first (invite code is validated server-side by security rules)
         db.collection("families")
             .document(familyId)
             .collection("parents")
@@ -437,7 +438,8 @@ class FirebaseRepository {
     suspend fun registerDevice(
         familyId: String,
         childId: String,
-        deviceName: String
+        deviceName: String,
+        lookupCode: String
     ): Result<Unit> = runCatching {
         val user = currentUser ?: throw Exception("Not signed in")
 
@@ -450,6 +452,7 @@ class FirebaseRepository {
             .set(
                 mapOf(
                     "deviceName" to deviceName,
+                    "lookupCode" to lookupCode,
                     "registeredAt" to FieldValue.serverTimestamp(),
                     "lastAccessedAt" to FieldValue.serverTimestamp()
                 )
