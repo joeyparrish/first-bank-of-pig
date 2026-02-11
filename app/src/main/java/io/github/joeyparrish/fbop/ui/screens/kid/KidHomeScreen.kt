@@ -1,5 +1,6 @@
 package io.github.joeyparrish.fbop.ui.screens.kid
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -7,6 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Remove
@@ -51,6 +53,7 @@ fun KidHomeScreen(
     var errorMessage by remember { mutableStateOf<String?>(null) }
     var showMenu by remember { mutableStateOf(false) }
     var showThemeDialog by remember { mutableStateOf(false) }
+    var showPig by remember { mutableStateOf(false) }
     var currentThemeMode by remember { mutableStateOf(configRepository.getThemeMode()) }
     var accessRevoked by remember { mutableStateOf(false) }
 
@@ -153,6 +156,22 @@ fun KidHomeScreen(
         )
     }
 
+    if (showPig) {
+        BackHandler { showPig = false }
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.piggy_bank),
+                contentDescription = "Piggy bank",
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Fit
+            )
+        }
+        return
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -182,6 +201,16 @@ fun KidHomeScreen(
                             },
                             leadingIcon = {
                                 Icon(Icons.Default.Palette, contentDescription = null)
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text("Have a pig") },
+                            onClick = {
+                                showMenu = false
+                                showPig = true
+                            },
+                            leadingIcon = {
+                                Icon(Icons.Default.Favorite, contentDescription = null)
                             }
                         )
                     }
