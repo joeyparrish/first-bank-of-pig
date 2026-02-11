@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    This is a placeholder file.
+    The actual default_web_client_id will be generated when you download
+    google-services.json from Firebase and place it in the app/ directory.
+
+    This file can be deleted once google-services.json is in place.
+-->
+<resources>
+    <string name="default_web_client_id" translatable="false">PLACEHOLDER_WEB_CLIENT_ID</string>
+</resources>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">First Bank of Pig</string>
+
+    <!-- Onboarding -->
+    <string name="welcome_title">First Bank of Pig</string>
+    <string name="welcome_subtitle">How will you use this device?</string>
+    <string name="mode_parent">Parent Mode</string>
+    <string name="mode_parent_desc">Manage accounts and transactions</string>
+    <string name="mode_kid">Kid Mode</string>
+    <string name="mode_kid_desc">View your balance and history</string>
+
+    <!-- Parent Setup -->
+    <string name="parent_setup_title">Parent Setup</string>
+    <string name="create_family">Create New Family</string>
+    <string name="create_family_desc">Start fresh with a new family account</string>
+    <string name="join_family">Join Existing Family</string>
+    <string name="join_family_desc">Enter an invite code from another parent</string>
+
+    <!-- Kid Setup -->
+    <string name="kid_setup_title">Kid Setup</string>
+    <string name="scan_qr_code">Scan QR Code</string>
+    <string name="scan_qr_code_desc">Ask your parent to show the QR code</string>
+    <string name="enter_code_manually">Enter Code Manually</string>
+
+    <!-- Common -->
+    <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="loading">Loading…</string>
+    <string name="error">Error</string>
+    <string name="retry">Retry</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="done">Done</string>
+
+    <!-- Parent Mode -->
+    <string name="family_overview">Family Overview</string>
+    <string name="add_child">Add Child</string>
+    <string name="child_name">Child Name</string>
+    <string name="invite_parent">Invite Parent</string>
+    <string name="manage_parents">Manage Parents</string>
+    <string name="show_qr_code">Show QR Code</string>
+
+    <!-- Transactions -->
+    <string name="add_transaction">Add Transaction</string>
+    <string name="edit_transaction">Edit Transaction</string>
+    <string name="transaction_amount">Amount</string>
+    <string name="transaction_description">Description</string>
+    <string name="transaction_date">Date</string>
+    <string name="deposit">Deposit</string>
+    <string name="withdrawal">Withdrawal</string>
+
+    <!-- Balance -->
+    <string name="current_balance">Current Balance</string>
+    <string name="transaction_history">Transaction History</string>
+    <string name="no_transactions">No transactions yet</string>
+
+    <!-- Biometric -->
+    <string name="biometric_prompt_title">Authenticate</string>
+    <string name="biometric_prompt_subtitle">Confirm your identity to access parent mode</string>
+    <string name="biometric_prompt_cancel">Use password</string>
+
+    <!-- Errors -->
+    <string name="error_sign_in_failed">Sign in failed. Please try again.</string>
+    <string name="error_invalid_code">Invalid or expired code.</string>
+    <string name="error_network">Network error. Please check your connection.</string>
+    <string name="error_biometric_not_available">Biometric authentication not available</string>
+</resources>

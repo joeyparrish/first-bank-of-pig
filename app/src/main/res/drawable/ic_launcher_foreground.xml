@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Placeholder pig icon - replace with custom artwork -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Background circle -->
+    <path
+        android:fillColor="#FFB0BE"
+        android:pathData="M54,54m-40,0a40,40 0,1 1,80 0a40,40 0,1 1,-80 0" />
+
+    <!-- Pig face - simple circle -->
+    <path
+        android:fillColor="#FF8FA3"
+        android:pathData="M54,58m-25,0a25,25 0,1 1,50 0a25,25 0,1 1,-50 0" />
+
+    <!-- Pig snout -->
+    <path
+        android:fillColor="#FFB0BE"
+        android:pathData="M54,65m-10,0a10,7 0,1 1,20 0a10,7 0,1 1,-20 0" />
+
+    <!-- Nostrils -->
+    <path
+        android:fillColor="#E85A77"
+        android:pathData="M50,65m-2,0a2,2 0,1 1,4 0a2,2 0,1 1,-4 0" />
+    <path
+        android:fillColor="#E85A77"
+        android:pathData="M58,65m-2,0a2,2 0,1 1,4 0a2,2 0,1 1,-4 0" />
+
+    <!-- Eyes -->
+    <path
+        android:fillColor="#262626"
+        android:pathData="M44,52m-3,0a3,3 0,1 1,6 0a3,3 0,1 1,-6 0" />
+    <path
+        android:fillColor="#262626"
+        android:pathData="M64,52m-3,0a3,3 0,1 1,6 0a3,3 0,1 1,-6 0" />
+
+    <!-- Ears -->
+    <path
+        android:fillColor="#FF8FA3"
+        android:pathData="M32,40 Q28,30 38,35 Q42,38 38,42 Z" />
+    <path
+        android:fillColor="#FF8FA3"
+        android:pathData="M76,40 Q80,30 70,35 Q66,38 70,42 Z" />
+</vector>
