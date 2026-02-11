@@ -11,7 +11,6 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
-import java.util.UUID
 
 class FirebaseRepository {
     private val auth = FirebaseAuth.getInstance()
@@ -131,7 +130,7 @@ class FirebaseRepository {
         val user = currentUser ?: throw Exception("Not signed in")
 
         // Generate a short, readable code
-        val code = generateInviteCode()
+        val code = generateShortCode()
         val expiresAt = Timestamp(
             java.util.Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000) // 24 hours
         )
@@ -202,9 +201,9 @@ class FirebaseRepository {
         }.await()
     }
 
-    private fun generateInviteCode(): String {
-        val chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789" // Excluding confusing characters
-        return (1..6).map { chars.random() }.joinToString("")
+    private fun generateShortCode(): String {
+        val chars = "ABCDEFGHJKMNPQRSTWXYZ23456789" // Excluding confusing characters
+        return (1..8).map { chars.random() }.joinToString("")
     }
 
     // =========================================================================
@@ -221,7 +220,7 @@ class FirebaseRepository {
         childRef.set(child).await()
 
         // Create lookup code for kid devices
-        val lookupCode = UUID.randomUUID().toString()
+        val lookupCode = generateShortCode()
         db.collection("childLookup")
             .document(lookupCode)
             .set(
@@ -291,7 +290,7 @@ class FirebaseRepository {
 
         if (snapshot.isEmpty) {
             // Create one if it doesn't exist
-            val lookupCode = UUID.randomUUID().toString()
+            val lookupCode = generateShortCode()
             db.collection("childLookup")
                 .document(lookupCode)
                 .set(
