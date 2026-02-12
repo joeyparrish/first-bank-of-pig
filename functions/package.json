@@ -5,6 +5,9 @@
     "node": "22"
   },
   "main": "index.js",
+  "scripts": {
+    "cleanup": "node cleanup.js"
+  },
   "dependencies": {
     "firebase-admin": "^13.6.1",
     "firebase-functions": "^7.0.5"
