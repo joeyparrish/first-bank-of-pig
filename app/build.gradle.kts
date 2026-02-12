@@ -5,6 +5,17 @@ plugins {
     alias(libs.plugins.google.services)
 }
 
+fun gitVersionCode(): Int {
+    val process = ProcessBuilder("git", "rev-list", "--count", "HEAD").start()
+    return process.inputStream.bufferedReader().readText().trim().toIntOrNull() ?: 1
+}
+
+fun gitVersionName(): String {
+    val process = ProcessBuilder("git", "describe", "--tags", "--abbrev=0").start()
+    val tag = process.inputStream.bufferedReader().readText().trim().removePrefix("v")
+    return tag.ifEmpty { "0.0.0" }
+}
+
 android {
     namespace = "io.github.joeyparrish.fbop"
     compileSdk = 35
@@ -13,8 +24,8 @@ android {
         applicationId = "io.github.joeyparrish.fbop"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0.0"
+        versionCode = gitVersionCode()
+        versionName = gitVersionName()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
