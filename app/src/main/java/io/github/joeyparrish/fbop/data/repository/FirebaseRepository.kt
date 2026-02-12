@@ -223,17 +223,6 @@ class FirebaseRepository {
         val child = Child(id = childRef.id, name = name)
         childRef.set(child).await()
 
-        // Create lookup code for kid devices
-        val lookupCode = generateShortCode()
-        db.collection("childLookup")
-            .document(lookupCode)
-            .set(
-                mapOf(
-                    "familyId" to familyId,
-                    "childId" to childRef.id
-                )
-            ).await()
-
         child.copy(id = childRef.id)
     }
 
@@ -284,29 +273,23 @@ class FirebaseRepository {
             ?: throw Exception("Child not found")
     }
 
-    suspend fun getChildLookupCode(familyId: String, childId: String): Result<String> = runCatching {
-        val snapshot = db.collection("childLookup")
-            .whereEqualTo("familyId", familyId)
-            .whereEqualTo("childId", childId)
-            .limit(1)
-            .get()
-            .await()
+    suspend fun generateChildLookupCode(familyId: String, childId: String): Result<String> = runCatching {
+        val lookupCode = generateShortCode()
+        val expiresAt = Timestamp(
+            java.util.Date(System.currentTimeMillis() + 60 * 60 * 1000) // 1 hour
+        )
 
-        if (snapshot.isEmpty) {
-            // Create one if it doesn't exist
-            val lookupCode = generateShortCode()
-            db.collection("childLookup")
-                .document(lookupCode)
-                .set(
-                    mapOf(
-                        "familyId" to familyId,
-                        "childId" to childId
-                    )
-                ).await()
-            lookupCode
-        } else {
-            snapshot.documents.first().id
-        }
+        db.collection("childLookup")
+            .document(lookupCode)
+            .set(
+                mapOf(
+                    "familyId" to familyId,
+                    "childId" to childId,
+                    "expiresAt" to expiresAt
+                )
+            ).await()
+
+        lookupCode
     }
 
     suspend fun lookupChild(lookupCode: String): Result<ChildLookup> = runCatching {
@@ -317,6 +300,11 @@ class FirebaseRepository {
 
         if (!doc.exists()) {
             throw Exception("Invalid code")
+        }
+
+        val expiresAt = doc.getTimestamp("expiresAt")
+        if (expiresAt != null && expiresAt.toDate().before(java.util.Date())) {
+            throw Exception("Code has expired")
         }
 
         ChildLookup(
