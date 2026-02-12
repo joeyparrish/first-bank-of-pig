@@ -1,0 +1,13 @@
+{
+  "name": "first-bank-of-pig-functions",
+  "description": "Cloud Functions for First Bank of Pig",
+  "engines": {
+    "node": "22"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "firebase-admin": "^13.6.1",
+    "firebase-functions": "^7.0.5"
+  },
+  "private": true
+}

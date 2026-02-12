@@ -71,6 +71,13 @@ if [ -f "firebase/firestore.indexes.json" ]; then
     echo ""
 fi
 
+# Deploy Cloud Functions (if configured)
+if [ -d "functions" ]; then
+    echo "Deploying Cloud Functions..."
+    firebase deploy --only functions --project="$PROJECT_ID"
+    echo ""
+fi
+
 echo "=============================================="
 echo "Deployment complete!"
 echo "=============================================="
@@ -79,6 +86,9 @@ echo "Deployed:"
 echo "  - Firestore security rules"
 if [ -f "firebase/firestore.indexes.json" ]; then
     echo "  - Firestore indexes"
+fi
+if [ -d "functions" ]; then
+    echo "  - Cloud Functions"
 fi
 echo ""
 echo "You can verify the rules in the Firebase Console:"

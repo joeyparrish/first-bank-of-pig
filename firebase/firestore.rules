@@ -152,7 +152,7 @@ service cloud.firestore {
             (isAuthenticated() && deviceUid == request.auth.uid);
 
           // A device can register itself (deviceUid must match auth uid)
-          // Must provide a valid lookup code for this family/child
+          // Must provide a valid, unexpired lookup code for this family/child
           // Must use server timestamp for registeredAt and lastAccessedAt
           allow create: if isAuthenticated() &&
             deviceUid == request.auth.uid &&
@@ -160,7 +160,8 @@ service cloud.firestore {
             request.resource.data.lastAccessedAt == request.time &&
             exists(/databases/$(database)/documents/childLookup/$(request.resource.data.lookupCode)) &&
             get(/databases/$(database)/documents/childLookup/$(request.resource.data.lookupCode)).data.familyId == familyId &&
-            get(/databases/$(database)/documents/childLookup/$(request.resource.data.lookupCode)).data.childId == childId;
+            get(/databases/$(database)/documents/childLookup/$(request.resource.data.lookupCode)).data.childId == childId &&
+            get(/databases/$(database)/documents/childLookup/$(request.resource.data.lookupCode)).data.expiresAt > request.time;
 
           // Only the device itself can update its lastAccessedAt
           // Must use server timestamp and can only update lastAccessedAt
@@ -228,8 +229,10 @@ service cloud.firestore {
       allow list: if false;
 
       // Only parents can create lookup codes for their children
+      // Must include an expiration timestamp
       allow create: if isAuthenticated() &&
-        isParentOfFamily(request.resource.data.familyId);
+        isParentOfFamily(request.resource.data.familyId) &&
+        request.resource.data.expiresAt is timestamp;
 
       // Only parents can delete
       allow delete: if isAuthenticated() &&

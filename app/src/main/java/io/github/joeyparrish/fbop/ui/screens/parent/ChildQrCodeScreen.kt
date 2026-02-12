@@ -43,8 +43,8 @@ fun ChildQrCodeScreen(
         firebaseRepository.getChild(familyId, childId)
             .onSuccess { child = it }
 
-        // Get or create lookup code
-        firebaseRepository.getChildLookupCode(familyId, childId)
+        // Generate a fresh lookup code (expires in 1 hour)
+        firebaseRepository.generateChildLookupCode(familyId, childId)
             .onSuccess { code ->
                 lookupCode = code
                 // Generate QR code
