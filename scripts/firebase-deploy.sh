@@ -74,7 +74,10 @@ fi
 # Deploy Cloud Functions (if configured)
 if [ -d "functions" ]; then
     echo "Deploying Cloud Functions..."
-    firebase deploy --only functions --project="$PROJECT_ID"
+    if ! firebase deploy --only functions --project="$PROJECT_ID"; then
+      echo "Function deployment failed."
+      echo "You can run cleanup locally using 'npm run cleanup' in functions/."
+    fi
     echo ""
 fi
 
