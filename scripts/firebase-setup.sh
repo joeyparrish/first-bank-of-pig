@@ -283,11 +283,21 @@ read -p "Press Enter after adding your SHA-1 fingerprint..."
 
 echo_step "Deploying Firestore security rules"
 
-echo "Deploying Firestore rules..."
 firebase deploy --only firestore:rules --project="$PROJECT_ID"
 
 echo ""
 echo "Firestore rules deployed successfully."
+
+# -----------------------------------------------------------------------------
+# Step 12: Enable monitoring API
+# -----------------------------------------------------------------------------
+
+echo_step "Enabling monitoring API"
+
+gcloud services enable monitoring.googleapis.com --project="$PROJECT_ID"
+
+echo ""
+echo "Monitoring API enabled."
 
 # -----------------------------------------------------------------------------
 # Done!
