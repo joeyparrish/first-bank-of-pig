@@ -85,4 +85,23 @@ else
 fi
 
 echo ""
+
+echo "--- Registered Families ---"
+ACCESS_TOKEN=$(gcloud auth print-access-token 2>/dev/null)
+FAMILY_COUNT=$(curl -s \
+    -H "Authorization: Bearer $ACCESS_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d '{
+        "structuredAggregationQuery": {
+            "structuredQuery": {
+                "from": [{"collectionId": "families"}]
+            },
+            "aggregations": [{"alias": "count", "count": {}}]
+        }
+    }' \
+    "https://firestore.googleapis.com/v1/projects/$PROJECT_ID/databases/(default)/documents:runAggregationQuery" \
+    2>/dev/null | grep -o '"integerValue":"[0-9]*"' | grep -o '[0-9]*')
+echo "  Families: ${FAMILY_COUNT:-0}"
+echo ""
+
 echo "Free tier: 50K reads/day, 20K writes/day, 1 GiB storage"
