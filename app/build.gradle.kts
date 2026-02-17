@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.services)
-    alias(libs.plugins.oss.licenses.plugin)
+    alias(libs.plugins.aboutlibraries)
 }
 
 fun gitVersionCode(): Int {
@@ -63,27 +63,8 @@ android {
     }
 }
 
-// In debug builds, the OSS licenses plugin only generates placeholder text.
-// Copy the real license data from the release task into the debug output.
-afterEvaluate {
-    tasks.register("copyReleaseLicensesToDebug") {
-        dependsOn("releaseOssLicensesTask")
-        mustRunAfter("debugOssLicensesTask")
-        doLast {
-            copy {
-                from("build/generated/third_party_licenses/release/res/raw/")
-                into("build/generated/third_party_licenses/debug/res/raw/")
-            }
-        }
-    }
-    tasks.named("mergeDebugResources") {
-        dependsOn("copyReleaseLicensesToDebug")
-    }
-}
-
 dependencies {
     // AndroidX Core
-    implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
@@ -115,8 +96,8 @@ dependencies {
     implementation(libs.zxing.core)
     implementation(libs.zxing.android)
 
-    // OSS Licenses
-    implementation(libs.oss.licenses)
+    // About / OSS Licenses
+    implementation(libs.aboutlibraries.compose.m3)
 
     // Debug
     debugImplementation(libs.androidx.ui.tooling)

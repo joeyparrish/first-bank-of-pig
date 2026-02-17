@@ -1,7 +1,5 @@
 package io.github.joeyparrish.fbop.ui.screens
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -11,21 +9,15 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import io.github.joeyparrish.fbop.BuildConfig
-import io.github.joeyparrish.fbop.data.model.ThemeMode
-import io.github.joeyparrish.fbop.data.repository.ConfigRepository
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AboutScreen(
-    configRepository: ConfigRepository,
+    onOpenLicenses: () -> Unit,
     onBack: () -> Unit
 ) {
-    val context = LocalContext.current
-
     Scaffold(
         topBar = {
             TopAppBar(
@@ -118,21 +110,7 @@ fun AboutScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             OutlinedButton(
-                onClick = {
-                    // Sync AppCompat night mode with the app's theme preference
-                    // so the OSS activity matches the current theme
-                    AppCompatDelegate.setDefaultNightMode(
-                        when (configRepository.getThemeMode()) {
-                            ThemeMode.LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
-                            ThemeMode.DARK -> AppCompatDelegate.MODE_NIGHT_YES
-                            ThemeMode.SYSTEM -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-                        }
-                    )
-                    OssLicensesMenuActivity.setActivityTitle("Open Source Licenses")
-                    context.startActivity(
-                        Intent(context, OssLicensesMenuActivity::class.java)
-                    )
-                },
+                onClick = onOpenLicenses,
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Open Source Licenses")

@@ -11,6 +11,7 @@ import io.github.joeyparrish.fbop.data.model.ThemeMode
 import io.github.joeyparrish.fbop.data.repository.ConfigRepository
 import io.github.joeyparrish.fbop.data.repository.FirebaseRepository
 import io.github.joeyparrish.fbop.ui.screens.AboutScreen
+import io.github.joeyparrish.fbop.ui.screens.OssLicensesScreen
 import io.github.joeyparrish.fbop.ui.screens.kid.KidHomeScreen
 import io.github.joeyparrish.fbop.ui.screens.onboarding.*
 import io.github.joeyparrish.fbop.ui.screens.parent.*
@@ -53,6 +54,7 @@ sealed class Screen(val route: String) {
 
     // Shared
     object About : Screen("about")
+    object OssLicenses : Screen("oss_licenses")
 }
 
 @Composable
@@ -302,7 +304,13 @@ fun AppNavigation(
 
         composable(Screen.About.route) {
             AboutScreen(
-                configRepository = configRepository,
+                onOpenLicenses = { navController.navigate(Screen.OssLicenses.route) },
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        composable(Screen.OssLicenses.route) {
+            OssLicensesScreen(
                 onBack = { navController.popBackStack() }
             )
         }
