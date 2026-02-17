@@ -63,6 +63,24 @@ android {
     }
 }
 
+// In debug builds, the OSS licenses plugin only generates placeholder text.
+// Copy the real license data from the release task into the debug output.
+afterEvaluate {
+    tasks.register("copyReleaseLicensesToDebug") {
+        dependsOn("releaseOssLicensesTask")
+        mustRunAfter("debugOssLicensesTask")
+        doLast {
+            copy {
+                from("build/generated/third_party_licenses/release/res/raw/")
+                into("build/generated/third_party_licenses/debug/res/raw/")
+            }
+        }
+    }
+    tasks.named("mergeDebugResources") {
+        dependsOn("copyReleaseLicensesToDebug")
+    }
+}
+
 dependencies {
     // AndroidX Core
     implementation(libs.androidx.appcompat)
