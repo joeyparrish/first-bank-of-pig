@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.services)
+    alias(libs.plugins.oss.licenses.plugin)
 }
 
 fun gitVersionCode(): Int {
@@ -94,6 +95,9 @@ dependencies {
     // QR Code
     implementation(libs.zxing.core)
     implementation(libs.zxing.android)
+
+    // OSS Licenses
+    implementation(libs.oss.licenses)
 
     // Debug
     debugImplementation(libs.androidx.ui.tooling)

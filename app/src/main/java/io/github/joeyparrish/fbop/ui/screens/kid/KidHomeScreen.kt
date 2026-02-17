@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Remove
@@ -39,6 +40,7 @@ fun KidHomeScreen(
     firebaseRepository: FirebaseRepository,
     configRepository: ConfigRepository,
     onThemeModeChanged: (ThemeMode) -> Unit,
+    onAbout: () -> Unit,
     onAccessRevoked: () -> Unit
 ) {
     val config = configRepository.getConfig()
@@ -201,6 +203,16 @@ fun KidHomeScreen(
                             },
                             leadingIcon = {
                                 Icon(Icons.Default.Palette, contentDescription = null)
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text("About") },
+                            onClick = {
+                                showMenu = false
+                                onAbout()
+                            },
+                            leadingIcon = {
+                                Icon(Icons.Default.Info, contentDescription = null)
                             }
                         )
                         DropdownMenuItem(

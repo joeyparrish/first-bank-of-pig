@@ -36,6 +36,7 @@ fun ParentHomeScreen(
     onAddChild: () -> Unit,
     onInviteParent: () -> Unit,
     onManageParents: () -> Unit,
+    onAbout: () -> Unit,
     onThemeModeChanged: (ThemeMode) -> Unit,
     onFamilyNotFound: () -> Unit
 ) {
@@ -152,6 +153,16 @@ fun ParentHomeScreen(
                             },
                             leadingIcon = {
                                 Icon(Icons.Default.Palette, contentDescription = null)
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text("About") },
+                            onClick = {
+                                showMenu = false
+                                onAbout()
+                            },
+                            leadingIcon = {
+                                Icon(Icons.Default.Info, contentDescription = null)
                             }
                         )
                     }

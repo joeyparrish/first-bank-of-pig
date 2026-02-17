@@ -20,6 +20,10 @@ googleid = "1.1.1"
 zxing = "3.5.3"
 zxingAndroid = "4.3.0"
 
+# OSS Licenses
+ossLicensesPlugin = "0.10.6"
+ossLicenses = "17.1.0"
+
 [libraries]
 # AndroidX Core
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -54,8 +58,12 @@ google-id = { group = "com.google.android.libraries.identity.googleid", name = "
 zxing-core = { group = "com.google.zxing", name = "core", version.ref = "zxing" }
 zxing-android = { group = "com.journeyapps", name = "zxing-android-embedded", version.ref = "zxingAndroid" }
 
+# OSS Licenses
+oss-licenses = { group = "com.google.android.gms", name = "play-services-oss-licenses", version.ref = "ossLicenses" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
+oss-licenses-plugin = { id = "com.google.android.gms.oss-licenses-plugin", version.ref = "ossLicensesPlugin" }
