@@ -12,6 +12,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import io.github.joeyparrish.fbop.BuildConfig
 
@@ -21,6 +22,8 @@ fun AboutScreen(
     onOpenLicenses: () -> Unit,
     onBack: () -> Unit
 ) {
+    val uriHandler = LocalUriHandler.current
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -111,6 +114,17 @@ fun AboutScreen(
             }
 
             Spacer(modifier = Modifier.height(24.dp))
+
+            OutlinedButton(
+                onClick = {
+                    uriHandler.openUri("https://github.com/joeyparrish/first-bank-of-pig")
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Source Code on GitHub")
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
 
             OutlinedButton(
                 onClick = onOpenLicenses,
