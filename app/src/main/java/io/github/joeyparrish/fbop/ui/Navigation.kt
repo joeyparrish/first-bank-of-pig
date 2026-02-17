@@ -10,6 +10,7 @@ import io.github.joeyparrish.fbop.data.model.AppMode
 import io.github.joeyparrish.fbop.data.model.ThemeMode
 import io.github.joeyparrish.fbop.data.repository.ConfigRepository
 import io.github.joeyparrish.fbop.data.repository.FirebaseRepository
+import io.github.joeyparrish.fbop.ui.screens.AboutScreen
 import io.github.joeyparrish.fbop.ui.screens.kid.KidHomeScreen
 import io.github.joeyparrish.fbop.ui.screens.onboarding.*
 import io.github.joeyparrish.fbop.ui.screens.parent.*
@@ -49,6 +50,9 @@ sealed class Screen(val route: String) {
 
     // Kid mode
     object KidHome : Screen("kid_home")
+
+    // Shared
+    object About : Screen("about")
 }
 
 @Composable
@@ -142,6 +146,7 @@ fun AppNavigation(
                 onAddChild = { navController.navigate(Screen.AddChild.route) },
                 onInviteParent = { navController.navigate(Screen.InviteParent.route) },
                 onManageParents = { navController.navigate(Screen.ManageParents.route) },
+                onAbout = { navController.navigate(Screen.About.route) },
                 onThemeModeChanged = onThemeModeChanged,
                 onFamilyNotFound = {
                     navController.navigate(Screen.ModeSelection.route) {
@@ -282,11 +287,22 @@ fun AppNavigation(
                 firebaseRepository = firebaseRepository,
                 configRepository = configRepository,
                 onThemeModeChanged = onThemeModeChanged,
+                onAbout = { navController.navigate(Screen.About.route) },
                 onAccessRevoked = {
                     navController.navigate(Screen.ModeSelection.route) {
                         popUpTo(0) { inclusive = true }
                     }
                 }
+            )
+        }
+
+        // =====================================================================
+        // Shared
+        // =====================================================================
+
+        composable(Screen.About.route) {
+            AboutScreen(
+                onBack = { navController.popBackStack() }
             )
         }
     }
