@@ -82,7 +82,7 @@ fun AboutScreen(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Text(
-                        text = "Copyright (c) 2025 Joey Parrish\n\n" +
+                        text = "Copyright (c) 2026 Joey Parrish\n\n" +
                             "Permission is hereby granted, free of charge, to any person " +
                             "obtaining a copy of this software and associated documentation " +
                             "files (the \"Software\"), to deal in the Software without " +
