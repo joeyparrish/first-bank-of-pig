@@ -1,3 +1,6 @@
+// Copyright (c) 2026 Joey Parrish
+// SPDX-License-Identifier: MIT
+
 package io.github.joeyparrish.fbop.ui
 
 import androidx.compose.runtime.Composable
