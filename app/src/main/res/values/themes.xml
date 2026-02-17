@@ -9,4 +9,10 @@
         <!-- Window background -->
         <item name="android:windowBackground">@color/neutral_50</item>
     </style>
+
+    <!-- AppCompat theme for OssLicensesMenuActivity -->
+    <style name="Theme.FirstBankOfPig.AppCompat" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/pink_500</item>
+        <item name="android:statusBarColor">@color/pink_500</item>
+    </style>
 </resources>
