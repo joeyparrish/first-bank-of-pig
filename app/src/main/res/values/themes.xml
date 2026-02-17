@@ -11,8 +11,9 @@
     </style>
 
     <!-- AppCompat theme for OssLicensesMenuActivity -->
-    <style name="Theme.FirstBankOfPig.AppCompat" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="Theme.FirstBankOfPig.AppCompat" parent="Theme.AppCompat.DayNight.DarkActionBar">
         <item name="colorPrimary">@color/pink_500</item>
+        <item name="colorPrimaryDark">@color/pink_700</item>
         <item name="android:statusBarColor">@color/pink_500</item>
     </style>
 </resources>

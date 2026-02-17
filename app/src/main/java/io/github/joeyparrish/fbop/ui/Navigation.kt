@@ -302,6 +302,7 @@ fun AppNavigation(
 
         composable(Screen.About.route) {
             AboutScreen(
+                configRepository = configRepository,
                 onBack = { navController.popBackStack() }
             )
         }
