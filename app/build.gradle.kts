@@ -64,6 +64,14 @@ android {
     }
 }
 
+aboutLibraries {
+    offlineMode = true
+    library {
+        duplicationMode = com.mikepenz.aboutlibraries.plugin.DuplicateMode.MERGE
+        duplicationRule = com.mikepenz.aboutlibraries.plugin.DuplicateRule.GROUP
+    }
+}
+
 dependencies {
     // AndroidX Core
     implementation(libs.androidx.core.ktx)
