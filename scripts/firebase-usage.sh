@@ -40,15 +40,18 @@ fetch_metric() {
         2>/dev/null | paste -sd+ | bc 2>/dev/null || echo "0"
 }
 
+PREV_MONTH_LABEL=$(date -u -d "$(date +%Y-%m-01) -1 month" +"%B %Y")
+CUR_MONTH_LABEL=$(date +"%B %Y")
+
 echo "--- Previous Month ---"
-echo "  $(date -d "$PREV_MONTH_START" +%B\ %Y)"
+echo "  $PREV_MONTH_LABEL"
 echo "  Reads:   $(fetch_metric read_count "$PREV_MONTH_START" "$PREV_MONTH_END")"
 echo "  Writes:  $(fetch_metric write_count "$PREV_MONTH_START" "$PREV_MONTH_END")"
 echo "  Deletes: $(fetch_metric delete_count "$PREV_MONTH_START" "$PREV_MONTH_END")"
 echo ""
 
 echo "--- Current Month (to date) ---"
-echo "  $(date -d "$MONTH_START" +%B\ %Y)"
+echo "  $CUR_MONTH_LABEL"
 echo "  Reads:   $(fetch_metric read_count "$MONTH_START" "$NOW")"
 echo "  Writes:  $(fetch_metric write_count "$MONTH_START" "$NOW")"
 echo "  Deletes: $(fetch_metric delete_count "$MONTH_START" "$NOW")"
@@ -100,7 +103,7 @@ FAMILY_COUNT=$(curl -s \
         }
     }' \
     "https://firestore.googleapis.com/v1/projects/$PROJECT_ID/databases/(default)/documents:runAggregationQuery" \
-    2>/dev/null | grep -o '"integerValue":"[0-9]*"' | grep -o '[0-9]*')
+    2>/dev/null | grep -o '"integerValue"[: ]*"[0-9]*"' | grep -o '[0-9]*')
 echo "  Families: ${FAMILY_COUNT:-0}"
 echo ""
 
