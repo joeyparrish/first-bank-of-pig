@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -52,6 +53,7 @@ fun ParentHomeScreen(
     var childrenWithBalances by remember { mutableStateOf<List<ChildWithBalance>>(emptyList()) }
     var isLoading by remember { mutableStateOf(true) }
     var isRefreshing by remember { mutableStateOf(false) }
+    val uriHandler = LocalUriHandler.current
     var showMenu by remember { mutableStateOf(false) }
     var showThemeDialog by remember { mutableStateOf(false) }
     var isOwner by remember { mutableStateOf(false) }
@@ -166,6 +168,16 @@ fun ParentHomeScreen(
                             },
                             leadingIcon = {
                                 Icon(Icons.Default.Info, contentDescription = null)
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text("Support this project") },
+                            onClick = {
+                                showMenu = false
+                                uriHandler.openUri("https://github.com/sponsors/joeyparrish")
+                            },
+                            leadingIcon = {
+                                Icon(Icons.Default.VolunteerActivism, contentDescription = null)
                             }
                         )
                     }
