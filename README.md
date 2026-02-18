@@ -2,6 +2,14 @@
 
 A simple Android piggy bank app for tracking kids' savings. Features parent mode for managing transactions and kid mode for viewing balances.
 
+## Install from the Play Store
+
+You don't need to build it yourself. It's free on the Play Store.
+
+I do pay a small amount in cloud computing costs to run the app.  Donations are welcome through [GitHub Sponsors](https://github.com/sponsors/joeyparrish).
+
+## Setup and Build
+
 **See [docs/SETUP.md](docs/SETUP.md) for complete setup and build instructions.**
 
 ## Features
