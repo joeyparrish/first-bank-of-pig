@@ -44,6 +44,9 @@ captures/
 *.keystore
 keystore.properties
 
+# Local script config overrides
+scripts/config.local.sh
+
 # External native build folder generated in Android Studio 2.2 and later
 .externalNativeBuild
 .cxx/

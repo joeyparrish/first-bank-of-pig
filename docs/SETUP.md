@@ -152,30 +152,41 @@ Firebase is the backend for this app. It provides:
 
 | File | Purpose |
 |------|---------|
+| `scripts/config.sh` | Shared configuration for all scripts |
+| `scripts/config.local.sh` | Your local overrides (gitignored, create this) |
 | `scripts/firebase-setup.sh` | Automated setup script (read and run step-by-step) |
+| `scripts/firebase-deploy.sh` | Deploy rules, indexes, and functions |
+| `scripts/firebase-usage.sh` | Firestore usage report (reads, writes, storage) |
 | `firebase/firestore.rules` | Security rules defining access permissions |
 | `firebase/firestore.indexes.json` | Query optimization indexes |
 | `app/google-services.json` | Generated config file connecting your app to Firebase |
 
-### Step 1: Configure the Setup Script
+### Step 1: Configure Your Project
 
-Edit `scripts/firebase-setup.sh` and set these values:
+All scripts share configuration from `scripts/config.sh`. To override the
+defaults without modifying tracked files, create `scripts/config.local.sh`
+(which is gitignored):
 
 ```bash
+# scripts/config.local.sh
+
 # Must be globally unique across all of Google Cloud
 PROJECT_ID="first-bank-of-pig-yourname"
 
-# Human-readable name
+# Human-readable project name
 PROJECT_NAME="First Bank of Pig"
+
+# Android package name (if you changed applicationId in build.gradle.kts)
+# By default, this is extracted from build.gradle.kts automatically.
+#ANDROID_PACKAGE="com.example.yourapp"
 
 # Optional: your GCP billing account ID (format: XXXXXX-XXXXXX-XXXXXX)
 # Find at: https://console.cloud.google.com/billing
 # Leave empty for free Spark tier (sufficient for this app)
 BILLING_ACCOUNT=""
-
-# Must match build.gradle.kts
-ANDROID_PACKAGE="io.github.joeyparrish.fbop"
 ```
+
+See `scripts/config.sh` for all available settings.
 
 ### Step 2: Run the Setup Script
 

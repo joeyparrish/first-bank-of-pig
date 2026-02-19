@@ -3,16 +3,13 @@
 # Requires: gcloud CLI, authenticated with `gcloud auth login`
 
 # -----------------------------------------------------------------------------
-# Configuration - EDIT THESE VALUES
+# Configuration
 # -----------------------------------------------------------------------------
+# Edit scripts/config.sh, or override values in scripts/config.local.sh
+# (which is not revision controlled).
 
-# Choose a globally unique project ID (lowercase, numbers, hyphens only)
-# This will be your project's identifier across all of Google Cloud/Firebase
-PROJECT_ID="first-bank-of-pig"
-
-# -----------------------------------------------------------------------------
-# End of Configuration
-# -----------------------------------------------------------------------------
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/config.sh"
 
 echo "=== Firebase Firestore Usage Report ==="
 echo "Project: $PROJECT_ID"

@@ -23,29 +23,13 @@
 set -e  # Exit on any error
 
 # -----------------------------------------------------------------------------
-# Configuration - EDIT THESE VALUES
+# Configuration
 # -----------------------------------------------------------------------------
+# Edit scripts/config.sh, or override values in scripts/config.local.sh
+# (which is not revision controlled).
 
-# Choose a globally unique project ID (lowercase, numbers, hyphens only)
-# This will be your project's identifier across all of Google Cloud/Firebase
-PROJECT_ID="first-bank-of-pig"
-
-# Human-readable project name
-PROJECT_NAME="First Bank of Pig"
-
-# Your GCP billing account ID (find at https://console.cloud.google.com/billing)
-# Format: XXXXXX-XXXXXX-XXXXXX
-# Leave empty to skip billing setup (Spark free tier only)
-BILLING_ACCOUNT=""
-
-# Android package name (must match build.gradle.kts)
-ANDROID_PACKAGE="io.github.joeyparrish.fbop"
-
-# SHA-1 fingerprint of your debug signing key (for Google Sign-In)
-# Get this by running:
-#   keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android
-# Look for the SHA1: line
-DEBUG_SHA1=""
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/config.sh"
 
 # -----------------------------------------------------------------------------
 # Helper functions
