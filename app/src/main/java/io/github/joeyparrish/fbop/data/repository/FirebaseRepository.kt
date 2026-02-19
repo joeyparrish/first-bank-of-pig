@@ -58,9 +58,13 @@ class FirebaseRepository {
         )
 
         // Create family and add current user as parent in a batch
+        val parentRef = familyRef.collection("parents").document(user.uid)
         db.runBatch { batch ->
             batch.set(familyRef, family)
-            batch.set(familyRef.collection("parents").document(user.uid), parent)
+            batch.set(parentRef, parent)
+            // @DocumentId excludes uid from writes, but we need it as a
+            // queryable field for collection group queries (reconnect flow)
+            batch.update(parentRef, "uid", user.uid)
         }.await()
 
         family.copy(id = familyRef.id)
@@ -161,6 +165,25 @@ class FirebaseRepository {
         awaitClose { listener.remove() }
     }
 
+    suspend fun findExistingFamily(): Result<String?> = runCatching {
+        val user = currentUser ?: throw Exception("Not signed in")
+
+        val querySnapshot = db.collectionGroup("parents")
+            .whereEqualTo("uid", user.uid)
+            .limit(1)
+            .get()
+            .await()
+
+        if (querySnapshot.isEmpty) {
+            null
+        } else {
+            val doc = querySnapshot.documents.first()
+            // Path: families/{familyId}/parents/{uid}
+            doc.reference.parent.parent?.id
+                ?: throw Exception("Unexpected document path structure")
+        }
+    }
+
     suspend fun removeParent(familyId: String, parentUid: String): Result<Unit> = runCatching {
         db.collection("families")
             .document(familyId)
@@ -238,12 +261,14 @@ class FirebaseRepository {
         )
 
         // Add parent first (invite code is validated server-side by security rules)
-        db.collection("families")
+        val parentRef = db.collection("families")
             .document(familyId)
             .collection("parents")
             .document(user.uid)
-            .set(parent)
-            .await()
+        parentRef.set(parent).await()
+        // @DocumentId excludes uid from writes, but we need it as a
+        // queryable field for collection group queries (reconnect flow)
+        parentRef.update("uid", user.uid).await()
 
         // Then delete the invite code (now allowed since we're a parent)
         try {

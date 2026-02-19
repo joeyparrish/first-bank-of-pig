@@ -92,8 +92,15 @@ fun AppNavigation(
 
         composable(Screen.ParentSetup.route) {
             ParentSetupScreen(
+                firebaseRepository = firebaseRepository,
+                configRepository = configRepository,
                 onCreateFamily = { navController.navigate(Screen.CreateFamily.route) },
                 onJoinFamily = { navController.navigate(Screen.JoinFamily.route) },
+                onReconnected = {
+                    navController.navigate(Screen.ParentHome.route) {
+                        popUpTo(Screen.ModeSelection.route) { inclusive = true }
+                    }
+                },
                 onBack = { navController.popBackStack() }
             )
         }

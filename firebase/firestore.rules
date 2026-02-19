@@ -75,6 +75,16 @@ service cloud.firestore {
     }
 
     // -------------------------------------------------------------------------
+    // Collection group rule for parent reconnection
+    // -------------------------------------------------------------------------
+    // Allows a signed-in user to query for their own parent documents across
+    // all families, used to reconnect after app data loss or device switch.
+    match /{path=**}/parents/{parentUid} {
+      allow read: if isAuthenticated() &&
+        resource.data.uid == request.auth.uid;
+    }
+
+    // -------------------------------------------------------------------------
     // Family document rules
     // -------------------------------------------------------------------------
 
