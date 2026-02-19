@@ -281,12 +281,30 @@ read -p "Press Enter after adding your SHA-1 fingerprint..."
 # Step 11: Deploy Firestore security rules
 # -----------------------------------------------------------------------------
 
-echo_step "Deploying Firestore security rules"
+echo_step "Deploying Firestore security rules and indexes"
 
 firebase deploy --only firestore:rules --project="$PROJECT_ID"
+firebase deploy --only firestore:indexes --project="$PROJECT_ID"
 
 echo ""
-echo "Firestore rules deployed successfully."
+echo "Firestore rules and indexes deployed successfully."
+
+# -----------------------------------------------------------------------------
+# Step 11b: Deploy Cloud Functions
+# -----------------------------------------------------------------------------
+
+if [ -d "functions" ]; then
+    echo_step "Deploying Cloud Functions"
+
+    cd functions && npm install && cd ..
+    if ! firebase deploy --only functions --project="$PROJECT_ID"; then
+        echo "Function deployment failed."
+        echo "You may need the Blaze plan for Cloud Functions."
+        echo "You can deploy functions later with: ./scripts/firebase-deploy.sh"
+    else
+        echo "Cloud Functions deployed successfully."
+    fi
+fi
 
 # -----------------------------------------------------------------------------
 # Step 12: Enable monitoring API
