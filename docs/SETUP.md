@@ -176,15 +176,14 @@ PROJECT_ID="first-bank-of-pig-yourname"
 # Human-readable project name
 PROJECT_NAME="First Bank of Pig"
 
-# Android package name (if you changed applicationId in build.gradle.kts)
-# By default, this is extracted from build.gradle.kts automatically.
-#ANDROID_PACKAGE="com.example.yourapp"
-
 # Optional: your GCP billing account ID (format: XXXXXX-XXXXXX-XXXXXX)
 # Find at: https://console.cloud.google.com/billing
 # Leave empty for free Spark tier (sufficient for this app)
 BILLING_ACCOUNT=""
 ```
+
+You will also want to modify `applicationId` in `build.gradle.kts` for your own
+version.  The shell scripts will extract this value automatically.
 
 See `scripts/config.sh` for all available settings.
 
