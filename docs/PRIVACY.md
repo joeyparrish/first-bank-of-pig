@@ -27,8 +27,8 @@ Google Cloud Firestore:
 - **Family name** — chosen by the parent when creating a family
 - **Child names** — entered by the parent
 - **Transaction records** — amounts and descriptions entered by the parent
-- **Google account identity** — used for parent authentication (email and
-  display name from your Google account)
+- **Google account identity** — used for parent authentication (email from your
+  Google account)
 
 This data is stored on Google's servers and is only accessible to
 authenticated parents within your family. Child devices access a read-only
@@ -52,8 +52,8 @@ Firebase Analytics collects anonymous usage data including:
 - App version
 
 This data is aggregated and anonymous. It helps us understand how the app is
-used and identify areas for improvement. No personally identifiable
-information is collected by Analytics.
+used and identify areas for improvement. No personally identifiable information
+is collected by Analytics.
 
 For more information, see
 [Google's Analytics data collection documentation](https://support.google.com/analytics/answer/11593727).
@@ -87,7 +87,7 @@ The app is designed for families. Children access a read-only view of their
 savings using a device registered by their parent. The child-facing portion
 of the app:
 
-- Does not require children to provide any personal information
+- Does not require children to provide any information
 - Uses anonymous authentication (no accounts or email addresses)
 - Does not display advertising
 - Does not include in-app purchases
@@ -113,12 +113,14 @@ data, you can:
 - Remove individual children or transactions from within the app
 - Delete your entire family and all its data using the "Delete Family"
   option in the menu (available to the family owner)
-- Contact the developer to request deletion of your data if you are unable
-  to do so yourself
 
 Temporary data such as invite codes and device lookup codes expire
 automatically (24 hours and 1 hour respectively) and are cleaned up
 periodically.
+
+If you lose your device, access to your family data can be regained simply by
+logging in with the same Google account.  If you lose access to your Google
+account, we cannot grant you access to your previous family data.
 
 ## Third-Party Services
 
@@ -146,8 +148,7 @@ linked above. The "last updated" date at the top will be revised accordingly.
 
 ## Contact
 
-If you have questions about this privacy policy or want to request deletion
-of your data, please open an issue on the
-[GitHub repository](https://github.com/joeyparrish/first-bank-of-pig/issues)
-or contact the developer at the email address listed on the Play Store
-listing.
+If you have questions about this privacy policy, you can either open an issue on
+the [GitHub repository](https://github.com/joeyparrish/first-bank-of-pig/issues)
+or contact the developer at
+[support@chickennoodlesoap.com](mailto:support@chickennoodlesoap.com).
