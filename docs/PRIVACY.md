@@ -109,7 +109,10 @@ Your data remains in Firestore as long as you use the app. To delete your
 data, you can:
 
 - Remove individual children or transactions from within the app
-- Contact the developer to request full deletion of your family's data
+- Delete your entire family and all its data using the "Delete Family"
+  option in the menu (available to the family owner)
+- Contact the developer to request deletion of your data if you are unable
+  to do so yourself
 
 Temporary data such as invite codes and device lookup codes expire
 automatically (24 hours and 1 hour respectively) and are cleaned up

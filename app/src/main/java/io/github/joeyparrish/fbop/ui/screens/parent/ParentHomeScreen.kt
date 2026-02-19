@@ -56,6 +56,8 @@ fun ParentHomeScreen(
     val uriHandler = LocalUriHandler.current
     var showMenu by remember { mutableStateOf(false) }
     var showThemeDialog by remember { mutableStateOf(false) }
+    var showDeleteConfirmDialog by remember { mutableStateOf(false) }
+    var isDeleting by remember { mutableStateOf(false) }
     var isOwner by remember { mutableStateOf(false) }
     var currentThemeMode by remember { mutableStateOf(configRepository.getThemeMode()) }
 
@@ -111,6 +113,22 @@ fun ParentHomeScreen(
         )
     }
 
+    if (showDeleteConfirmDialog) {
+        DeleteFamilyDialog(
+            familyName = family?.name ?: "",
+            isDeleting = isDeleting,
+            onDismiss = { if (!isDeleting) showDeleteConfirmDialog = false },
+            onConfirm = {
+                scope.launch {
+                    isDeleting = true
+                    firebaseRepository.deleteFamily(familyId)
+                    configRepository.clear()
+                    onFamilyNotFound()
+                }
+            }
+        )
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -147,6 +165,16 @@ fun ParentHomeScreen(
                                 },
                                 leadingIcon = {
                                     Icon(Icons.Default.Group, contentDescription = null)
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text("Delete Family") },
+                                onClick = {
+                                    showMenu = false
+                                    showDeleteConfirmDialog = true
+                                },
+                                leadingIcon = {
+                                    Icon(Icons.Default.DeleteForever, contentDescription = null)
                                 }
                             )
                         }
@@ -365,6 +393,55 @@ private fun ThemeModeDialog(
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
+                Text("Cancel")
+            }
+        }
+    )
+}
+
+@Composable
+private fun DeleteFamilyDialog(
+    familyName: String,
+    isDeleting: Boolean,
+    onDismiss: () -> Unit,
+    onConfirm: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Delete Family") },
+        text = {
+            if (isDeleting) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                    Text("Deleting...")
+                }
+            } else {
+                Text(
+                    "Permanently delete \"$familyName\" and all its data? " +
+                    "This includes all children, transactions, and device access. " +
+                    "This cannot be undone."
+                )
+            }
+        },
+        confirmButton = {
+            TextButton(
+                onClick = onConfirm,
+                enabled = !isDeleting,
+                colors = ButtonDefaults.textButtonColors(
+                    contentColor = MaterialTheme.colorScheme.error
+                )
+            ) {
+                Text("Delete")
+            }
+        },
+        dismissButton = {
+            TextButton(
+                onClick = onDismiss,
+                enabled = !isDeleting
+            ) {
                 Text("Cancel")
             }
         }

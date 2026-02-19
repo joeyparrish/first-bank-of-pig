@@ -95,6 +95,51 @@ class FirebaseRepository {
             .await()
     }
 
+    suspend fun deleteFamily(familyId: String): Result<Unit> = runCatching {
+        val user = currentUser ?: throw Exception("Not signed in")
+        val familyRef = db.collection("families").document(familyId)
+
+        // Delete children's subcollections (transactions, devices), then children
+        val children = familyRef.collection("children").get().await()
+        for (childDoc in children.documents) {
+            val childRef = childDoc.reference
+
+            val transactions = childRef.collection("transactions").get().await()
+            for (doc in transactions.documents) {
+                doc.reference.delete().await()
+            }
+
+            val devices = childRef.collection("devices").get().await()
+            for (doc in devices.documents) {
+                doc.reference.delete().await()
+            }
+
+            childRef.delete().await()
+        }
+
+        // Delete other parents first (owner's own parent doc must stay until
+        // children are deleted, since those rules check isParentOfFamily)
+        val parents = familyRef.collection("parents").get().await()
+        for (doc in parents.documents) {
+            if (doc.id != user.uid) {
+                doc.reference.delete().await()
+            }
+        }
+
+        // Delete invites
+        val invites = familyRef.collection("invites").get().await()
+        for (doc in invites.documents) {
+            doc.reference.delete().await()
+        }
+
+        // Delete owner's own parent doc (safe now — only family doc is needed
+        // for isOwnerOfFamily, which is used for the final delete below)
+        familyRef.collection("parents").document(user.uid).delete().await()
+
+        // Delete the family document last
+        familyRef.delete().await()
+    }
+
     // =========================================================================
     // Parent Operations
     // =========================================================================

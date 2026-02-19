@@ -103,9 +103,8 @@ service cloud.firestore {
            get(/databases/$(database)/documents/inviteCodes/$(request.resource.data.inviteCode)).data.familyId == familyId &&
            get(/databases/$(database)/documents/inviteCodes/$(request.resource.data.inviteCode)).data.expiresAt > request.time);
 
-        // Only owner can remove parents (except owner can't remove themselves)
-        allow delete: if isOwnerOfFamily(familyId) &&
-          parentUid != request.auth.uid;
+        // Only owner can remove parents
+        allow delete: if isOwnerOfFamily(familyId);
 
         // Parents can update their own record
         allow update: if isAuthenticated() && parentUid == request.auth.uid;
