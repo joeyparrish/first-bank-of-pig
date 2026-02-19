@@ -88,7 +88,7 @@ gradle --version
 From the project root directory:
 
 ```bash
-cd /path/to/piggy-bank
+cd /path/to/first-bank-of-pig
 gradle wrapper --gradle-version 8.9
 
 # This creates:
@@ -272,7 +272,7 @@ export PATH=$PATH:$ANDROID_HOME/platform-tools
 ### First-time Setup
 
 ```bash
-cd /path/to/piggy-bank
+cd /path/to/first-bank-of-pig
 
 # Verify wrapper works
 ./gradlew --version
@@ -305,7 +305,9 @@ keytool -genkey -v \
 # If you lose it, you cannot update your app on Play Store.
 ```
 
-Create `keystore.properties` in the project root (don't commit this!):
+Create `keystore.properties` in the project root.  (Don't commit this!)
+Note that the paths in this file are relative to app/, even though this file
+lives in the project root.
 
 ```properties
 storeFile=../release-keystore.jks
@@ -352,7 +354,7 @@ Then build:
 ## Build from Android Studio
 
 1. Open Android Studio
-2. File → Open → select the `piggy-bank` directory
+2. File → Open → select the `first-bank-of-pig` directory
 3. Wait for Gradle sync to complete
 4. If prompted about Gradle wrapper, click "OK" to use it
 5. Build → Build Bundle(s) / APK(s) → Build APK(s)
@@ -425,7 +427,7 @@ For open-source projects, obfuscation provides no security benefit (source is pu
 
 ### How Does Firebase Code Work?
 
-Firebase provides SDKs, not magic. You write real code:
+The database is schemaless - structure exists in your code and security rules, not enforced by Firebase itself.
 
 ```kotlin
 // Create document
@@ -438,8 +440,6 @@ db.collection("families").document(id).get()
 db.collection("families").document(id)
     .addSnapshotListener { snapshot, error -> ... }
 ```
-
-The database is schemaless - structure exists in your code and security rules, not enforced by Firebase itself.
 
 ### Firebase Security Rules
 
