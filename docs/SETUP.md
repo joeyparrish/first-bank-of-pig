@@ -314,40 +314,8 @@ keyAlias=release
 keyPassword=your_key_password
 ```
 
-Add to `app/build.gradle.kts` (before `android {`):
-
-```kotlin
-import java.util.Properties
-import java.io.FileInputStream
-
-val keystorePropertiesFile = rootProject.file("keystore.properties")
-val keystoreProperties = Properties()
-if (keystorePropertiesFile.exists()) {
-    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
-}
-```
-
-And inside `android { buildTypes { release { ... } } }`:
-
-```kotlin
-signingConfigs {
-    create("release") {
-        if (keystorePropertiesFile.exists()) {
-            storeFile = file(keystoreProperties["storeFile"] as String)
-            storePassword = keystoreProperties["storePassword"] as String
-            keyAlias = keystoreProperties["keyAlias"] as String
-            keyPassword = keystoreProperties["keyPassword"] as String
-        }
-    }
-}
-
-buildTypes {
-    release {
-        signingConfig = signingConfigs.getByName("release")
-        // ... existing config
-    }
-}
-```
+The build script (`app/build.gradle.kts`) is already configured to read this
+file. If `keystore.properties` is missing, release builds will be unsigned.
 
 Then build:
 
