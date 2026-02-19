@@ -1,6 +1,7 @@
 # Privacy Policy
 
 **First Bank of Pig**
+
 *Last updated: February 2026*
 
 ## Overview
@@ -9,13 +10,14 @@ First Bank of Pig is an open-source piggy bank app that helps parents track
 their children's savings. This policy describes what data is collected, how it
 is used, and how it is stored.
 
-Note that:
- - There are **no ads**
- - There are **no in-app purchases**
- - There are **no accounts or logins for children**
- - This app is **free and open source** and you can run your own version of it
-   if you are technically savvy and inclined to do so
- - You may donate to help with server costs via [GitHub Sponsors](https://github.com/sponsors/joeyparrish)
+> [!NOTE]
+> - There are _**no ads**_
+> - There are _**no in-app purchases**_
+> - There are _**no accounts or logins for children**_
+> - This app is _**free and open source**_ and you can run your own version of
+>   it if you are technically savvy and inclined to do so
+> - You may donate to help with server costs via
+>   [GitHub Sponsors](https://github.com/sponsors/joeyparrish)
 
 ## Data You Provide
 
