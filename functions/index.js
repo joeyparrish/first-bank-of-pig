@@ -6,7 +6,7 @@ initializeApp();
 
 /**
  * Scheduled function to clean up expired codes from Firestore.
- * Runs daily. Deletes expired invite codes and child lookup codes.
+ * Runs weekly. Deletes expired invite codes and child lookup codes.
  *
  * The Admin SDK bypasses security rules, so this function can
  * query and delete documents regardless of client-side restrictions.
