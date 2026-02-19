@@ -61,6 +61,13 @@ service cloud.firestore {
         get(/databases/$(database)/documents/families/$(familyId)).data.ownerUid == request.auth.uid;
     }
 
+    // Check ownership using post-batch state (for batched writes where
+    // the family doc is created in the same batch as the parent doc)
+    function isOwnerOfFamilyAfter(familyId) {
+      return isAuthenticated() &&
+        getAfter(/databases/$(database)/documents/families/$(familyId)).data.ownerUid == request.auth.uid;
+    }
+
     // Check if the user has registered device access for this child
     function hasDeviceAccess(familyId, childId) {
       return isAuthenticated() &&
@@ -95,9 +102,10 @@ service cloud.firestore {
         // Parents can see other parents in their family
         allow read: if isParentOfFamily(familyId);
 
-        // Owner can add parents directly
+        // Owner can add parents directly (isOwnerOfFamilyAfter handles the
+        // case where family and parent docs are created in the same batch)
         // Others must provide a valid, unexpired invite code for this family
-        allow create: if isOwnerOfFamily(familyId) ||
+        allow create: if isOwnerOfFamilyAfter(familyId) ||
           (isAuthenticated() && parentUid == request.auth.uid &&
            exists(/databases/$(database)/documents/inviteCodes/$(request.resource.data.inviteCode)) &&
            get(/databases/$(database)/documents/inviteCodes/$(request.resource.data.inviteCode)).data.familyId == familyId &&
