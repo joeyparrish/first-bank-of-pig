@@ -4,14 +4,14 @@ A simple Android piggy bank app for tracking kids' savings.  Parents manage
 transactions and family membership, and kids can view their transactions and
 balance.
 
-## Features:
+## Features
 
-    - Parent Mode: Create family, add children, manage transactions (deposits/withdrawals), invite other parents
-    - Kid Mode: View balance and transaction history (read-only)
-    - Device Security: Kid devices register by scanning parent's QR code (no login required!); parents can manage kid devices and revoke access at any time
-    - Biometric Lock: Parent mode is protected by fingerprint/face/PIN
-    - Real-time Sync: Instant updates across devices
-    - Theme Support: System, light, and dark mode
+ - Parent Mode: Create family, add children, manage transactions (deposits/withdrawals), invite other parents
+ - Kid Mode: View balance and transaction history (read-only)
+ - Device Security: Kid devices register by scanning parent's QR code (no login required!); parents can manage kid devices and revoke access at any time
+ - Biometric Lock: Parent mode is protected by fingerprint/face/PIN
+ - Real-time Sync: Instant updates across devices
+ - Theme Support: System, light, and dark mode
 
 ## Install from the Play Store
 
