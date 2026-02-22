@@ -8,9 +8,13 @@
     <!-- Camera permission for QR code scanning -->
     <uses-permission android:name="android.permission.CAMERA" />
 
-    <!-- Remove AD_ID permission injected by Firebase Analytics — this app
-         has no ads and does not use the advertising ID -->
+    <!-- Remove ad-related permissions injected by Firebase Analytics — this
+         app has no ads and does not use advertising ID or attribution -->
     <uses-permission android:name="com.google.android.gms.permission.AD_ID"
+        tools:node="remove" />
+    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_AD_ID"
+        tools:node="remove" />
+    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_ATTRIBUTION"
         tools:node="remove" />
 
     <!-- Biometric hardware feature (optional) -->
