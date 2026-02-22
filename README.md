@@ -36,8 +36,8 @@ welcome through [GitHub Sponsors](https://github.com/sponsors/joeyparrish).
 ```
 /families/{familyId}/
   name, ownerUid, createdAt
-  parents/{uid}: { email, joinedAt }
-  invites/{id}: { code, expiresAt, createdBy }
+  parents/{uid}: { email, joinedAt, inviteCode? }
+  invites/{code}: { code, expiresAt, createdBy, familyId }
   children/{childId}: { name, createdAt }
     devices/{deviceUid}: { deviceName, registeredAt, lastAccessedAt }
     transactions/{txId}: { amount, description, date, createdAt, modifiedAt }

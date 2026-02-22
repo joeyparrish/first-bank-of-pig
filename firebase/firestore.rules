@@ -139,8 +139,8 @@ service cloud.firestore {
         // Only owner can create invites
         allow create: if isOwnerOfFamily(familyId);
 
-        // Only owner can delete invites
-        allow delete: if isOwnerOfFamily(familyId);
+        // Owner can delete invites; joining parents can delete the invite they consumed
+        allow delete: if isOwnerOfFamily(familyId) || isParentOfFamily(familyId);
 
         // Invites should not be updated, only created/deleted
         allow update: if false;

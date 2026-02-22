@@ -213,12 +213,13 @@ class FirebaseRepository {
             expiresAt = expiresAt
         )
 
-        // Create in both locations for lookup
+        // Create in both locations for lookup; use code as the doc ID in the
+        // invites subcollection so joinFamily() can delete it by ID directly
         db.runBatch { batch ->
             val inviteRef = db.collection("families")
                 .document(familyId)
                 .collection("invites")
-                .document()
+                .document(code)
 
             batch.set(inviteRef, invite)
             batch.set(
@@ -270,11 +271,18 @@ class FirebaseRepository {
         // queryable field for collection group queries (reconnect flow)
         parentRef.update("uid", user.uid).await()
 
-        // Then delete the invite code (now allowed since we're a parent)
+        // Then delete both invite records (now allowed since we're a parent)
         try {
-            db.collection("inviteCodes").document(inviteCode.uppercase()).delete().await()
+            val code = inviteCode.uppercase()
+            db.runBatch { batch ->
+                batch.delete(db.collection("inviteCodes").document(code))
+                batch.delete(
+                    db.collection("families").document(familyId)
+                        .collection("invites").document(code)
+                )
+            }.await()
         } catch (e: Exception) {
-            // Non-fatal: invite code will expire on its own
+            // Non-fatal: invite codes will expire on their own
         }
     }
 

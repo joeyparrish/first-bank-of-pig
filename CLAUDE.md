@@ -111,6 +111,12 @@ values (`childId`, `deviceUid`) that can't be guaranteed across all results.
 side-channel for parameters; embedding the code in the document is the only way
 to pass it to security rules for validation.
 
+**Invite cleanup** — `families/{familyId}/invites/{code}` uses the code itself as
+the document ID (matching `inviteCodes/{code}`). The invite delete rule allows any
+parent (not just owner) so that `joinFamily()` can batch-delete both records on
+join. Non-owner parents can't list invites, so they can only target a doc if they
+know its ID (the code), which is unguessable (29^8 ≈ 500B).
+
 **Server-side device registration** — The device document includes a `lookupCode`
 field. The create rule cross-checks via `exists(/childLookup/$(code))` + `familyId`
 + `childId` path match.
