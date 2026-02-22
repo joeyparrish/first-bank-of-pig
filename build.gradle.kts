@@ -7,4 +7,5 @@ plugins {
     alias(libs.plugins.google.services) apply false
     alias(libs.plugins.firebase.crashlytics.plugin) apply false
     alias(libs.plugins.aboutlibraries) apply false
+    alias(libs.plugins.play.publisher) apply false
 }

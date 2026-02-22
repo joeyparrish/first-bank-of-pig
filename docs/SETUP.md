@@ -9,9 +9,10 @@ This guide covers everything needed to build and deploy the app from scratch.
 3. [Firebase Setup](#firebase-setup)
 4. [Configure the Android App](#configure-the-android-app)
 5. [Build from Command Line](#build-from-command-line)
-6. [Build from Android Studio](#build-from-android-studio)
-7. [Side-loading onto Devices](#side-loading-onto-devices)
-8. [Appendix: Concepts Explained](#appendix-concepts-explained)
+6. [Upload to Play Store](#upload-to-play-store)
+7. [Build from Android Studio](#build-from-android-studio)
+8. [Side-loading onto Devices](#side-loading-onto-devices)
+9. [Appendix: Concepts Explained](#appendix-concepts-explained)
 
 ---
 
@@ -358,6 +359,56 @@ Then build:
 # Build both debug and release
 ./gradlew assemble
 ```
+
+---
+
+## Upload to Play Store
+
+The project uses [gradle-play-publisher](https://github.com/Triple-T/gradle-play-publisher)
+to upload builds directly from the command line.
+
+### Step 1: Create a Google Play Service Account
+
+1. Open [Google Cloud Console](https://console.cloud.google.com) and select your project
+2. Go to **IAM & Admin** → **Service Accounts** → **Create Service Account**
+3. Name it (e.g. `play-publisher`), click **Create and Continue**
+4. Skip optional role/access steps, click **Done**
+5. Click the service account → **Keys** tab → **Add Key** → **Create new key** → **JSON**
+6. Save the downloaded JSON file somewhere safe (e.g. `~/play-api-key.json`)
+
+### Step 2: Grant Play Console Access
+
+1. Open [Google Play Console](https://play.google.com/console)
+2. Go to **Users and permissions**
+3. Click **Invite new users**
+4. Enter the email address of the service account above
+5. Set "account permissions":
+   - Release to production, exclude devices, and use Play App Signing
+   - Release apps to testing tracks
+6. Add the app
+7. Click **Invite user**
+
+### Step 3: Configure keystore.properties
+
+Add the path to your service account JSON to `keystore.properties`.
+The path is relative to `app/`, consistent with `storeFile`:
+
+```properties
+playServiceAccount=../play-api-key.json
+```
+
+### Step 4: Upload
+
+```bash
+# Build and upload AAB to the alpha test track
+./gradlew publishReleaseBundle
+
+# To upload to a different track, override on the command line:
+./gradlew publishReleaseBundle --track foo
+```
+
+The default track is `alpha`. Promote to wider tracks from the Play Console,
+or change `track` in `app/build.gradle.kts`.
 
 ---
 

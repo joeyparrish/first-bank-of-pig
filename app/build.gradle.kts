@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.google.services)
     alias(libs.plugins.firebase.crashlytics.plugin)
     alias(libs.plugins.aboutlibraries)
+    alias(libs.plugins.play.publisher)
 }
 
 fun gitVersionCode(): Int {
@@ -91,6 +92,15 @@ aboutLibraries {
         duplicationMode = com.mikepenz.aboutlibraries.plugin.DuplicateMode.MERGE
         duplicationRule = com.mikepenz.aboutlibraries.plugin.DuplicateRule.GROUP
     }
+}
+
+play {
+    val serviceAccount = keystoreProperties.getProperty("playServiceAccount")
+    if (serviceAccount != null) {
+        serviceAccountCredentials.set(file(serviceAccount))
+    }
+    track.set("alpha")
+    defaultToAppBundles.set(true)
 }
 
 dependencies {
