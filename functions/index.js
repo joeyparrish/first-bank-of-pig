@@ -2,8 +2,6 @@ const { onSchedule } = require("firebase-functions/scheduler");
 const { initializeApp } = require("firebase-admin/app");
 const { getFirestore } = require("firebase-admin/firestore");
 
-initializeApp();
-
 /**
  * Core cleanup logic. Deletes expired codes from all three collections.
  * Accepts a Firestore instance so callers can supply their own credentials.
@@ -67,5 +65,6 @@ exports.cleanupExpiredCodesImpl = cleanupExpiredCodesImpl;
  * Runs weekly.
  */
 exports.cleanupExpiredCodes = onSchedule("every sunday 03:00", async (event) => {
+  initializeApp();
   await cleanupExpiredCodesImpl(getFirestore());
 });
