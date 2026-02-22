@@ -156,6 +156,9 @@ gcloud services enable firestore.googleapis.com --project="$PROJECT_ID"
 # Firebase Management API
 gcloud services enable firebase.googleapis.com --project="$PROJECT_ID"
 
+# Google Play Developer API (for gradle-play-publisher uploads)
+gcloud services enable androidpublisher.googleapis.com --project="$PROJECT_ID"
+
 echo "APIs enabled successfully."
 
 # -----------------------------------------------------------------------------

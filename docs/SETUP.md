@@ -397,7 +397,21 @@ The path is relative to `app/`, consistent with `storeFile`:
 playServiceAccount=../play-api-key.json
 ```
 
-### Step 4: Upload
+### Step 4: Create the app in Play Console (first time only)
+
+The Play Developer API cannot create a new app from scratch — the package name
+must already exist in the Play Console before any API uploads will work.
+
+1. Go to [Google Play Console](https://play.google.com/console) → **All apps** → **Create app**
+2. Fill in the app name, language, type, and free/paid status; accept the declarations
+3. Go to **Testing** → **Closed testing (Alpha)** → **Create new release**
+4. Build the AAB locally: `./gradlew bundleRelease`
+5. Upload `app/build/outputs/bundle/release/app-release.aab` manually
+6. Complete and roll out the release
+
+After this one-time setup, all future uploads can be done via the command line.
+
+### Step 5: Upload
 
 ```bash
 # Build and upload AAB to the alpha test track
