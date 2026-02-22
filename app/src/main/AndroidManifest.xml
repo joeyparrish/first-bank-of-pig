@@ -35,6 +35,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FirstBankOfPig">
 
+        <!-- Disable ad ID collection in Firebase Analytics — this app has no ads -->
+        <meta-data
+            android:name="google_analytics_adid_collection_enabled"
+            android:value="false" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
