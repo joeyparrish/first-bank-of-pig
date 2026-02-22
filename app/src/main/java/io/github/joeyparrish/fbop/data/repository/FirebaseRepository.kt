@@ -512,6 +512,7 @@ class FirebaseRepository {
             .document(user.uid)
             .set(
                 mapOf(
+                    "uid" to user.uid,
                     "deviceName" to deviceName,
                     "lookupCode" to lookupCode,
                     "registeredAt" to FieldValue.serverTimestamp(),

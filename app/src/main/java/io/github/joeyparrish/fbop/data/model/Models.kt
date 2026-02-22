@@ -25,7 +25,6 @@ data class Family(
  * Stored as a subcollection under the family document.
  */
 data class Parent(
-    @DocumentId
     val uid: String = "",
     val email: String = "",
     val inviteCode: String? = null, // Required for joining parents, validated server-side
@@ -109,7 +108,6 @@ data class ChildLookup(
  * The document ID is the device's anonymous auth UID.
  */
 data class DeviceAccess(
-    @DocumentId
     val uid: String = "",
     val deviceName: String = "",
     val lookupCode: String = "", // Validated server-side against childLookup collection
