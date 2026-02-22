@@ -5,14 +5,13 @@ const { getFirestore } = require("firebase-admin/firestore");
 initializeApp();
 
 /**
- * Scheduled function to clean up expired codes from Firestore.
- * Runs weekly. Deletes expired invite codes and child lookup codes.
+ * Core cleanup logic. Deletes expired codes from all three collections.
+ * Accepts a Firestore instance so callers can supply their own credentials.
  *
  * The Admin SDK bypasses security rules, so this function can
  * query and delete documents regardless of client-side restrictions.
  */
-exports.cleanupExpiredCodes = onSchedule("every sunday 03:00", async (event) => {
-  const db = getFirestore();
+async function cleanupExpiredCodesImpl(db) {
   const now = new Date();
 
   // Clean up expired invite codes
@@ -59,4 +58,14 @@ exports.cleanupExpiredCodes = onSchedule("every sunday 03:00", async (event) => 
   } else {
     console.log("No expired codes to clean up");
   }
+}
+
+exports.cleanupExpiredCodesImpl = cleanupExpiredCodesImpl;
+
+/**
+ * Scheduled function to clean up expired codes from Firestore.
+ * Runs weekly.
+ */
+exports.cleanupExpiredCodes = onSchedule("every sunday 03:00", async (event) => {
+  await cleanupExpiredCodesImpl(getFirestore());
 });
