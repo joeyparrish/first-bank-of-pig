@@ -2,7 +2,7 @@
   "name": "first-bank-of-pig-functions",
   "description": "Cloud Functions for First Bank of Pig",
   "engines": {
-    "node": "22"
+    "node": ">=22 <=24"
   },
   "main": "index.js",
   "scripts": {
