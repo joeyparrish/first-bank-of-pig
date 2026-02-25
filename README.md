@@ -1,8 +1,8 @@
 # First Bank of Pig
 
-A simple Android piggy bank app for tracking kids' savings.  Parents manage
-transactions and family membership, and kids can view their transactions and
-balance.
+A simple, open source, Android piggy bank app for tracking kids' savings.
+Parents manage transactions and family membership, and kids can view their
+transactions and balance. **No ads, and no logins for children.**
 
 ## Features
 
@@ -15,7 +15,8 @@ balance.
 
 ## Install from the Play Store
 
-You don't need to build it yourself. It's free on the Play Store!
+You don't need to build it yourself. It's
+[free on the Play Store](https://play.google.com/store/apps/details?id=io.github.joeyparrish.fbop)!
 
 I do pay a small amount in cloud computing costs to run the app.  Donations are
 welcome through [GitHub Sponsors](https://github.com/sponsors/joeyparrish).
