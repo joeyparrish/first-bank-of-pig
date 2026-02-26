@@ -154,6 +154,10 @@ so the client cannot fake the timestamp or modify any other field.
 
 ## Building
 
+**Java version**: Kotlin 2.0.x cannot parse Java 25 version strings and will
+crash at build time. Build with Java 21:
+`export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64`
+
 ```bash
 ./gradlew assembleDebug    # → app/build/outputs/apk/debug/app-debug.apk
 ./gradlew assembleRelease  # requires keystore.properties (see docs/SETUP.md)
