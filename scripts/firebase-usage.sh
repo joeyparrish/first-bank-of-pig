@@ -84,33 +84,30 @@ CUR_MONTH_LABEL=$(date +"%B %Y")
 PREV_ALIGNMENT=$(( ($(date -d "$PREV_MONTH_END" +%s) - $(date -d "$PREV_MONTH_START" +%s)) ))
 CUR_ALIGNMENT=$(( ($(date -d "$NOW" +%s) - $(date -d "$MONTH_START" +%s)) ))
 
-echo "--- Previous Month ---"
-echo "  $PREV_MONTH_LABEL"
-echo "  Reads:   $(fetch_delta_metric read_count "$PREV_MONTH_START" "$PREV_MONTH_END" "$PREV_ALIGNMENT")"
-echo "  Writes:  $(fetch_delta_metric write_count "$PREV_MONTH_START" "$PREV_MONTH_END" "$PREV_ALIGNMENT")"
-echo "  Deletes: $(fetch_delta_metric delete_count "$PREV_MONTH_START" "$PREV_MONTH_END" "$PREV_ALIGNMENT")"
-echo ""
+echo   "--- Previous Month ($PREV_MONTH_LABEL) ---"
+printf "Reads:   %'9d\n" "$(fetch_delta_metric read_count "$PREV_MONTH_START" "$PREV_MONTH_END" "$PREV_ALIGNMENT")"
+printf "Writes:  %'9d\n" "$(fetch_delta_metric write_count "$PREV_MONTH_START" "$PREV_MONTH_END" "$PREV_ALIGNMENT")"
+printf "Deletes: %'9d\n" "$(fetch_delta_metric delete_count "$PREV_MONTH_START" "$PREV_MONTH_END" "$PREV_ALIGNMENT")"
+echo   ""
 
-echo "--- Current Month (to date) ---"
-echo "  $CUR_MONTH_LABEL"
-echo "  Reads:   $(fetch_delta_metric read_count "$MONTH_START" "$NOW" "$CUR_ALIGNMENT")"
-echo "  Writes:  $(fetch_delta_metric write_count "$MONTH_START" "$NOW" "$CUR_ALIGNMENT")"
-echo "  Deletes: $(fetch_delta_metric delete_count "$MONTH_START" "$NOW" "$CUR_ALIGNMENT")"
-echo ""
+echo   "--- Current Month to Date ($CUR_MONTH_LABEL) ---"
+printf "Reads:   %'9d\n" "$(fetch_delta_metric read_count "$MONTH_START" "$NOW" "$CUR_ALIGNMENT")"
+printf "Writes:  %'9d\n" "$(fetch_delta_metric write_count "$MONTH_START" "$NOW" "$CUR_ALIGNMENT")"
+printf "Deletes: %'9d\n" "$(fetch_delta_metric delete_count "$MONTH_START" "$NOW" "$CUR_ALIGNMENT")"
+echo   ""
 
-echo "--- Storage ---"
+echo   "--- Storage ---"
 STORAGE_BYTES=$(fetch_gauge_metric "storage/data_and_index_storage_bytes")
 
 if [ -n "$STORAGE_BYTES" ] && [ "$STORAGE_BYTES" != "0" ]; then
-    STORAGE_KB=$((STORAGE_BYTES / 1024))
-    echo "  Storage: ${STORAGE_KB} KB (${STORAGE_BYTES} bytes)"
+    echo "$(echo "$STORAGE_BYTES" | numfmt --to=iec --suffix=B)"
 else
-    echo "  Storage: not available (check web console)"
+    echo "Not available (check web console)"
 fi
 
-echo ""
+echo   ""
 
-echo "--- Registered Families ---"
+echo   "--- Registered Families ---"
 FAMILY_COUNT=$(curl -s \
     -H "Authorization: Bearer $ACCESS_TOKEN" \
     -H "Content-Type: application/json" \
@@ -124,7 +121,7 @@ FAMILY_COUNT=$(curl -s \
     }' \
     "https://firestore.googleapis.com/v1/projects/$PROJECT_ID/databases/(default)/documents:runAggregationQuery" \
     2>/dev/null | grep -o '"integerValue"[: ]*"[0-9]*"' | grep -o '[0-9]*')
-echo "  Families: ${FAMILY_COUNT:-0}"
-echo ""
+printf "Families: %'d\n" "${FAMILY_COUNT:-0}"
+echo   ""
 
-echo "Free tier: 50K reads/day, 20K writes/day, 1 GiB storage"
+echo   "Free tier: 50K reads/day, 20K writes/day, 1 GB storage"
