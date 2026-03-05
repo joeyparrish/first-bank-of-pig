@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -341,7 +342,11 @@ private fun ChildCard(
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
-                    text = "${childWithBalance.transactions.size} transactions",
+                    text = pluralStringResource(
+                        R.plurals.transaction_count,
+                        childWithBalance.transactions.size,
+                        childWithBalance.transactions.size
+                    ),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

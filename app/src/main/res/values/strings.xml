@@ -184,4 +184,9 @@
     <string name="error_network">Network error. Please check your connection.</string>
     <string name="error_biometric_not_available">Biometric authentication not available</string>
     <string name="error_enter_valid_amount_label">Please enter a valid amount</string>
+
+    <plurals name="transaction_count">
+        <item quantity="one">1 transaction</item>
+        <item quantity="other">%d transactions</item>
+    </plurals>
 </resources>
