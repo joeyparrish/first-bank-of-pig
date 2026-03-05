@@ -14,10 +14,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
+import io.github.joeyparrish.fbop.R
 import io.github.joeyparrish.fbop.data.model.Child
 import io.github.joeyparrish.fbop.data.repository.ConfigRepository
 import io.github.joeyparrish.fbop.data.repository.FirebaseRepository
@@ -81,12 +83,12 @@ fun ChildQrCodeScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("QR Code for ${child?.name ?: "..."}") },
+                title = { Text(stringResource(R.string.qr_code_for_title, child?.name ?: "...")) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = stringResource(R.string.back)
                         )
                     }
                 },
@@ -110,7 +112,7 @@ fun ChildQrCodeScreen(
                 isLoading -> {
                     CircularProgressIndicator()
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text("Loading...")
+                    Text(stringResource(R.string.loading))
                 }
                 errorMessage != null -> {
                     Text(
@@ -122,7 +124,7 @@ fun ChildQrCodeScreen(
                 }
                 qrBitmap != null -> {
                     Text(
-                        text = "Scan this code on ${child?.name ?: "your child"}'s device",
+                        text = stringResource(R.string.qr_code_scan_prompt, child?.name ?: "your child"),
                         style = MaterialTheme.typography.titleMedium,
                         textAlign = TextAlign.Center
                     )
@@ -143,7 +145,7 @@ fun ChildQrCodeScreen(
                         ) {
                             Image(
                                 bitmap = qrBitmap!!.asImageBitmap(),
-                                contentDescription = "QR Code",
+                                contentDescription = stringResource(R.string.qr_code_content_desc),
                                 modifier = Modifier
                                     .fillMaxSize()
                                     .padding(16.dp)
@@ -154,13 +156,13 @@ fun ChildQrCodeScreen(
                     Spacer(modifier = Modifier.height(32.dp))
 
                     Text(
-                        text = "On the kid's device:",
+                        text = stringResource(R.string.qr_code_kid_device_label),
                         style = MaterialTheme.typography.titleSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "1. Open First Bank of Pig\n2. Choose \"Kid Mode\"\n3. Scan this QR code or enter the code below",
+                        text = stringResource(R.string.qr_code_kid_instructions),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         textAlign = TextAlign.Center
@@ -169,7 +171,7 @@ fun ChildQrCodeScreen(
                     Spacer(modifier = Modifier.height(24.dp))
 
                     Text(
-                        text = "Manual code:",
+                        text = stringResource(R.string.manual_code_label),
                         style = MaterialTheme.typography.titleSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )

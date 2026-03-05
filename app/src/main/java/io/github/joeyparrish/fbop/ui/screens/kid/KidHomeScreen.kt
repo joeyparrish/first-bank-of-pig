@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.github.joeyparrish.fbop.R
@@ -135,14 +136,14 @@ fun KidHomeScreen(
     if (accessRevoked) {
         AlertDialog(
             onDismissRequest = { },
-            title = { Text("Access Revoked") },
-            text = { Text("Your access to this account has been removed. Please contact your parent to set up access again.") },
+            title = { Text(stringResource(R.string.access_revoked)) },
+            text = { Text(stringResource(R.string.access_revoked_message)) },
             confirmButton = {
                 Button(onClick = {
                     configRepository.clear()
                     onAccessRevoked()
                 }) {
-                    Text("OK")
+                    Text(stringResource(R.string.ok))
                 }
             }
         )
@@ -169,7 +170,7 @@ fun KidHomeScreen(
         ) {
             Image(
                 painter = painterResource(id = R.drawable.piggy_bank),
-                contentDescription = "Piggy bank",
+                contentDescription = stringResource(R.string.piggy_bank_content_desc),
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Fit
             )
@@ -182,7 +183,7 @@ fun KidHomeScreen(
             TopAppBar(
                 title = {
                     Column {
-                        Text(child?.name ?: "My Piggy Bank")
+                        Text(child?.name ?: stringResource(R.string.my_piggy_bank))
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -192,14 +193,14 @@ fun KidHomeScreen(
                 ),
                 actions = {
                     IconButton(onClick = { showMenu = true }) {
-                        Icon(Icons.Default.MoreVert, contentDescription = "Menu")
+                        Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.menu))
                     }
                     DropdownMenu(
                         expanded = showMenu,
                         onDismissRequest = { showMenu = false }
                     ) {
                         DropdownMenuItem(
-                            text = { Text("Theme") },
+                            text = { Text(stringResource(R.string.theme)) },
                             onClick = {
                                 showMenu = false
                                 showThemeDialog = true
@@ -209,7 +210,7 @@ fun KidHomeScreen(
                             }
                         )
                         DropdownMenuItem(
-                            text = { Text("About") },
+                            text = { Text(stringResource(R.string.about)) },
                             onClick = {
                                 showMenu = false
                                 onAbout()
@@ -219,7 +220,7 @@ fun KidHomeScreen(
                             }
                         )
                         DropdownMenuItem(
-                            text = { Text("Have a pig") },
+                            text = { Text(stringResource(R.string.have_a_pig)) },
                             onClick = {
                                 showMenu = false
                                 showPig = true
@@ -295,7 +296,7 @@ fun KidHomeScreen(
                 // Transactions header
                 item {
                     Text(
-                        text = "Transaction History",
+                        text = stringResource(R.string.transaction_history),
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
@@ -311,7 +312,7 @@ fun KidHomeScreen(
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = "No transactions yet.\nAsk your parent to add some!",
+                                text = stringResource(R.string.no_transactions_kid_hint),
                                 style = MaterialTheme.typography.bodyLarge,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 textAlign = TextAlign.Center
@@ -351,7 +352,7 @@ private fun KidBalanceHeader(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Your Balance",
+                text = stringResource(R.string.your_balance),
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             )
@@ -370,6 +371,8 @@ private fun KidBalanceHeader(
 @Composable
 private fun KidTransactionRow(transaction: Transaction) {
     val dateFormat = remember { SimpleDateFormat("MMM d", Locale.getDefault()) }
+    val depositLabel = stringResource(R.string.deposit)
+    val spentLabel = stringResource(R.string.spent)
 
     Surface(
         modifier = Modifier.fillMaxWidth()
@@ -407,7 +410,7 @@ private fun KidTransactionRow(transaction: Transaction) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = transaction.description.ifBlank {
-                        if (transaction.isDeposit) "Deposit" else "Spent"
+                        if (transaction.isDeposit) depositLabel else spentLabel
                     },
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurface
@@ -438,7 +441,7 @@ private fun ThemeModeDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Theme") },
+        title = { Text(stringResource(R.string.theme)) },
         text = {
             Column {
                 ThemeMode.entries.forEach { mode ->
@@ -456,9 +459,9 @@ private fun ThemeModeDialog(
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = when (mode) {
-                                ThemeMode.SYSTEM -> "System default"
-                                ThemeMode.LIGHT -> "Light"
-                                ThemeMode.DARK -> "Dark"
+                                ThemeMode.SYSTEM -> stringResource(R.string.theme_system)
+                                ThemeMode.LIGHT -> stringResource(R.string.theme_light)
+                                ThemeMode.DARK -> stringResource(R.string.theme_dark)
                             }
                         )
                     }
@@ -467,7 +470,7 @@ private fun ThemeModeDialog(
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(R.string.cancel))
             }
         }
     )

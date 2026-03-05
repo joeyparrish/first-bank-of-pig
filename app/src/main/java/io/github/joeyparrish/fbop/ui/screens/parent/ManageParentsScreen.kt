@@ -15,8 +15,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import io.github.joeyparrish.fbop.R
 import io.github.joeyparrish.fbop.data.model.Family
 import io.github.joeyparrish.fbop.data.model.Parent
 import io.github.joeyparrish.fbop.data.repository.ConfigRepository
@@ -76,9 +78,9 @@ fun ManageParentsScreen(
     parentToRemove?.let { parent ->
         AlertDialog(
             onDismissRequest = { parentToRemove = null },
-            title = { Text("Remove Parent?") },
+            title = { Text(stringResource(R.string.remove_parent_dialog_title)) },
             text = {
-                Text("Remove ${parent.email} from this family? They will no longer be able to manage children or transactions.")
+                Text(stringResource(R.string.remove_parent_confirmation, parent.email))
             },
             confirmButton = {
                 TextButton(
@@ -87,12 +89,12 @@ fun ManageParentsScreen(
                         contentColor = MaterialTheme.colorScheme.error
                     )
                 ) {
-                    Text("Remove")
+                    Text(stringResource(R.string.remove))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { parentToRemove = null }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.cancel))
                 }
             }
         )
@@ -101,12 +103,12 @@ fun ManageParentsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Manage Parents") },
+                title = { Text(stringResource(R.string.manage_parents)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = stringResource(R.string.back)
                         )
                     }
                 },
@@ -131,7 +133,7 @@ fun ManageParentsScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "No other parents yet",
+                        text = stringResource(R.string.no_parents_yet),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         textAlign = TextAlign.Center
@@ -178,14 +180,14 @@ fun ManageParentsScreen(
                                     )
                                     if (isThisOwner) {
                                         Text(
-                                            text = "Owner",
+                                            text = stringResource(R.string.owner),
                                             style = MaterialTheme.typography.bodySmall,
                                             color = MaterialTheme.colorScheme.primary
                                         )
                                     }
                                     if (isCurrentUser) {
                                         Text(
-                                            text = "(You)",
+                                            text = stringResource(R.string.you),
                                             style = MaterialTheme.typography.bodySmall,
                                             color = MaterialTheme.colorScheme.onSurfaceVariant
                                         )
@@ -200,7 +202,7 @@ fun ManageParentsScreen(
                                     ) {
                                         Icon(
                                             imageVector = Icons.Default.Delete,
-                                            contentDescription = "Remove",
+                                            contentDescription = stringResource(R.string.remove),
                                             tint = MaterialTheme.colorScheme.error
                                         )
                                     }

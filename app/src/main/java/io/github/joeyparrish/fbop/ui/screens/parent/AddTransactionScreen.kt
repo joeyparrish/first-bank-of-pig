@@ -11,9 +11,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.google.firebase.Timestamp
+import io.github.joeyparrish.fbop.R
 import io.github.joeyparrish.fbop.data.model.datePickerMillisToLocalDate
 import io.github.joeyparrish.fbop.data.model.localDateToDatePickerMillis
 import io.github.joeyparrish.fbop.data.model.parseCurrency
@@ -49,11 +51,12 @@ fun AddTransactionScreen(
     val datePickerState = rememberDatePickerState(
         initialSelectedDateMillis = localDateToDatePickerMillis(selectedDate)
     )
+    val errorEnterValidAmount = stringResource(R.string.error_enter_valid_amount)
 
     fun save() {
         val cents = parseCurrency(amountText)
         if (cents == null || cents <= 0) {
-            errorMessage = "Please enter a valid amount"
+            errorMessage = errorEnterValidAmount
             return
         }
 
@@ -94,12 +97,12 @@ fun AddTransactionScreen(
                         showDatePicker = false
                     }
                 ) {
-                    Text("OK")
+                    Text(stringResource(R.string.ok))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showDatePicker = false }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.cancel))
                 }
             }
         ) {
@@ -110,12 +113,12 @@ fun AddTransactionScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Add Transaction") },
+                title = { Text(stringResource(R.string.add_transaction)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = stringResource(R.string.back)
                         )
                     }
                 },
@@ -142,13 +145,13 @@ fun AddTransactionScreen(
                 FilterChip(
                     selected = isDeposit,
                     onClick = { isDeposit = true },
-                    label = { Text("Deposit (+)") },
+                    label = { Text(stringResource(R.string.deposit_with_sign)) },
                     modifier = Modifier.weight(1f)
                 )
                 FilterChip(
                     selected = !isDeposit,
                     onClick = { isDeposit = false },
-                    label = { Text("Withdrawal (-)") },
+                    label = { Text(stringResource(R.string.withdrawal_with_sign)) },
                     modifier = Modifier.weight(1f)
                 )
             }
@@ -159,7 +162,7 @@ fun AddTransactionScreen(
             OutlinedTextField(
                 value = amountText,
                 onValueChange = { amountText = it },
-                label = { Text("Amount") },
+                label = { Text(stringResource(R.string.transaction_amount)) },
                 placeholder = { Text("0.00") },
                 prefix = { Text("$") },
                 singleLine = true,
@@ -173,8 +176,8 @@ fun AddTransactionScreen(
             OutlinedTextField(
                 value = description,
                 onValueChange = { description = it },
-                label = { Text("Description") },
-                placeholder = { Text("e.g., Allowance, Bought toy, etc.") },
+                label = { Text(stringResource(R.string.transaction_description)) },
+                placeholder = { Text(stringResource(R.string.description_placeholder)) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -185,12 +188,12 @@ fun AddTransactionScreen(
             OutlinedTextField(
                 value = dateFormat.format(selectedDate),
                 onValueChange = { },
-                label = { Text("Date") },
+                label = { Text(stringResource(R.string.transaction_date)) },
                 readOnly = true,
                 modifier = Modifier.fillMaxWidth(),
                 trailingIcon = {
                     TextButton(onClick = { showDatePicker = true }) {
-                        Text("Change")
+                        Text(stringResource(R.string.change))
                     }
                 }
             )
@@ -208,7 +211,7 @@ fun AddTransactionScreen(
                         color = MaterialTheme.colorScheme.onPrimary
                     )
                 } else {
-                    Text("Add Transaction")
+                    Text(stringResource(R.string.add_transaction))
                 }
             }
 

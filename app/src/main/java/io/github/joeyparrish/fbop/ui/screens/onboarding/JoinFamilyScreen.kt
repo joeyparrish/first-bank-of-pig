@@ -18,6 +18,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -111,13 +112,13 @@ fun JoinFamilyScreen(
         if (isGranted) {
             val options = ScanOptions().apply {
                 setDesiredBarcodeFormats(ScanOptions.QR_CODE)
-                setPrompt("Scan the invite QR code from the other parent")
+                setPrompt(context.getString(R.string.scan_invite_qr_prompt))
                 setBeepEnabled(false)
                 setOrientationLocked(true)
             }
             scanLauncher.launch(options)
         } else {
-            errorMessage = "Camera permission is required to scan QR codes"
+            errorMessage = context.getString(R.string.error_camera_permission)
         }
     }
 
@@ -129,7 +130,7 @@ fun JoinFamilyScreen(
             ) == PackageManager.PERMISSION_GRANTED -> {
                 val options = ScanOptions().apply {
                     setDesiredBarcodeFormats(ScanOptions.QR_CODE)
-                    setPrompt("Scan the invite QR code from the other parent")
+                    setPrompt(context.getString(R.string.scan_invite_qr_prompt))
                     setBeepEnabled(false)
                     setOrientationLocked(true)
                 }
@@ -193,12 +194,12 @@ fun JoinFamilyScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Join Family") },
+                title = { Text(stringResource(R.string.join_family_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = stringResource(R.string.back)
                         )
                     }
                 },
@@ -221,7 +222,7 @@ fun JoinFamilyScreen(
             if (pendingFamilyId == null && !showManualEntry) {
                 // Step 1: Choose scan or manual
                 Text(
-                    text = "Get the invite code from the other parent",
+                    text = stringResource(R.string.join_family_scan_prompt),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Center
@@ -231,8 +232,8 @@ fun JoinFamilyScreen(
 
                 ModeCard(
                     icon = Icons.Default.CameraAlt,
-                    title = "Scan QR Code",
-                    description = "Use the camera to scan",
+                    title = stringResource(R.string.scan_qr_code),
+                    description = stringResource(R.string.scan_qr_code_camera_desc),
                     onClick = { startScan() },
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -241,15 +242,15 @@ fun JoinFamilyScreen(
 
                 ModeCard(
                     icon = Icons.Default.Edit,
-                    title = "Enter Code Manually",
-                    description = "Type the code instead",
+                    title = stringResource(R.string.enter_code_manually),
+                    description = stringResource(R.string.enter_code_desc),
                     onClick = { showManualEntry = true },
                     modifier = Modifier.fillMaxWidth()
                 )
             } else if (pendingFamilyId == null) {
                 // Step 1b: Manual code entry
                 Text(
-                    text = "Enter the invite code from the other parent",
+                    text = stringResource(R.string.join_family_manual_prompt),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Center
@@ -260,7 +261,7 @@ fun JoinFamilyScreen(
                 OutlinedTextField(
                     value = inviteCode,
                     onValueChange = { inviteCode = it.uppercase().take(8) },
-                    label = { Text("Invite Code") },
+                    label = { Text(stringResource(R.string.invite_code_label)) },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(
                         capitalization = KeyboardCapitalization.Characters
@@ -278,7 +279,7 @@ fun JoinFamilyScreen(
                         onClick = { showManualEntry = false },
                         modifier = Modifier.weight(1f)
                     ) {
-                        Text("Back")
+                        Text(stringResource(R.string.back))
                     }
 
                     Button(
@@ -292,14 +293,14 @@ fun JoinFamilyScreen(
                                 color = MaterialTheme.colorScheme.onPrimary
                             )
                         } else {
-                            Text("Continue")
+                            Text(stringResource(R.string.continue_button))
                         }
                     }
                 }
             } else {
                 // Step 2: Sign in with Google
                 Text(
-                    text = "Code verified! Sign in to join the family.",
+                    text = stringResource(R.string.join_family_code_verified),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Center
@@ -318,7 +319,7 @@ fun JoinFamilyScreen(
                             color = MaterialTheme.colorScheme.onPrimary
                         )
                     } else {
-                        Text("Sign in with Google")
+                        Text(stringResource(R.string.sign_in_with_google))
                     }
                 }
             }

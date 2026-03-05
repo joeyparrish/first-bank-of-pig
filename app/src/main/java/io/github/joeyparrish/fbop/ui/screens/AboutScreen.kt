@@ -13,8 +13,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import io.github.joeyparrish.fbop.BuildConfig
+import io.github.joeyparrish.fbop.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -27,12 +29,12 @@ fun AboutScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("About") },
+                title = { Text(stringResource(R.string.about)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = stringResource(R.string.back)
                         )
                     }
                 },
@@ -55,7 +57,7 @@ fun AboutScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = "First Bank of Pig",
+                text = stringResource(R.string.app_name),
                 style = MaterialTheme.typography.headlineMedium,
                 color = MaterialTheme.colorScheme.primary
             )
@@ -80,7 +82,7 @@ fun AboutScreen(
                     modifier = Modifier.padding(16.dp)
                 ) {
                     Text(
-                        text = "MIT License",
+                        text = stringResource(R.string.mit_license),
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -121,7 +123,7 @@ fun AboutScreen(
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Source Code on GitHub")
+                Text(stringResource(R.string.source_code_on_github))
             }
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -130,7 +132,7 @@ fun AboutScreen(
                 onClick = onOpenLicenses,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Open Source Licenses")
+                Text(stringResource(R.string.open_source_licenses))
             }
         }
     }

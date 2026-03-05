@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">First Bank of Pig</string>
 
-    <!-- Onboarding -->
+    <!-- Onboarding: Mode Selection -->
     <string name="welcome_title">First Bank of Pig</string>
     <string name="welcome_subtitle">How will you use this device?</string>
     <string name="mode_parent">Parent Mode</string>
@@ -10,18 +10,41 @@
     <string name="mode_kid">Kid Mode</string>
     <string name="mode_kid_desc">View your balance and history</string>
 
-    <!-- Parent Setup -->
+    <!-- Onboarding: Parent Setup -->
     <string name="parent_setup_title">Parent Setup</string>
+    <string name="sign_in_to_get_started">Sign in to get started</string>
+    <string name="parent_setup_prompt">Are you starting a new family account or joining an existing one?</string>
     <string name="create_family">Create New Family</string>
     <string name="create_family_desc">Start fresh with a new family account</string>
     <string name="join_family">Join Existing Family</string>
     <string name="join_family_desc">Enter an invite code from another parent</string>
 
-    <!-- Kid Setup -->
+    <!-- Onboarding: Kid Setup -->
     <string name="kid_setup_title">Kid Setup</string>
+    <string name="kid_setup_prompt">Ask your parent to show you the QR code for your account</string>
     <string name="scan_qr_code">Scan QR Code</string>
-    <string name="scan_qr_code_desc">Ask your parent to show the QR code</string>
+    <string name="scan_qr_code_camera_desc">Use the camera to scan</string>
     <string name="enter_code_manually">Enter Code Manually</string>
+    <string name="enter_code_desc">Type the code instead</string>
+    <string name="kid_enter_code_prompt">Enter the code from your parent</string>
+    <string name="code_label">Code</string>
+    <string name="scan_qr_kid_prompt">Scan the QR code from your parent\'s device</string>
+    <string name="error_camera_permission">Camera permission is required to scan QR codes</string>
+
+    <!-- Onboarding: Create Family -->
+    <string name="create_family_title">Create Family</string>
+    <string name="create_family_sign_in_prompt">Sign in to create your family</string>
+    <string name="create_family_name_prompt">What should we call your family?</string>
+    <string name="family_name_label">Family Name</string>
+    <string name="family_name_placeholder">The Smith Family</string>
+
+    <!-- Onboarding: Join Family -->
+    <string name="join_family_title">Join Family</string>
+    <string name="join_family_scan_prompt">Get the invite code from the other parent</string>
+    <string name="join_family_manual_prompt">Enter the invite code from the other parent</string>
+    <string name="invite_code_label">Invite Code</string>
+    <string name="join_family_code_verified">Code verified! Sign in to join the family.</string>
+    <string name="scan_invite_qr_prompt">Scan the invite QR code from the other parent</string>
 
     <!-- Common -->
     <string name="sign_in_with_google">Sign in with Google</string>
@@ -30,17 +53,62 @@
     <string name="retry">Retry</string>
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
+    <string name="save_changes">Save Changes</string>
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
     <string name="done">Done</string>
+    <string name="back">Back</string>
+    <string name="ok">OK</string>
+    <string name="continue_button">Continue</string>
+    <string name="change">Change</string>
+    <string name="remove">Remove</string>
+    <string name="try_again">Try Again</string>
+    <string name="deleting">Deleting…</string>
+    <string name="menu">Menu</string>
+    <string name="unlock">Unlock</string>
+
+    <!-- Accessibility -->
+    <string name="piggy_bank_content_desc">Piggy bank</string>
+    <string name="qr_code_content_desc">QR Code</string>
+    <string name="locked">Locked</string>
+    <string name="remove_device">Remove device</string>
+
+    <!-- Theme -->
+    <string name="theme">Theme</string>
+    <string name="theme_system">System default</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+
+    <!-- About -->
+    <string name="about">About</string>
+    <string name="mit_license">MIT License</string>
+    <string name="source_code_on_github">Source Code on GitHub</string>
+    <string name="open_source_licenses">Open Source Licenses</string>
 
     <!-- Parent Mode -->
     <string name="family_overview">Family Overview</string>
     <string name="add_child">Add Child</string>
     <string name="child_name">Child Name</string>
+    <string name="childs_name">Child\'s Name</string>
+    <string name="child_name_placeholder">e.g., Alex</string>
     <string name="invite_parent">Invite Parent</string>
     <string name="manage_parents">Manage Parents</string>
     <string name="show_qr_code">Show QR Code</string>
+    <string name="edit_child">Edit Child</string>
+    <string name="manage_devices">Manage Devices</string>
+    <string name="delete_family">Delete Family</string>
+    <string name="support_this_project">Support this project</string>
+    <string name="no_children">No children yet</string>
+    <string name="no_children_hint">Tap the + button to add your first child</string>
+    <string name="delete_family_confirmation">Permanently delete \"%1$s\" and all its data? This includes all children, transactions, and device access. This cannot be undone.</string>
+    <string name="owner">Owner</string>
+    <string name="you">(You)</string>
+
+    <!-- Child -->
+    <string name="error_enter_name">Please enter a name</string>
+    <string name="error_enter_family_name">Please enter a family name</string>
+    <string name="delete_child_dialog_title">Delete Child?</string>
+    <string name="delete_child_confirmation">This will permanently delete %1$s and all their transactions. This cannot be undone.</string>
 
     <!-- Transactions -->
     <string name="add_transaction">Add Transaction</string>
@@ -49,21 +117,71 @@
     <string name="transaction_description">Description</string>
     <string name="transaction_date">Date</string>
     <string name="deposit">Deposit</string>
+    <string name="deposit_with_sign">Deposit (+)</string>
     <string name="withdrawal">Withdrawal</string>
+    <string name="withdrawal_with_sign">Withdrawal (-)</string>
+    <string name="spent">Spent</string>
+    <string name="description_placeholder">e.g., Allowance, Bought toy, etc.</string>
+    <string name="error_enter_valid_amount">Please enter a valid amount</string>
+    <string name="delete_transaction_dialog_title">Delete Transaction?</string>
+    <string name="delete_transaction_confirmation">This will permanently delete this transaction. This cannot be undone.</string>
+
+    <!-- Invite Parent -->
+    <string name="generating_invite_code">Generating invite code…</string>
+    <string name="invite_parent_share_prompt">Share this code with the other parent</string>
+    <string name="invite_parent_manual_entry">or enter this code manually:</string>
+    <string name="invite_code_expires">This code expires in 24 hours and can only be used once.</string>
+    <string name="generate_new_code">Generate New Code</string>
+
+    <!-- Manage Parents -->
+    <string name="remove_parent_dialog_title">Remove Parent?</string>
+    <string name="remove_parent_confirmation">Remove %1$s from this family? They will no longer be able to manage children or transactions.</string>
+    <string name="no_parents_yet">No other parents yet</string>
+
+    <!-- Manage Devices -->
+    <string name="devices_for_title">Devices for %1$s</string>
+    <string name="this_account">this account</string>
+    <string name="remove_device_dialog_title">Remove Device?</string>
+    <string name="remove_device_confirmation">Remove \"%1$s\" from accessing %2$s? The device will need to scan the QR code again to regain access.</string>
+    <string name="no_devices_registered">No devices registered</string>
+    <string name="no_devices_hint">Devices will appear here after scanning the QR code</string>
+    <string name="devices_description">These devices can view %1$s\'s balance and transaction history.</string>
+    <string name="registered_date">Registered: %1$s</string>
+    <string name="last_seen_date">Last seen: %1$s</string>
+
+    <!-- Child QR Code -->
+    <string name="qr_code_for_title">QR Code for %1$s</string>
+    <string name="qr_code_scan_prompt">Scan this code on %1$s\'s device</string>
+    <string name="qr_code_kid_device_label">On the kid\'s device:</string>
+    <string name="qr_code_kid_instructions">1. Open First Bank of Pig\n2. Choose \"Kid Mode\"\n3. Scan this QR code or enter the code below</string>
+    <string name="manual_code_label">Manual code:</string>
 
     <!-- Balance -->
     <string name="current_balance">Current Balance</string>
+    <string name="your_balance">Your Balance</string>
     <string name="transaction_history">Transaction History</string>
     <string name="no_transactions">No transactions yet</string>
+    <string name="no_transactions_parent_hint">No transactions yet.\nTap + to add the first one!</string>
+    <string name="no_transactions_kid_hint">No transactions yet.\nAsk your parent to add some!</string>
+
+    <!-- Kid Home -->
+    <string name="my_piggy_bank">My Piggy Bank</string>
+    <string name="have_a_pig">Have a pig</string>
+    <string name="access_revoked">Access Revoked</string>
+    <string name="access_revoked_message">Your access to this account has been removed. Please contact your parent to set up access again.</string>
 
     <!-- Biometric -->
     <string name="biometric_prompt_title">Authenticate</string>
     <string name="biometric_prompt_subtitle">Confirm your identity to access parent mode</string>
     <string name="biometric_prompt_cancel">Use password</string>
+    <string name="biometric_locked_title">Parent mode is locked</string>
+    <string name="biometric_authenticate_prompt">Authenticate to continue</string>
+    <string name="biometric_prompt_subtitle_app">Authenticate to access parent mode</string>
 
     <!-- Errors -->
     <string name="error_sign_in_failed">Sign in failed. Please try again.</string>
     <string name="error_invalid_code">Invalid or expired code.</string>
     <string name="error_network">Network error. Please check your connection.</string>
     <string name="error_biometric_not_available">Biometric authentication not available</string>
+    <string name="error_enter_valid_amount_label">Please enter a valid amount</string>
 </resources>

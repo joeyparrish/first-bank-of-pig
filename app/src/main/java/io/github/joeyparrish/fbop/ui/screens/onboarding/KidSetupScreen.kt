@@ -18,11 +18,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
+import io.github.joeyparrish.fbop.R
 import io.github.joeyparrish.fbop.data.repository.ConfigRepository
 import io.github.joeyparrish.fbop.data.repository.FirebaseRepository
 import io.github.joeyparrish.fbop.ui.components.ModeCard
@@ -104,13 +106,13 @@ fun KidSetupScreen(
         if (isGranted) {
             val options = ScanOptions().apply {
                 setDesiredBarcodeFormats(ScanOptions.QR_CODE)
-                setPrompt("Scan the QR code from your parent's device")
+                setPrompt(context.getString(R.string.scan_qr_kid_prompt))
                 setBeepEnabled(false)
                 setOrientationLocked(true)
             }
             scanLauncher.launch(options)
         } else {
-            errorMessage = "Camera permission is required to scan QR codes"
+            errorMessage = context.getString(R.string.error_camera_permission)
         }
     }
 
@@ -122,7 +124,7 @@ fun KidSetupScreen(
             ) == PackageManager.PERMISSION_GRANTED -> {
                 val options = ScanOptions().apply {
                     setDesiredBarcodeFormats(ScanOptions.QR_CODE)
-                    setPrompt("Scan the QR code from your parent's device")
+                    setPrompt(context.getString(R.string.scan_qr_kid_prompt))
                     setBeepEnabled(false)
                     setOrientationLocked(true)
                 }
@@ -137,12 +139,12 @@ fun KidSetupScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Kid Setup") },
+                title = { Text(stringResource(R.string.kid_setup_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = stringResource(R.string.back)
                         )
                     }
                 },
@@ -164,7 +166,7 @@ fun KidSetupScreen(
         ) {
             if (!showManualEntry) {
                 Text(
-                    text = "Ask your parent to show you the QR code for your account",
+                    text = stringResource(R.string.kid_setup_prompt),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Center
@@ -174,8 +176,8 @@ fun KidSetupScreen(
 
                 ModeCard(
                     icon = Icons.Default.CameraAlt,
-                    title = "Scan QR Code",
-                    description = "Use the camera to scan",
+                    title = stringResource(R.string.scan_qr_code),
+                    description = stringResource(R.string.scan_qr_code_camera_desc),
                     onClick = { startScan() },
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -184,14 +186,14 @@ fun KidSetupScreen(
 
                 ModeCard(
                     icon = Icons.Default.Edit,
-                    title = "Enter Code Manually",
-                    description = "Type the code instead",
+                    title = stringResource(R.string.enter_code_manually),
+                    description = stringResource(R.string.enter_code_desc),
                     onClick = { showManualEntry = true },
                     modifier = Modifier.fillMaxWidth()
                 )
             } else {
                 Text(
-                    text = "Enter the code from your parent",
+                    text = stringResource(R.string.kid_enter_code_prompt),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Center
@@ -202,7 +204,7 @@ fun KidSetupScreen(
                 OutlinedTextField(
                     value = manualCode,
                     onValueChange = { manualCode = it },
-                    label = { Text("Code") },
+                    label = { Text(stringResource(R.string.code_label)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -217,7 +219,7 @@ fun KidSetupScreen(
                         onClick = { showManualEntry = false },
                         modifier = Modifier.weight(1f)
                     ) {
-                        Text("Back")
+                        Text(stringResource(R.string.back))
                     }
 
                     Button(
@@ -231,7 +233,7 @@ fun KidSetupScreen(
                                 color = MaterialTheme.colorScheme.onPrimary
                             )
                         } else {
-                            Text("Continue")
+                            Text(stringResource(R.string.continue_button))
                         }
                     }
                 }

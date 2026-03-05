@@ -12,9 +12,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.google.firebase.Timestamp
+import io.github.joeyparrish.fbop.R
 import io.github.joeyparrish.fbop.data.model.Transaction
 import io.github.joeyparrish.fbop.data.model.datePickerMillisToLocalDate
 import io.github.joeyparrish.fbop.data.model.formatCurrency
@@ -54,6 +56,7 @@ fun EditTransactionScreen(
 
     val dateFormat = remember { SimpleDateFormat("MMM d, yyyy", Locale.getDefault()) }
     val datePickerState = rememberDatePickerState()
+    val errorEnterValidAmount = stringResource(R.string.error_enter_valid_amount)
 
     // Load transaction
     LaunchedEffect(familyId, childId, transactionId) {
@@ -83,7 +86,7 @@ fun EditTransactionScreen(
     fun save() {
         val cents = parseCurrency(amountText)
         if (cents == null || cents <= 0) {
-            errorMessage = "Please enter a valid amount"
+            errorMessage = errorEnterValidAmount
             return
         }
 
@@ -124,8 +127,8 @@ fun EditTransactionScreen(
     if (showDeleteDialog) {
         AlertDialog(
             onDismissRequest = { showDeleteDialog = false },
-            title = { Text("Delete Transaction?") },
-            text = { Text("This will permanently delete this transaction. This cannot be undone.") },
+            title = { Text(stringResource(R.string.delete_transaction_dialog_title)) },
+            text = { Text(stringResource(R.string.delete_transaction_confirmation)) },
             confirmButton = {
                 TextButton(
                     onClick = {
@@ -136,12 +139,12 @@ fun EditTransactionScreen(
                         contentColor = MaterialTheme.colorScheme.error
                     )
                 ) {
-                    Text("Delete")
+                    Text(stringResource(R.string.delete))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showDeleteDialog = false }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.cancel))
                 }
             }
         )
@@ -159,12 +162,12 @@ fun EditTransactionScreen(
                         showDatePicker = false
                     }
                 ) {
-                    Text("OK")
+                    Text(stringResource(R.string.ok))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showDatePicker = false }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.cancel))
                 }
             }
         ) {
@@ -175,12 +178,12 @@ fun EditTransactionScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Edit Transaction") },
+                title = { Text(stringResource(R.string.edit_transaction)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = stringResource(R.string.back)
                         )
                     }
                 },
@@ -188,7 +191,7 @@ fun EditTransactionScreen(
                     IconButton(onClick = { showDeleteDialog = true }) {
                         Icon(
                             imageVector = Icons.Default.Delete,
-                            contentDescription = "Delete",
+                            contentDescription = stringResource(R.string.delete),
                             tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
@@ -226,13 +229,13 @@ fun EditTransactionScreen(
                     FilterChip(
                         selected = isDeposit,
                         onClick = { isDeposit = true },
-                        label = { Text("Deposit (+)") },
+                        label = { Text(stringResource(R.string.deposit_with_sign)) },
                         modifier = Modifier.weight(1f)
                     )
                     FilterChip(
                         selected = !isDeposit,
                         onClick = { isDeposit = false },
-                        label = { Text("Withdrawal (-)") },
+                        label = { Text(stringResource(R.string.withdrawal_with_sign)) },
                         modifier = Modifier.weight(1f)
                     )
                 }
@@ -243,7 +246,7 @@ fun EditTransactionScreen(
                 OutlinedTextField(
                     value = amountText,
                     onValueChange = { amountText = it },
-                    label = { Text("Amount") },
+                    label = { Text(stringResource(R.string.transaction_amount)) },
                     prefix = { Text("$") },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
@@ -256,7 +259,7 @@ fun EditTransactionScreen(
                 OutlinedTextField(
                     value = description,
                     onValueChange = { description = it },
-                    label = { Text("Description") },
+                    label = { Text(stringResource(R.string.transaction_description)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -267,12 +270,12 @@ fun EditTransactionScreen(
                 OutlinedTextField(
                     value = dateFormat.format(selectedDate),
                     onValueChange = { },
-                    label = { Text("Date") },
+                    label = { Text(stringResource(R.string.transaction_date)) },
                     readOnly = true,
                     modifier = Modifier.fillMaxWidth(),
                     trailingIcon = {
                         TextButton(onClick = { showDatePicker = true }) {
-                            Text("Change")
+                            Text(stringResource(R.string.change))
                         }
                     }
                 )
@@ -290,7 +293,7 @@ fun EditTransactionScreen(
                             color = MaterialTheme.colorScheme.onPrimary
                         )
                     } else {
-                        Text("Save Changes")
+                        Text(stringResource(R.string.save_changes))
                     }
                 }
 

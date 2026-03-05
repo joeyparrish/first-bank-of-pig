@@ -14,8 +14,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import io.github.joeyparrish.fbop.R
 import io.github.joeyparrish.fbop.data.model.Child
 import io.github.joeyparrish.fbop.data.model.DeviceAccess
 import io.github.joeyparrish.fbop.data.repository.ConfigRepository
@@ -59,11 +61,12 @@ fun ManageDevicesScreen(
 
     // Delete confirmation dialog
     deviceToDelete?.let { device ->
+        val childName = child?.name ?: stringResource(R.string.this_account)
         AlertDialog(
             onDismissRequest = { deviceToDelete = null },
-            title = { Text("Remove Device?") },
+            title = { Text(stringResource(R.string.remove_device_dialog_title)) },
             text = {
-                Text("Remove \"${device.deviceName}\" from accessing ${child?.name ?: "this account"}? The device will need to scan the QR code again to regain access.")
+                Text(stringResource(R.string.remove_device_confirmation, device.deviceName, childName))
             },
             confirmButton = {
                 TextButton(
@@ -77,12 +80,12 @@ fun ManageDevicesScreen(
                         contentColor = MaterialTheme.colorScheme.error
                     )
                 ) {
-                    Text("Remove")
+                    Text(stringResource(R.string.remove))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { deviceToDelete = null }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.cancel))
                 }
             }
         )
@@ -91,12 +94,12 @@ fun ManageDevicesScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Devices for ${child?.name ?: "..."}") },
+                title = { Text(stringResource(R.string.devices_for_title, child?.name ?: "...")) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = stringResource(R.string.back)
                         )
                     }
                 },
@@ -136,13 +139,13 @@ fun ManageDevicesScreen(
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        text = "No devices registered",
+                        text = stringResource(R.string.no_devices_registered),
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "Devices will appear here after scanning the QR code",
+                        text = stringResource(R.string.no_devices_hint),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         textAlign = TextAlign.Center
@@ -159,7 +162,7 @@ fun ManageDevicesScreen(
                 ) {
                     item {
                         Text(
-                            text = "These devices can view ${child?.name ?: "this child"}'s balance and transaction history.",
+                            text = stringResource(R.string.devices_description, child?.name ?: "this child"),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -223,14 +226,14 @@ private fun DeviceCard(
                 )
                 device.registeredAt?.let { registeredAt ->
                     Text(
-                        text = "Registered: ${dateFormat.format(registeredAt.toDate())}",
+                        text = stringResource(R.string.registered_date, dateFormat.format(registeredAt.toDate())),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
                 device.lastAccessedAt?.let { lastAccessed ->
                     Text(
-                        text = "Last seen: ${dateFormat.format(lastAccessed.toDate())}",
+                        text = stringResource(R.string.last_seen_date, dateFormat.format(lastAccessed.toDate())),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -240,7 +243,7 @@ private fun DeviceCard(
             IconButton(onClick = onDelete) {
                 Icon(
                     Icons.Default.Delete,
-                    contentDescription = "Remove device",
+                    contentDescription = stringResource(R.string.remove_device),
                     tint = MaterialTheme.colorScheme.error
                 )
             }

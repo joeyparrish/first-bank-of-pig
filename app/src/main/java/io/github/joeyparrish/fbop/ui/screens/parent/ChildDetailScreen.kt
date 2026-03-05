@@ -15,8 +15,10 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import io.github.joeyparrish.fbop.R
 import io.github.joeyparrish.fbop.data.model.*
 import io.github.joeyparrish.fbop.data.repository.ConfigRepository
 import io.github.joeyparrish.fbop.data.repository.FirebaseRepository
@@ -76,12 +78,12 @@ fun ChildDetailScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(child?.name ?: "Loading...") },
+                title = { Text(child?.name ?: stringResource(R.string.loading)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = stringResource(R.string.back)
                         )
                     }
                 },
@@ -93,14 +95,14 @@ fun ChildDetailScreen(
                 ),
                 actions = {
                     IconButton(onClick = { showMenu = true }) {
-                        Icon(Icons.Default.MoreVert, contentDescription = "Menu")
+                        Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.menu))
                     }
                     DropdownMenu(
                         expanded = showMenu,
                         onDismissRequest = { showMenu = false }
                     ) {
                         DropdownMenuItem(
-                            text = { Text("Show QR Code") },
+                            text = { Text(stringResource(R.string.show_qr_code)) },
                             onClick = {
                                 showMenu = false
                                 onShowQrCode()
@@ -110,7 +112,7 @@ fun ChildDetailScreen(
                             }
                         )
                         DropdownMenuItem(
-                            text = { Text("Edit Child") },
+                            text = { Text(stringResource(R.string.edit_child)) },
                             onClick = {
                                 showMenu = false
                                 onEditChild()
@@ -120,7 +122,7 @@ fun ChildDetailScreen(
                             }
                         )
                         DropdownMenuItem(
-                            text = { Text("Manage Devices") },
+                            text = { Text(stringResource(R.string.manage_devices)) },
                             onClick = {
                                 showMenu = false
                                 onManageDevices()
@@ -138,7 +140,7 @@ fun ChildDetailScreen(
                 onClick = onAddTransaction,
                 containerColor = MaterialTheme.colorScheme.primary
             ) {
-                Icon(Icons.Default.Add, contentDescription = "Add Transaction")
+                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.add_transaction))
             }
         }
     ) { paddingValues ->
@@ -168,7 +170,7 @@ fun ChildDetailScreen(
                     // Transactions section header
                     item {
                         Text(
-                            text = "Transaction History",
+                            text = stringResource(R.string.transaction_history),
                             style = MaterialTheme.typography.titleMedium,
                             color = MaterialTheme.colorScheme.onBackground,
                             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
@@ -184,7 +186,7 @@ fun ChildDetailScreen(
                                 contentAlignment = Alignment.Center
                             ) {
                                 Text(
-                                    text = "No transactions yet.\nTap + to add the first one!",
+                                    text = stringResource(R.string.no_transactions_parent_hint),
                                     style = MaterialTheme.typography.bodyLarge,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     textAlign = TextAlign.Center
@@ -223,7 +225,7 @@ private fun BalanceHeader(balance: Long) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Current Balance",
+                text = stringResource(R.string.current_balance),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             )
@@ -243,6 +245,8 @@ private fun TransactionRow(
     onClick: () -> Unit
 ) {
     val dateFormat = remember { SimpleDateFormat("MMM d, yyyy", Locale.getDefault()) }
+    val depositLabel = stringResource(R.string.deposit)
+    val withdrawalLabel = stringResource(R.string.withdrawal)
 
     Surface(
         modifier = Modifier
@@ -281,7 +285,9 @@ private fun TransactionRow(
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = transaction.description.ifBlank { if (transaction.isDeposit) "Deposit" else "Withdrawal" },
+                    text = transaction.description.ifBlank {
+                        if (transaction.isDeposit) depositLabel else withdrawalLabel
+                    },
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurface
                 )

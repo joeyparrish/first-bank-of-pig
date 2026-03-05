@@ -10,7 +10,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import io.github.joeyparrish.fbop.R
 import io.github.joeyparrish.fbop.data.repository.ConfigRepository
 import io.github.joeyparrish.fbop.data.repository.FirebaseRepository
 import kotlinx.coroutines.launch
@@ -31,9 +33,11 @@ fun AddChildScreen(
     var isLoading by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
 
+    val errorEnterName = stringResource(R.string.error_enter_name)
+
     fun save() {
         if (name.isBlank()) {
-            errorMessage = "Please enter a name"
+            errorMessage = errorEnterName
             return
         }
 
@@ -53,12 +57,12 @@ fun AddChildScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Add Child") },
+                title = { Text(stringResource(R.string.add_child)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = stringResource(R.string.back)
                         )
                     }
                 },
@@ -80,8 +84,8 @@ fun AddChildScreen(
             OutlinedTextField(
                 value = name,
                 onValueChange = { name = it },
-                label = { Text("Child's Name") },
-                placeholder = { Text("e.g., Alex") },
+                label = { Text(stringResource(R.string.childs_name)) },
+                placeholder = { Text(stringResource(R.string.child_name_placeholder)) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -99,7 +103,7 @@ fun AddChildScreen(
                         color = MaterialTheme.colorScheme.onPrimary
                     )
                 } else {
-                    Text("Add Child")
+                    Text(stringResource(R.string.add_child))
                 }
             }
 

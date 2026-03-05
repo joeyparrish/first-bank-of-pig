@@ -13,10 +13,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
+import io.github.joeyparrish.fbop.R
 import io.github.joeyparrish.fbop.data.model.Invite
 import io.github.joeyparrish.fbop.data.repository.ConfigRepository
 import io.github.joeyparrish.fbop.data.repository.FirebaseRepository
@@ -83,12 +85,12 @@ fun InviteParentScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Invite Parent") },
+                title = { Text(stringResource(R.string.invite_parent)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = stringResource(R.string.back)
                         )
                     }
                 },
@@ -112,7 +114,7 @@ fun InviteParentScreen(
                 isLoading -> {
                     CircularProgressIndicator()
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text("Generating invite code...")
+                    Text(stringResource(R.string.generating_invite_code))
                 }
                 errorMessage != null -> {
                     Text(
@@ -123,12 +125,12 @@ fun InviteParentScreen(
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Button(onClick = { generateInvite() }) {
-                        Text("Try Again")
+                        Text(stringResource(R.string.try_again))
                     }
                 }
                 invite != null -> {
                     Text(
-                        text = "Share this code with the other parent",
+                        text = stringResource(R.string.invite_parent_share_prompt),
                         style = MaterialTheme.typography.titleMedium,
                         textAlign = TextAlign.Center
                     )
@@ -145,7 +147,7 @@ fun InviteParentScreen(
                         ) {
                             Image(
                                 bitmap = bitmap.asImageBitmap(),
-                                contentDescription = "QR Code",
+                                contentDescription = stringResource(R.string.qr_code_content_desc),
                                 modifier = Modifier.fillMaxSize()
                             )
                         }
@@ -154,7 +156,7 @@ fun InviteParentScreen(
                     Spacer(modifier = Modifier.height(24.dp))
 
                     Text(
-                        text = "or enter this code manually:",
+                        text = stringResource(R.string.invite_parent_manual_entry),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -179,7 +181,7 @@ fun InviteParentScreen(
                     Spacer(modifier = Modifier.height(24.dp))
 
                     Text(
-                        text = "This code expires in 24 hours and can only be used once.",
+                        text = stringResource(R.string.invite_code_expires),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         textAlign = TextAlign.Center
@@ -188,7 +190,7 @@ fun InviteParentScreen(
                     Spacer(modifier = Modifier.height(24.dp))
 
                     OutlinedButton(onClick = { generateInvite() }) {
-                        Text("Generate New Code")
+                        Text(stringResource(R.string.generate_new_code))
                     }
                 }
             }

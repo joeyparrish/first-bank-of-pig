@@ -14,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.credentials.CredentialManager
 import androidx.credentials.GetCredentialRequest
@@ -84,7 +85,7 @@ fun CreateFamilyScreen(
 
     fun createFamily() {
         if (familyName.isBlank()) {
-            errorMessage = "Please enter a family name"
+            errorMessage = context.getString(R.string.error_enter_family_name)
             return
         }
 
@@ -107,12 +108,12 @@ fun CreateFamilyScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Create Family") },
+                title = { Text(stringResource(R.string.create_family_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = stringResource(R.string.back)
                         )
                     }
                 },
@@ -135,7 +136,7 @@ fun CreateFamilyScreen(
             if (!isSignedIn) {
                 // Step 1: Sign in with Google
                 Text(
-                    text = "Sign in to create your family",
+                    text = stringResource(R.string.create_family_sign_in_prompt),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onBackground
                 )
@@ -153,13 +154,13 @@ fun CreateFamilyScreen(
                             color = MaterialTheme.colorScheme.onPrimary
                         )
                     } else {
-                        Text("Sign in with Google")
+                        Text(stringResource(R.string.sign_in_with_google))
                     }
                 }
             } else {
                 // Step 2: Enter family name
                 Text(
-                    text = "What should we call your family?",
+                    text = stringResource(R.string.create_family_name_prompt),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onBackground
                 )
@@ -169,8 +170,8 @@ fun CreateFamilyScreen(
                 OutlinedTextField(
                     value = familyName,
                     onValueChange = { familyName = it },
-                    label = { Text("Family Name") },
-                    placeholder = { Text("The Smith Family") },
+                    label = { Text(stringResource(R.string.family_name_label)) },
+                    placeholder = { Text(stringResource(R.string.family_name_placeholder)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -188,7 +189,7 @@ fun CreateFamilyScreen(
                             color = MaterialTheme.colorScheme.onPrimary
                         )
                     } else {
-                        Text("Create Family")
+                        Text(stringResource(R.string.create_family_title))
                     }
                 }
             }

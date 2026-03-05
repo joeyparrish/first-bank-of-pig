@@ -9,7 +9,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.stringResource
 import com.mikepenz.aboutlibraries.ui.compose.m3.LibrariesContainer
+import io.github.joeyparrish.fbop.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -22,12 +24,12 @@ fun OssLicensesScreen(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             TopAppBar(
-                title = { Text("Open Source Licenses") },
+                title = { Text(stringResource(R.string.open_source_licenses)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = stringResource(R.string.back)
                         )
                     }
                 },

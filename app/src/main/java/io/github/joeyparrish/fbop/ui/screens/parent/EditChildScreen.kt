@@ -11,7 +11,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import io.github.joeyparrish.fbop.R
 import io.github.joeyparrish.fbop.data.model.Child
 import io.github.joeyparrish.fbop.data.repository.ConfigRepository
 import io.github.joeyparrish.fbop.data.repository.FirebaseRepository
@@ -37,6 +39,8 @@ fun EditChildScreen(
     var errorMessage by remember { mutableStateOf<String?>(null) }
     var showDeleteDialog by remember { mutableStateOf(false) }
 
+    val errorEnterName = stringResource(R.string.error_enter_name)
+
     // Load child
     LaunchedEffect(familyId, childId) {
         firebaseRepository.getChild(familyId, childId)
@@ -48,7 +52,7 @@ fun EditChildScreen(
 
     fun save() {
         if (name.isBlank()) {
-            errorMessage = "Please enter a name"
+            errorMessage = errorEnterName
             return
         }
 
@@ -80,9 +84,9 @@ fun EditChildScreen(
     if (showDeleteDialog) {
         AlertDialog(
             onDismissRequest = { showDeleteDialog = false },
-            title = { Text("Delete Child?") },
+            title = { Text(stringResource(R.string.delete_child_dialog_title)) },
             text = {
-                Text("This will permanently delete ${child?.name ?: "this child"} and all their transactions. This cannot be undone.")
+                Text(stringResource(R.string.delete_child_confirmation, child?.name ?: "this child"))
             },
             confirmButton = {
                 TextButton(
@@ -94,12 +98,12 @@ fun EditChildScreen(
                         contentColor = MaterialTheme.colorScheme.error
                     )
                 ) {
-                    Text("Delete")
+                    Text(stringResource(R.string.delete))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showDeleteDialog = false }) {
-                    Text("Cancel")
+                    Text(stringResource(R.string.cancel))
                 }
             }
         )
@@ -108,12 +112,12 @@ fun EditChildScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Edit Child") },
+                title = { Text(stringResource(R.string.edit_child)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = stringResource(R.string.back)
                         )
                     }
                 },
@@ -121,7 +125,7 @@ fun EditChildScreen(
                     IconButton(onClick = { showDeleteDialog = true }) {
                         Icon(
                             imageVector = Icons.Default.Delete,
-                            contentDescription = "Delete",
+                            contentDescription = stringResource(R.string.delete),
                             tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
@@ -154,7 +158,7 @@ fun EditChildScreen(
                 OutlinedTextField(
                     value = name,
                     onValueChange = { name = it },
-                    label = { Text("Child's Name") },
+                    label = { Text(stringResource(R.string.childs_name)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -172,7 +176,7 @@ fun EditChildScreen(
                             color = MaterialTheme.colorScheme.onPrimary
                         )
                     } else {
-                        Text("Save Changes")
+                        Text(stringResource(R.string.save_changes))
                     }
                 }
 

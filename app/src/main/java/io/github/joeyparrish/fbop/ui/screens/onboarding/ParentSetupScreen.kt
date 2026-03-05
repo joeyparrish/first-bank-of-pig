@@ -13,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.credentials.CredentialManager
 import androidx.credentials.GetCredentialRequest
@@ -101,12 +102,12 @@ fun ParentSetupScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Parent Setup") },
+                title = { Text(stringResource(R.string.parent_setup_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            contentDescription = stringResource(R.string.back)
                         )
                     }
                 },
@@ -131,7 +132,7 @@ fun ParentSetupScreen(
             } else if (!isSignedIn) {
                 // Step 1: Sign in with Google
                 Text(
-                    text = "Sign in to get started",
+                    text = stringResource(R.string.sign_in_to_get_started),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onBackground
                 )
@@ -142,12 +143,12 @@ fun ParentSetupScreen(
                     onClick = { signInWithGoogle() },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Sign in with Google")
+                    Text(stringResource(R.string.sign_in_with_google))
                 }
             } else {
                 // Step 2: Create or join
                 Text(
-                    text = "Are you starting a new family account or joining an existing one?",
+                    text = stringResource(R.string.parent_setup_prompt),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onBackground
                 )
@@ -156,8 +157,8 @@ fun ParentSetupScreen(
 
                 ModeCard(
                     icon = Icons.Default.Add,
-                    title = "Create New Family",
-                    description = "Start fresh with a new family account",
+                    title = stringResource(R.string.create_family),
+                    description = stringResource(R.string.create_family_desc),
                     onClick = onCreateFamily,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -166,8 +167,8 @@ fun ParentSetupScreen(
 
                 ModeCard(
                     icon = Icons.Default.GroupAdd,
-                    title = "Join Existing Family",
-                    description = "Enter an invite code from another parent",
+                    title = stringResource(R.string.join_family),
+                    description = stringResource(R.string.join_family_desc),
                     onClick = onJoinFamily,
                     modifier = Modifier.fillMaxWidth()
                 )

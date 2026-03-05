@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.github.joeyparrish.fbop.R
@@ -28,7 +29,6 @@ import io.github.joeyparrish.fbop.data.repository.FirebaseRepository
 import io.github.joeyparrish.fbop.ui.theme.AppTheme
 import io.github.joeyparrish.fbop.ui.theme.MoneyPositive
 import io.github.joeyparrish.fbop.ui.theme.MoneyNegative
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -132,7 +132,7 @@ fun ParentHomeScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(family?.name ?: "Loading...") },
+                title = { Text(family?.name ?: stringResource(R.string.loading)) },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                     titleContentColor = MaterialTheme.colorScheme.onPrimary,
@@ -140,7 +140,7 @@ fun ParentHomeScreen(
                 ),
                 actions = {
                     IconButton(onClick = { showMenu = true }) {
-                        Icon(Icons.Default.MoreVert, contentDescription = "Menu")
+                        Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.menu))
                     }
                     DropdownMenu(
                         expanded = showMenu,
@@ -148,7 +148,7 @@ fun ParentHomeScreen(
                     ) {
                         if (isOwner) {
                             DropdownMenuItem(
-                                text = { Text("Invite Parent") },
+                                text = { Text(stringResource(R.string.invite_parent)) },
                                 onClick = {
                                     showMenu = false
                                     onInviteParent()
@@ -158,7 +158,7 @@ fun ParentHomeScreen(
                                 }
                             )
                             DropdownMenuItem(
-                                text = { Text("Manage Parents") },
+                                text = { Text(stringResource(R.string.manage_parents)) },
                                 onClick = {
                                     showMenu = false
                                     onManageParents()
@@ -168,7 +168,7 @@ fun ParentHomeScreen(
                                 }
                             )
                             DropdownMenuItem(
-                                text = { Text("Delete Family") },
+                                text = { Text(stringResource(R.string.delete_family)) },
                                 onClick = {
                                     showMenu = false
                                     showDeleteConfirmDialog = true
@@ -179,7 +179,7 @@ fun ParentHomeScreen(
                             )
                         }
                         DropdownMenuItem(
-                            text = { Text("Theme") },
+                            text = { Text(stringResource(R.string.theme)) },
                             onClick = {
                                 showMenu = false
                                 showThemeDialog = true
@@ -189,7 +189,7 @@ fun ParentHomeScreen(
                             }
                         )
                         DropdownMenuItem(
-                            text = { Text("About") },
+                            text = { Text(stringResource(R.string.about)) },
                             onClick = {
                                 showMenu = false
                                 onAbout()
@@ -199,7 +199,7 @@ fun ParentHomeScreen(
                             }
                         )
                         DropdownMenuItem(
-                            text = { Text("Support this project") },
+                            text = { Text(stringResource(R.string.support_this_project)) },
                             onClick = {
                                 showMenu = false
                                 uriHandler.openUri("https://github.com/sponsors/joeyparrish")
@@ -217,7 +217,7 @@ fun ParentHomeScreen(
                 onClick = onAddChild,
                 containerColor = MaterialTheme.colorScheme.primary
             ) {
-                Icon(Icons.Default.Add, contentDescription = "Add Child")
+                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.add_child))
             }
         }
     ) { paddingValues ->
@@ -266,13 +266,13 @@ fun ParentHomeScreen(
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        text = "No children yet",
+                        text = stringResource(R.string.no_children),
                         style = MaterialTheme.typography.titleLarge,
                         color = MaterialTheme.colorScheme.onBackground
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "Tap the + button to add your first child",
+                        text = stringResource(R.string.no_children_hint),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         textAlign = TextAlign.Center
@@ -364,7 +364,7 @@ private fun ThemeModeDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Theme") },
+        title = { Text(stringResource(R.string.theme)) },
         text = {
             Column {
                 ThemeMode.entries.forEach { mode ->
@@ -382,9 +382,9 @@ private fun ThemeModeDialog(
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = when (mode) {
-                                ThemeMode.SYSTEM -> "System default"
-                                ThemeMode.LIGHT -> "Light"
-                                ThemeMode.DARK -> "Dark"
+                                ThemeMode.SYSTEM -> stringResource(R.string.theme_system)
+                                ThemeMode.LIGHT -> stringResource(R.string.theme_light)
+                                ThemeMode.DARK -> stringResource(R.string.theme_dark)
                             }
                         )
                     }
@@ -393,7 +393,7 @@ private fun ThemeModeDialog(
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel")
+                Text(stringResource(R.string.cancel))
             }
         }
     )
@@ -408,7 +408,7 @@ private fun DeleteFamilyDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Delete Family") },
+        title = { Text(stringResource(R.string.delete_family)) },
         text = {
             if (isDeleting) {
                 Row(
@@ -416,14 +416,10 @@ private fun DeleteFamilyDialog(
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     CircularProgressIndicator(modifier = Modifier.size(24.dp))
-                    Text("Deleting...")
+                    Text(stringResource(R.string.deleting))
                 }
             } else {
-                Text(
-                    "Permanently delete \"$familyName\" and all its data? " +
-                    "This includes all children, transactions, and device access. " +
-                    "This cannot be undone."
-                )
+                Text(stringResource(R.string.delete_family_confirmation, familyName))
             }
         },
         confirmButton = {
@@ -434,7 +430,7 @@ private fun DeleteFamilyDialog(
                     contentColor = MaterialTheme.colorScheme.error
                 )
             ) {
-                Text("Delete")
+                Text(stringResource(R.string.delete))
             }
         },
         dismissButton = {
@@ -442,7 +438,7 @@ private fun DeleteFamilyDialog(
                 onClick = onDismiss,
                 enabled = !isDeleting
             ) {
-                Text("Cancel")
+                Text(stringResource(R.string.cancel))
             }
         }
     )

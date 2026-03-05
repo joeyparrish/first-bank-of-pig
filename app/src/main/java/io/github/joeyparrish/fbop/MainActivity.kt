@@ -14,6 +14,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
@@ -118,8 +119,8 @@ fun MainScreen(
         val biometricPrompt = BiometricPrompt(activity, executor, callback)
 
         val promptInfo = BiometricPrompt.PromptInfo.Builder()
-            .setTitle("First Bank of Pig")
-            .setSubtitle("Authenticate to access parent mode")
+            .setTitle(activity.getString(R.string.app_name))
+            .setSubtitle(activity.getString(R.string.biometric_prompt_subtitle_app))
             .setAllowedAuthenticators(
                 BiometricManager.Authenticators.BIOMETRIC_STRONG or
                 BiometricManager.Authenticators.DEVICE_CREDENTIAL
@@ -173,7 +174,7 @@ fun BiometricLockScreen(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "First Bank of Pig",
+                text = stringResource(R.string.app_name),
                 style = MaterialTheme.typography.headlineLarge,
                 color = MaterialTheme.colorScheme.primary
             )
@@ -188,7 +189,7 @@ fun BiometricLockScreen(
                 Box(contentAlignment = Alignment.Center) {
                     Icon(
                         imageVector = Icons.Default.Lock,
-                        contentDescription = "Locked",
+                        contentDescription = stringResource(R.string.locked),
                         modifier = Modifier.size(56.dp),
                         tint = MaterialTheme.colorScheme.onPrimaryContainer
                     )
@@ -198,7 +199,7 @@ fun BiometricLockScreen(
             Spacer(modifier = Modifier.height(32.dp))
 
             Text(
-                text = "Parent mode is locked",
+                text = stringResource(R.string.biometric_locked_title),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onBackground
             )
@@ -206,7 +207,7 @@ fun BiometricLockScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "Authenticate to continue",
+                text = stringResource(R.string.biometric_authenticate_prompt),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -227,7 +228,7 @@ fun BiometricLockScreen(
                 onClick = onAuthenticate,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Unlock")
+                Text(stringResource(R.string.unlock))
             }
         }
     }
