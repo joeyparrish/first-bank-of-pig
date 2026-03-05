@@ -90,7 +90,7 @@
     <string name="add_child">Add Child</string>
     <string name="child_name">Child Name</string>
     <string name="childs_name">Child\'s Name</string>
-    <string name="child_name_placeholder">e.g., Alex</string>
+    <string name="child_name_placeholder">e.g. Alex</string>
     <string name="invite_parent">Invite Parent</string>
     <string name="manage_parents">Manage Parents</string>
     <string name="show_qr_code">Show QR Code</string>

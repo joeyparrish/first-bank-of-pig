@@ -15,7 +15,7 @@
     <string name="sign_in_to_get_started">Anmelden, um zu beginnen</string>
     <string name="parent_setup_prompt">Möchtest du ein neues Familienkonto erstellen oder einem vorhandenen beitreten?</string>
     <string name="create_family">Neue Familie erstellen</string>
-    <string name="create_family_desc">Neu starten mit einem neuen Familienkonto</string>
+    <string name="create_family_desc">Mit einem neuen Familienkonto starten</string>
     <string name="join_family">Vorhandener Familie beitreten</string>
     <string name="join_family_desc">Einladungscode von einem anderen Elternteil eingeben</string>
 
@@ -90,7 +90,7 @@
     <string name="add_child">Kind hinzufügen</string>
     <string name="child_name">Name des Kindes</string>
     <string name="childs_name">Name des Kindes</string>
-    <string name="child_name_placeholder">z. B. Lena</string>
+    <string name="child_name_placeholder">z. B. Karl-Heinz</string>
     <string name="invite_parent">Elternteil einladen</string>
     <string name="manage_parents">Eltern verwalten</string>
     <string name="show_qr_code">QR-Code anzeigen</string>
@@ -99,9 +99,9 @@
     <string name="delete_family">Familie löschen</string>
     <string name="support_this_project">Dieses Projekt unterstützen</string>
     <string name="no_children">Noch keine Kinder</string>
-    <string name="no_children_hint">Tippe auf die +-Schaltfläche, um das erste Kind hinzuzufügen</string>
+    <string name="no_children_hint">Drück den Plus-Button, um das erste Kind hinzuzufügen</string>
     <string name="delete_family_confirmation">„%1$s" und alle zugehörigen Daten dauerhaft löschen? Dies umfasst alle Kinder, Transaktionen und Gerätezugänge. Dies kann nicht rückgängig gemacht werden.</string>
-    <string name="owner">Eigentümer</string>
+    <string name="owner">Kontoinhaber:in</string>
     <string name="you">(Du)</string>
 
     <!-- Child -->
@@ -151,7 +151,7 @@
 
     <!-- Child QR Code -->
     <string name="qr_code_for_title">QR-Code für %1$s</string>
-    <string name="qr_code_scan_prompt">Diesen Code auf %1$ss Gerät scannen</string>
+    <string name="qr_code_scan_prompt">Diesen Code auf dem Gerät von %1$s scannen</string>
     <string name="qr_code_kid_device_label">Auf dem Gerät des Kindes:</string>
     <string name="qr_code_kid_instructions">1. First Bank of Pig öffnen\n2. „Kindmodus" wählen\n3. Diesen QR-Code scannen oder den Code unten eingeben</string>
     <string name="manual_code_label">Manueller Code:</string>
@@ -161,8 +161,8 @@
     <string name="your_balance">Dein Guthaben</string>
     <string name="transaction_history">Transaktionshistorie</string>
     <string name="no_transactions">Noch keine Transaktionen</string>
-    <string name="no_transactions_parent_hint">Noch keine Transaktionen.\nTippe auf +, um die erste hinzuzufügen!</string>
-    <string name="no_transactions_kid_hint">Noch keine Transaktionen.\nFrage deine Eltern, welche hinzuzufügen!</string>
+    <string name="no_transactions_parent_hint">Noch keine Transaktionen.\nDrück den Plus-Button, um die erste hinzuzufügen!</string>
+    <string name="no_transactions_kid_hint">Noch keine Transaktionen.\nFrag deine Eltern, welche hinzuzufügen!</string>
 
     <!-- Kid Home -->
     <string name="my_piggy_bank">Mein Sparschwein</string>
