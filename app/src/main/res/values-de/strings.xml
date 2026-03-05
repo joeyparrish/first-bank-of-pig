@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">First Bank of Pig</string>
+
+    <!-- Onboarding: Mode Selection -->
+    <string name="welcome_title">First Bank of Pig</string>
+    <string name="welcome_subtitle">Wie wirst du dieses Gerät nutzen?</string>
+    <string name="mode_parent">Elternmodus</string>
+    <string name="mode_parent_desc">Konten und Transaktionen verwalten</string>
+    <string name="mode_kid">Kindmodus</string>
+    <string name="mode_kid_desc">Guthaben und Verlauf anzeigen</string>
+
+    <!-- Onboarding: Parent Setup -->
+    <string name="parent_setup_title">Eltern-Setup</string>
+    <string name="sign_in_to_get_started">Anmelden, um zu beginnen</string>
+    <string name="parent_setup_prompt">Möchtest du ein neues Familienkonto erstellen oder einem vorhandenen beitreten?</string>
+    <string name="create_family">Neue Familie erstellen</string>
+    <string name="create_family_desc">Neu starten mit einem neuen Familienkonto</string>
+    <string name="join_family">Vorhandener Familie beitreten</string>
+    <string name="join_family_desc">Einladungscode von einem anderen Elternteil eingeben</string>
+
+    <!-- Onboarding: Kid Setup -->
+    <string name="kid_setup_title">Kind-Setup</string>
+    <string name="kid_setup_prompt">Bitte deine Eltern, den QR-Code für dein Konto zu zeigen</string>
+    <string name="scan_qr_code">QR-Code scannen</string>
+    <string name="scan_qr_code_camera_desc">Kamera zum Scannen verwenden</string>
+    <string name="enter_code_manually">Code manuell eingeben</string>
+    <string name="enter_code_desc">Code stattdessen eintippen</string>
+    <string name="kid_enter_code_prompt">Gib den Code deiner Eltern ein</string>
+    <string name="code_label">Code</string>
+    <string name="scan_qr_kid_prompt">Scanne den QR-Code vom Gerät deiner Eltern</string>
+    <string name="error_camera_permission">Kameraberechtigung ist erforderlich, um QR-Codes zu scannen</string>
+
+    <!-- Onboarding: Create Family -->
+    <string name="create_family_title">Familie erstellen</string>
+    <string name="create_family_sign_in_prompt">Anmelden, um deine Familie zu erstellen</string>
+    <string name="create_family_name_prompt">Wie soll deine Familie heißen?</string>
+    <string name="family_name_label">Familienname</string>
+    <string name="family_name_placeholder">Die Familie Müller</string>
+
+    <!-- Onboarding: Join Family -->
+    <string name="join_family_title">Familie beitreten</string>
+    <string name="join_family_scan_prompt">Einladungscode vom anderen Elternteil holen</string>
+    <string name="join_family_manual_prompt">Einladungscode des anderen Elternteils eingeben</string>
+    <string name="invite_code_label">Einladungscode</string>
+    <string name="join_family_code_verified">Code bestätigt! Anmelden, um der Familie beizutreten.</string>
+    <string name="scan_invite_qr_prompt">Einladungs-QR-Code vom anderen Elternteil scannen</string>
+
+    <!-- Common -->
+    <string name="sign_in_with_google">Mit Google anmelden</string>
+    <string name="loading">Laden…</string>
+    <string name="error">Fehler</string>
+    <string name="retry">Wiederholen</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="save">Speichern</string>
+    <string name="save_changes">Änderungen speichern</string>
+    <string name="delete">Löschen</string>
+    <string name="edit">Bearbeiten</string>
+    <string name="done">Fertig</string>
+    <string name="back">Zurück</string>
+    <string name="ok">OK</string>
+    <string name="continue_button">Weiter</string>
+    <string name="change">Ändern</string>
+    <string name="remove">Entfernen</string>
+    <string name="try_again">Erneut versuchen</string>
+    <string name="deleting">Wird gelöscht…</string>
+    <string name="menu">Menü</string>
+    <string name="unlock">Entsperren</string>
+
+    <!-- Accessibility -->
+    <string name="piggy_bank_content_desc">Sparschwein</string>
+    <string name="qr_code_content_desc">QR-Code</string>
+    <string name="locked">Gesperrt</string>
+    <string name="remove_device">Gerät entfernen</string>
+
+    <!-- Theme -->
+    <string name="theme">Design</string>
+    <string name="theme_system">Systemstandard</string>
+    <string name="theme_light">Hell</string>
+    <string name="theme_dark">Dunkel</string>
+
+    <!-- About -->
+    <string name="about">Über die App</string>
+    <string name="mit_license">MIT-Lizenz</string>
+    <string name="source_code_on_github">Quellcode auf GitHub</string>
+    <string name="open_source_licenses">Open-Source-Lizenzen</string>
+
+    <!-- Parent Mode -->
+    <string name="family_overview">Familienübersicht</string>
+    <string name="add_child">Kind hinzufügen</string>
+    <string name="child_name">Name des Kindes</string>
+    <string name="childs_name">Name des Kindes</string>
+    <string name="child_name_placeholder">z. B. Lena</string>
+    <string name="invite_parent">Elternteil einladen</string>
+    <string name="manage_parents">Eltern verwalten</string>
+    <string name="show_qr_code">QR-Code anzeigen</string>
+    <string name="edit_child">Kind bearbeiten</string>
+    <string name="manage_devices">Geräte verwalten</string>
+    <string name="delete_family">Familie löschen</string>
+    <string name="support_this_project">Dieses Projekt unterstützen</string>
+    <string name="no_children">Noch keine Kinder</string>
+    <string name="no_children_hint">Tippe auf die +-Schaltfläche, um das erste Kind hinzuzufügen</string>
+    <string name="delete_family_confirmation">„%1$s" und alle zugehörigen Daten dauerhaft löschen? Dies umfasst alle Kinder, Transaktionen und Gerätezugänge. Dies kann nicht rückgängig gemacht werden.</string>
+    <string name="owner">Eigentümer</string>
+    <string name="you">(Du)</string>
+
+    <!-- Child -->
+    <string name="error_enter_name">Bitte einen Namen eingeben</string>
+    <string name="error_enter_family_name">Bitte einen Familiennamen eingeben</string>
+    <string name="delete_child_dialog_title">Kind löschen?</string>
+    <string name="delete_child_confirmation">%1$s und alle Transaktionen werden dauerhaft gelöscht. Dies kann nicht rückgängig gemacht werden.</string>
+
+    <!-- Transactions -->
+    <string name="add_transaction">Transaktion hinzufügen</string>
+    <string name="edit_transaction">Transaktion bearbeiten</string>
+    <string name="transaction_amount">Betrag</string>
+    <string name="transaction_description">Beschreibung</string>
+    <string name="transaction_date">Datum</string>
+    <string name="deposit">Einzahlung</string>
+    <string name="deposit_with_sign">Einzahlung (+)</string>
+    <string name="withdrawal">Auszahlung</string>
+    <string name="withdrawal_with_sign">Auszahlung (-)</string>
+    <string name="spent">Ausgegeben</string>
+    <string name="description_placeholder">z. B. Taschengeld, Spielzeug gekauft usw.</string>
+    <string name="error_enter_valid_amount">Bitte einen gültigen Betrag eingeben</string>
+    <string name="delete_transaction_dialog_title">Transaktion löschen?</string>
+    <string name="delete_transaction_confirmation">Diese Transaktion wird dauerhaft gelöscht. Dies kann nicht rückgängig gemacht werden.</string>
+
+    <!-- Invite Parent -->
+    <string name="generating_invite_code">Einladungscode wird generiert…</string>
+    <string name="invite_parent_share_prompt">Diesen Code mit dem anderen Elternteil teilen</string>
+    <string name="invite_parent_manual_entry">oder diesen Code manuell eingeben:</string>
+    <string name="invite_code_expires">Dieser Code läuft in 24 Stunden ab und kann nur einmal verwendet werden.</string>
+    <string name="generate_new_code">Neuen Code generieren</string>
+
+    <!-- Manage Parents -->
+    <string name="remove_parent_dialog_title">Elternteil entfernen?</string>
+    <string name="remove_parent_confirmation">%1$s aus dieser Familie entfernen? Sie können dann keine Kinder oder Transaktionen mehr verwalten.</string>
+    <string name="no_parents_yet">Noch keine weiteren Elternteile</string>
+
+    <!-- Manage Devices -->
+    <string name="devices_for_title">Geräte für %1$s</string>
+    <string name="this_account">dieses Konto</string>
+    <string name="remove_device_dialog_title">Gerät entfernen?</string>
+    <string name="remove_device_confirmation">„%1$s" den Zugriff auf %2$s entziehen? Das Gerät muss den QR-Code erneut scannen, um wieder Zugriff zu erhalten.</string>
+    <string name="no_devices_registered">Keine Geräte registriert</string>
+    <string name="no_devices_hint">Geräte werden hier angezeigt, nachdem der QR-Code gescannt wurde</string>
+    <string name="devices_description">Diese Geräte können das Guthaben und die Transaktionshistorie von %1$s einsehen.</string>
+    <string name="registered_date">Registriert: %1$s</string>
+    <string name="last_seen_date">Zuletzt gesehen: %1$s</string>
+
+    <!-- Child QR Code -->
+    <string name="qr_code_for_title">QR-Code für %1$s</string>
+    <string name="qr_code_scan_prompt">Diesen Code auf %1$ss Gerät scannen</string>
+    <string name="qr_code_kid_device_label">Auf dem Gerät des Kindes:</string>
+    <string name="qr_code_kid_instructions">1. First Bank of Pig öffnen\n2. „Kindmodus" wählen\n3. Diesen QR-Code scannen oder den Code unten eingeben</string>
+    <string name="manual_code_label">Manueller Code:</string>
+
+    <!-- Balance -->
+    <string name="current_balance">Aktuelles Guthaben</string>
+    <string name="your_balance">Dein Guthaben</string>
+    <string name="transaction_history">Transaktionshistorie</string>
+    <string name="no_transactions">Noch keine Transaktionen</string>
+    <string name="no_transactions_parent_hint">Noch keine Transaktionen.\nTippe auf +, um die erste hinzuzufügen!</string>
+    <string name="no_transactions_kid_hint">Noch keine Transaktionen.\nFrage deine Eltern, welche hinzuzufügen!</string>
+
+    <!-- Kid Home -->
+    <string name="my_piggy_bank">Mein Sparschwein</string>
+    <string name="have_a_pig">Ein Schwein haben</string>
+    <string name="access_revoked">Zugriff widerrufen</string>
+    <string name="access_revoked_message">Dein Zugriff auf dieses Konto wurde entfernt. Bitte wende dich an deine Eltern, um den Zugriff neu einzurichten.</string>
+
+    <!-- Biometric -->
+    <string name="biometric_prompt_title">Authentifizieren</string>
+    <string name="biometric_prompt_subtitle">Identität bestätigen, um den Elternmodus zu öffnen</string>
+    <string name="biometric_prompt_cancel">Passwort verwenden</string>
+    <string name="biometric_locked_title">Elternmodus ist gesperrt</string>
+    <string name="biometric_authenticate_prompt">Zum Fortfahren authentifizieren</string>
+    <string name="biometric_prompt_subtitle_app">Authentifizieren, um den Elternmodus zu öffnen</string>
+
+    <!-- Errors -->
+    <string name="error_sign_in_failed">Anmeldung fehlgeschlagen. Bitte erneut versuchen.</string>
+    <string name="error_invalid_code">Ungültiger oder abgelaufener Code.</string>
+    <string name="error_network">Netzwerkfehler. Bitte Verbindung überprüfen.</string>
+    <string name="error_biometric_not_available">Biometrische Authentifizierung nicht verfügbar</string>
+    <string name="error_enter_valid_amount_label">Bitte einen gültigen Betrag eingeben</string>
+
+    <plurals name="transaction_count">
+        <item quantity="one">1 Transaktion</item>
+        <item quantity="other">%d Transaktionen</item>
+    </plurals>
+</resources>
