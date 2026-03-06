@@ -9,8 +9,8 @@
     "cleanup": "node cleanup.js"
   },
   "dependencies": {
-    "firebase-admin": "^13.6.1",
-    "firebase-functions": "^7.0.5"
+    "firebase-admin": "^13.7.0",
+    "firebase-functions": "^7.1.0"
   },
   "private": true
 }
