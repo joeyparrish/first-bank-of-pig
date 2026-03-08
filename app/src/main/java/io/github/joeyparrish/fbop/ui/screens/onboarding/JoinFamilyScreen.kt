@@ -69,21 +69,9 @@ fun JoinFamilyScreen(
             isLoading = true
             errorMessage = null
 
-            // First, sign in anonymously to be able to look up the code
-            if (!firebaseRepository.isSignedIn) {
-                firebaseRepository.signInAnonymously()
-                    .onFailure { e ->
-                        errorMessage = "Failed to connect: ${e.message}"
-                        isLoading = false
-                        return@launch
-                    }
-            }
-
             firebaseRepository.lookupInviteCode(inviteCode.uppercase().trim())
                 .onSuccess { familyId ->
                     pendingFamilyId = familyId
-                    // Sign out anonymous user so they can sign in with Google
-                    firebaseRepository.signOut()
                 }
                 .onFailure { e ->
                     errorMessage = e.message ?: "Invalid code"
