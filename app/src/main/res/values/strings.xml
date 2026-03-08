@@ -131,6 +131,8 @@
     <string name="invite_parent_share_prompt">Share this code with the other parent</string>
     <string name="invite_parent_manual_entry">or enter this code manually:</string>
     <string name="invite_code_expires">This code expires in 24 hours and can only be used once.</string>
+    <string name="copy_code">Copy Code</string>
+    <string name="code_copied">Code copied to clipboard</string>
     <string name="generate_new_code">Generate New Code</string>
 
     <!-- Manage Parents -->

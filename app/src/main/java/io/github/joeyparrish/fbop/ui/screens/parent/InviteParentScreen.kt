@@ -3,16 +3,21 @@
 
 package io.github.joeyparrish.fbop.ui.screens.parent
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.graphics.Bitmap
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -34,6 +39,8 @@ fun InviteParentScreen(
     val config = configRepository.getConfig()
     val familyId = config.familyId ?: return
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+    val snackbarHostState = remember { SnackbarHostState() }
 
     var invite by remember { mutableStateOf<Invite?>(null) }
     var isLoading by remember { mutableStateOf(true) }
@@ -82,7 +89,10 @@ fun InviteParentScreen(
         generateInvite()
     }
 
+    val codeCopiedMessage = stringResource(R.string.code_copied)
+
     Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(R.string.invite_parent)) },
@@ -176,6 +186,24 @@ fun InviteParentScreen(
                             modifier = Modifier.padding(horizontal = 24.dp, vertical = 16.dp),
                             letterSpacing = androidx.compose.ui.unit.TextUnit(4f, androidx.compose.ui.unit.TextUnitType.Sp)
                         )
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    OutlinedButton(
+                        onClick = {
+                            val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                            clipboard.setPrimaryClip(ClipData.newPlainText("invite_code", invite!!.code))
+                            scope.launch { snackbarHostState.showSnackbar(codeCopiedMessage) }
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.ContentCopy,
+                            contentDescription = null,
+                            modifier = Modifier.size(ButtonDefaults.IconSize)
+                        )
+                        Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
+                        Text(stringResource(R.string.copy_code))
                     }
 
                     Spacer(modifier = Modifier.height(24.dp))

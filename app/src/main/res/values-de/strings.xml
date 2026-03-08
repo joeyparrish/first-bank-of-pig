@@ -131,6 +131,8 @@
     <string name="invite_parent_share_prompt">Diesen Code mit dem anderen Elternteil teilen</string>
     <string name="invite_parent_manual_entry">oder diesen Code manuell eingeben:</string>
     <string name="invite_code_expires">Dieser Code läuft in 24 Stunden ab und kann nur einmal verwendet werden.</string>
+    <string name="copy_code">Code kopieren</string>
+    <string name="code_copied">Code in die Zwischenablage kopiert</string>
     <string name="generate_new_code">Neuen Code generieren</string>
 
     <!-- Manage Parents -->
