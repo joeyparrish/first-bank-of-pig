@@ -169,7 +169,7 @@ fun KidHomeScreen(
             color = MaterialTheme.colorScheme.background
         ) {
             Image(
-                painter = painterResource(id = R.drawable.piggy_bank),
+                painter = painterResource(id = R.drawable.pig_standard),
                 contentDescription = stringResource(R.string.piggy_bank_content_desc),
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Fit
@@ -241,7 +241,7 @@ fun KidHomeScreen(
         ) {
             // Watermark background
             Image(
-                painter = painterResource(id = R.drawable.piggy_bank),
+                painter = painterResource(id = R.drawable.pig_standard),
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxSize()

@@ -60,7 +60,7 @@ functions/
   cleanup.js                       — standalone cleanup (run locally on Spark plan)
 
 app/src/main/res/
-  drawable/piggy_bank.png          — pig artwork; used as watermark + easter egg
+  drawable/pig_*.png               — pig artwork; used as watermark + easter egg
   values-night/themes.xml          — dark window background (prevents white flash
                                      during screen transitions in dark mode)
 

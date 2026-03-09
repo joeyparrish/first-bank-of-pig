@@ -229,7 +229,7 @@ fun ParentHomeScreen(
         ) {
             // Watermark background
             Image(
-                painter = painterResource(id = R.drawable.piggy_bank),
+                painter = painterResource(id = R.drawable.pig_standard),
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxSize()

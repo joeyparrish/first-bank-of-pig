@@ -45,7 +45,7 @@ fun ModeSelectionScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             Image(
-                painter = painterResource(id = R.drawable.piggy_bank),
+                painter = painterResource(id = R.drawable.pig_standard),
                 contentDescription = stringResource(R.string.piggy_bank_content_desc),
                 modifier = Modifier.size(120.dp)
             )
