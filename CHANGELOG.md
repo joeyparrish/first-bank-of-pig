@@ -16,4 +16,10 @@ Mar 8, 2026
 
 Feb 25, 2026
 
+ - Documentation updates
+
+## v1.2.3
+
+Feb 22, 2026
+
  - Initial closed alpha release on Play Store
