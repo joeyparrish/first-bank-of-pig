@@ -5,13 +5,20 @@ package io.github.joeyparrish.fbop.ui.components
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import io.github.joeyparrish.fbop.BuildConfig
 import io.github.joeyparrish.fbop.R
 import java.time.LocalDate
@@ -75,26 +82,36 @@ private val piggyVariants = listOf(
     PiggyVariant(R.drawable.pig_standard) { _ -> true },
 )
 
-private val allPigResources = piggyVariants.map { it.res }
-
 @DrawableRes
 fun Piggy(): Int {
     val today = LocalDate.now()
     return piggyVariants.first { it.isActiveToday(today) }.res
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PigView(modifier: Modifier = Modifier, contentDescription: String? = null) {
     if (BuildConfig.DEBUG) {
-        val initialPage = allPigResources.indexOf(Piggy())
-        val pagerState = rememberPagerState(initialPage = initialPage) { allPigResources.size }
-        HorizontalPager(state = pagerState, modifier = modifier) { page ->
+        val millisPerDay = 24L * 60 * 60 * 1000
+        val datePickerState = rememberDatePickerState(
+            initialSelectedDateMillis = LocalDate.now().toEpochDay() * millisPerDay
+        )
+        val selectedDate = datePickerState.selectedDateMillis?.let {
+            LocalDate.ofEpochDay(it / millisPerDay)
+        } ?: LocalDate.now()
+        val pigRes = piggyVariants.first { it.isActiveToday(selectedDate) }.res
+
+        Column(
+            modifier = modifier.verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Image(
-                painter = painterResource(allPigResources[page]),
+                painter = painterResource(pigRes),
                 contentDescription = contentDescription,
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxWidth().height(200.dp),
                 contentScale = ContentScale.Fit
             )
+            DatePicker(state = datePickerState)
         }
     } else {
         Image(
