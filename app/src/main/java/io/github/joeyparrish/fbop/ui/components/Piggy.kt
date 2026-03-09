@@ -6,11 +6,10 @@ package io.github.joeyparrish.fbop.ui.components
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -109,9 +108,7 @@ fun PigView(modifier: Modifier = Modifier, contentDescription: String? = null) {
         val pigRes = piggyVariants.first { it.isActiveToday(selectedDate) }.res
 
         Column(
-            modifier = modifier
-                .verticalScroll(rememberScrollState())
-                .statusBarsPadding(),
+            modifier = modifier.statusBarsPadding(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             DatePicker(
@@ -123,7 +120,9 @@ fun PigView(modifier: Modifier = Modifier, contentDescription: String? = null) {
             Image(
                 painter = painterResource(pigRes),
                 contentDescription = contentDescription,
-                modifier = Modifier.fillMaxWidth().height(500.dp),
+                modifier = Modifier
+                    .padding(horizontal = 10.dp, vertical = 50.dp)
+                    .fillMaxSize(),
                 contentScale = ContentScale.Fit
             )
         }

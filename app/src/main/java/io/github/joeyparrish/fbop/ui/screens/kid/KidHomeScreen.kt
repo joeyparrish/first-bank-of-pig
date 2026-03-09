@@ -244,6 +244,7 @@ fun KidHomeScreen(
                 painter = painterResource(Piggy()),
                 contentDescription = null,
                 modifier = Modifier
+                    .padding(horizontal = 50.dp, vertical = 150.dp)
                     .fillMaxSize()
                     .alpha(AppTheme.watermarkAlpha),
                 contentScale = ContentScale.Fit
