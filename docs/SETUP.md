@@ -414,11 +414,13 @@ After this one-time setup, all future uploads can be done via the command line.
 ### Step 5: Upload
 
 ```bash
-# Build and upload AAB to the alpha test track
+# Build and upload AAB to the "internal" test track
 ./gradlew publishReleaseBundle
 
 # To upload to a different track, override on the command line:
-./gradlew publishReleaseBundle --track foo
+./gradlew publishReleaseBundle --track alpha
+./gradlew publishReleaseBundle --track beta
+./gradlew publishReleaseBundle --track production
 ```
 
 The default track is `alpha`. Promote to wider tracks from the Play Console,

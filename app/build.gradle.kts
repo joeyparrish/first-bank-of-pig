@@ -101,7 +101,7 @@ play {
     if (serviceAccount != null) {
         serviceAccountCredentials.set(file(serviceAccount))
     }
-    track.set("alpha")
+    track.set("internal")
     defaultToAppBundles.set(true)
 }
 
