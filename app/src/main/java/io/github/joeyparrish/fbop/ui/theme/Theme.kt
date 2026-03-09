@@ -18,7 +18,14 @@ import androidx.core.view.WindowCompat
 import io.github.joeyparrish.fbop.data.model.ThemeMode
 
 // Custom theme values not covered by MaterialTheme
-private val LocalWatermarkAlpha = staticCompositionLocalOf { 0.24f }
+
+// Currently back to the same values, but I may want to tweak them again in the
+// future.
+private const val DarkModeAlpha: Float = 0.24f
+private const val LightModeAlpha: Float = 0.24f
+
+// A fallback/default for something like Android Studio
+private val LocalWatermarkAlpha = staticCompositionLocalOf { LightModeAlpha }
 
 object AppTheme {
     val watermarkAlpha: Float
@@ -113,7 +120,7 @@ fun FirstBankOfPigTheme(
         }
     }
 
-    val watermarkAlpha = if (darkTheme) 0.12f else 0.24f
+    val watermarkAlpha = if (darkTheme) DarkModeAlpha else LightModeAlpha
 
     CompositionLocalProvider(
         LocalWatermarkAlpha provides watermarkAlpha
