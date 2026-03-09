@@ -21,7 +21,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import io.github.joeyparrish.fbop.BuildConfig
 import io.github.joeyparrish.fbop.R
+import java.time.Instant
 import java.time.LocalDate
+import java.time.ZoneOffset
 
 private fun calculateEasterSunday(year: Int): LocalDate {
     // Gauss's Easter Sunday algorithm, simplified for Gregorian dates.
@@ -92,12 +94,14 @@ fun Piggy(): Int {
 @Composable
 fun PigView(modifier: Modifier = Modifier, contentDescription: String? = null) {
     if (BuildConfig.DEBUG) {
-        val millisPerDay = 24L * 60 * 60 * 1000
         val datePickerState = rememberDatePickerState(
-            initialSelectedDateMillis = LocalDate.now().toEpochDay() * millisPerDay
+            initialSelectedDateMillis = LocalDate.now()
+                .atStartOfDay(ZoneOffset.UTC)
+                .toInstant()
+                .toEpochMilli()
         )
         val selectedDate = datePickerState.selectedDateMillis?.let {
-            LocalDate.ofEpochDay(it / millisPerDay)
+            Instant.ofEpochMilli(it).atOffset(ZoneOffset.UTC).toLocalDate()
         } ?: LocalDate.now()
         val pigRes = piggyVariants.first { it.isActiveToday(selectedDate) }.res
 
