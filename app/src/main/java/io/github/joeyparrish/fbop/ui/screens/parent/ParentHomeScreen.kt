@@ -3,6 +3,7 @@
 
 package io.github.joeyparrish.fbop.ui.screens.parent
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -27,7 +28,9 @@ import io.github.joeyparrish.fbop.R
 import io.github.joeyparrish.fbop.data.model.*
 import io.github.joeyparrish.fbop.data.repository.ConfigRepository
 import io.github.joeyparrish.fbop.data.repository.FirebaseRepository
+import io.github.joeyparrish.fbop.BuildConfig
 import io.github.joeyparrish.fbop.ui.components.Piggy
+import io.github.joeyparrish.fbop.ui.components.PigView
 import io.github.joeyparrish.fbop.ui.theme.AppTheme
 import io.github.joeyparrish.fbop.ui.theme.MoneyPositive
 import io.github.joeyparrish.fbop.ui.theme.MoneyNegative
@@ -62,6 +65,7 @@ fun ParentHomeScreen(
     var isDeleting by remember { mutableStateOf(false) }
     var isOwner by remember { mutableStateOf(false) }
     var currentThemeMode by remember { mutableStateOf(configRepository.getThemeMode()) }
+    var showPig by remember { mutableStateOf(false) }
 
     // Observe family data
     LaunchedEffect(familyId) {
@@ -129,6 +133,20 @@ fun ParentHomeScreen(
                 }
             }
         )
+    }
+
+    if (showPig) {
+        BackHandler { showPig = false }
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            PigView(
+                modifier = Modifier.fillMaxSize(),
+                contentDescription = stringResource(R.string.piggy_bank_content_desc)
+            )
+        }
+        return
     }
 
     Scaffold(
@@ -210,6 +228,18 @@ fun ParentHomeScreen(
                                 Icon(Icons.Default.VolunteerActivism, contentDescription = null)
                             }
                         )
+                        if (BuildConfig.DEBUG) {
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.have_a_pig)) },
+                                onClick = {
+                                    showMenu = false
+                                    showPig = true
+                                },
+                                leadingIcon = {
+                                    Icon(Icons.Default.Favorite, contentDescription = null)
+                                }
+                            )
+                        }
                     }
                 }
             )

@@ -32,6 +32,7 @@ import io.github.joeyparrish.fbop.data.model.*
 import io.github.joeyparrish.fbop.data.repository.ConfigRepository
 import io.github.joeyparrish.fbop.data.repository.FirebaseRepository
 import io.github.joeyparrish.fbop.ui.components.Piggy
+import io.github.joeyparrish.fbop.ui.components.PigView
 import io.github.joeyparrish.fbop.ui.theme.AppTheme
 import io.github.joeyparrish.fbop.ui.theme.MoneyNegative
 import io.github.joeyparrish.fbop.ui.theme.MoneyPositive
@@ -169,11 +170,9 @@ fun KidHomeScreen(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.background
         ) {
-            Image(
-                painter = painterResource(Piggy()),
-                contentDescription = stringResource(R.string.piggy_bank_content_desc),
+            PigView(
                 modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Fit
+                contentDescription = stringResource(R.string.piggy_bank_content_desc)
             )
         }
         return
