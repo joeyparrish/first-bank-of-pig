@@ -31,6 +31,7 @@ import io.github.joeyparrish.fbop.R
 import io.github.joeyparrish.fbop.data.model.*
 import io.github.joeyparrish.fbop.data.repository.ConfigRepository
 import io.github.joeyparrish.fbop.data.repository.FirebaseRepository
+import io.github.joeyparrish.fbop.ui.components.Piggy
 import io.github.joeyparrish.fbop.ui.theme.AppTheme
 import io.github.joeyparrish.fbop.ui.theme.MoneyNegative
 import io.github.joeyparrish.fbop.ui.theme.MoneyPositive
@@ -169,7 +170,7 @@ fun KidHomeScreen(
             color = MaterialTheme.colorScheme.background
         ) {
             Image(
-                painter = painterResource(id = R.drawable.pig_standard),
+                painter = painterResource(Piggy()),
                 contentDescription = stringResource(R.string.piggy_bank_content_desc),
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Fit
@@ -241,7 +242,7 @@ fun KidHomeScreen(
         ) {
             // Watermark background
             Image(
-                painter = painterResource(id = R.drawable.pig_standard),
+                painter = painterResource(Piggy()),
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxSize()

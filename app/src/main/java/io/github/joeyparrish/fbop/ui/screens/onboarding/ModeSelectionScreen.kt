@@ -18,6 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.github.joeyparrish.fbop.R
 import io.github.joeyparrish.fbop.ui.components.ModeCard
+import io.github.joeyparrish.fbop.ui.components.Piggy
 
 @Composable
 fun ModeSelectionScreen(
@@ -45,7 +46,7 @@ fun ModeSelectionScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             Image(
-                painter = painterResource(id = R.drawable.pig_standard),
+                painter = painterResource(Piggy()),
                 contentDescription = stringResource(R.string.piggy_bank_content_desc),
                 modifier = Modifier.size(120.dp)
             )
