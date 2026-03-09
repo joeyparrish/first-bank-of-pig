@@ -230,13 +230,13 @@ fun ParentHomeScreen(
                         )
                         if (BuildConfig.DEBUG) {
                             DropdownMenuItem(
-                                text = { Text(stringResource(R.string.have_a_pig)) },
+                                text = { Text("DEBUG: " + stringResource(R.string.have_a_pig)) },
                                 onClick = {
                                     showMenu = false
                                     showPig = true
                                 },
                                 leadingIcon = {
-                                    Icon(Icons.Default.Favorite, contentDescription = null)
+                                    Icon(Icons.Default.BugReport, contentDescription = null)
                                 }
                             )
                         }

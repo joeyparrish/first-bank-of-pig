@@ -114,16 +114,16 @@ fun PigView(modifier: Modifier = Modifier, contentDescription: String? = null) {
                 .statusBarsPadding(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = "DEBUG",
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.error
+            DatePicker(
+                state = datePickerState,
+                showModeToggle = false,
+                headline = null,
+                title = null
             )
-            DatePicker(state = datePickerState)
             Image(
                 painter = painterResource(pigRes),
                 contentDescription = contentDescription,
-                modifier = Modifier.fillMaxWidth().height(200.dp),
+                modifier = Modifier.fillMaxWidth().height(500.dp),
                 contentScale = ContentScale.Fit
             )
         }
