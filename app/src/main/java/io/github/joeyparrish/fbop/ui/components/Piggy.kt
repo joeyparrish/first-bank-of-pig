@@ -8,10 +8,13 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -106,16 +109,23 @@ fun PigView(modifier: Modifier = Modifier, contentDescription: String? = null) {
         val pigRes = piggyVariants.first { it.isActiveToday(selectedDate) }.res
 
         Column(
-            modifier = modifier.verticalScroll(rememberScrollState()),
+            modifier = modifier
+                .verticalScroll(rememberScrollState())
+                .statusBarsPadding(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Text(
+                text = "DEBUG",
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.error
+            )
+            DatePicker(state = datePickerState)
             Image(
                 painter = painterResource(pigRes),
                 contentDescription = contentDescription,
                 modifier = Modifier.fillMaxWidth().height(200.dp),
                 contentScale = ContentScale.Fit
             )
-            DatePicker(state = datePickerState)
         }
     } else {
         Image(
