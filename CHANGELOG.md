@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.3.0
+
+ - Vary the watermark images for holidays
+
 ## v1.2.5
 
 Mar 8, 2026
