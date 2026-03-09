@@ -14,6 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: ${{ github.ref_name }}
           fetch-depth: 0  # required for git describe and git rev-list in versioning
 
       - name: Set up Java 21
@@ -29,20 +30,22 @@ jobs:
             ~/.gradle/caches
             ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
+          restore-keys: ${{ runner.os }}-gradle-
 
       - name: Write google-services.json
         run: echo '${{ secrets.GOOGLE_SERVICES_JSON }}' > app/google-services.json
 
       - name: Build unsigned release APK
-        run: ./gradlew assembleRelease
+        run: |
+          ./gradlew assembleRelease
+          cp app/build/outputs/apk/release/app-release-unsigned.apk \
+            first-bank-of-pig-${{ github.ref_name }}.apk
 
       - name: Create GitHub release
         run: |
           gh release create "${{ github.ref_name }}" \
             --title "${{ github.ref_name }}" \
             --generate-notes \
-            app/build/outputs/apk/release/app-release-unsigned.apk
+            first-bank-of-pig-${{ github.ref_name }}.apk
         env:
           GH_TOKEN: ${{ github.token }}
