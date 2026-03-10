@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
 import io.github.joeyparrish.fbop.data.model.*
 import kotlinx.coroutines.channels.awaitClose
@@ -288,7 +289,7 @@ class FirebaseRepository {
 
     private fun generateShortCode(): String {
         val chars = "ABCDEFGHJKMNPQRSTWXYZ23456789" // Excluding confusing characters
-        return (1..8).map { chars.random() }.joinToString("")
+        return (1..8).map { chars.random() }.joinToString("") // Code length: must agree with input validation in JoinFamilyScreen
     }
 
     // =========================================================================
@@ -443,7 +444,7 @@ class FirebaseRepository {
                     "amount" to amountCents,
                     "description" to description,
                     "date" to date,
-                    "modifiedAt" to Timestamp.now()
+                    "modifiedAt" to FieldValue.serverTimestamp()
                 )
             ).await()
     }
@@ -472,7 +473,12 @@ class FirebaseRepository {
             .orderBy("date", Query.Direction.DESCENDING)
             .addSnapshotListener { snapshot, error ->
                 if (error != null) {
-                    close(error)
+                    // Only close the flow for permanent errors (access revoked).
+                    // Transient network errors are retried automatically by Firestore;
+                    // closing on those would falsely trigger the access-revoked dialog.
+                    if (error.code == FirebaseFirestoreException.Code.PERMISSION_DENIED) {
+                        close(error)
+                    }
                     return@addSnapshotListener
                 }
                 val transactions = snapshot?.documents?.mapNotNull {

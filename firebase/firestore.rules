@@ -124,8 +124,12 @@ service cloud.firestore {
         // Only owner can remove parents
         allow delete: if isOwnerOfFamily(familyId);
 
-        // Parents can update their own record
-        allow update: if isAuthenticated() && parentUid == request.auth.uid;
+        // The only legitimate post-create update is writing back the uid field
+        // (excluded from set() by @DocumentId, so written explicitly afterward).
+        // No other fields should ever be updated after creation.
+        allow update: if isAuthenticated() && parentUid == request.auth.uid &&
+          request.resource.data.diff(resource.data).affectedKeys().hasOnly(['uid']) &&
+          request.resource.data.uid == request.auth.uid;
       }
 
       // ---------------------------------------------------------------------
