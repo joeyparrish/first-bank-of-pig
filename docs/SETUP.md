@@ -156,6 +156,7 @@ Firebase is the backend for this app. It provides:
 | `scripts/config.sh` | Shared configuration for all scripts |
 | `scripts/config.local.sh` | Your local overrides (gitignored, create this) |
 | `scripts/firebase-setup.sh` | Automated setup script (read and run step-by-step) |
+| `scripts/firebase-harden.sh` | Restrict the Firebase API key to your app's signing certs |
 | `scripts/firebase-deploy.sh` | Deploy rules, indexes, and functions |
 | `scripts/firebase-usage.sh` | Firestore usage report (reads, writes, storage) |
 | `firebase/firestore.rules` | Security rules defining access permissions |
@@ -247,6 +248,47 @@ SHA1: A1:B2:C3:D4:E5:F6:...  (40 hex characters with colons)
 5. Save
 
 **Note**: Each developer needs to add their own debug SHA-1. For release builds, you'll add your release keystore's SHA-1 later.
+
+### Step 5: Harden the API Key
+
+The Firebase API key is embedded in `google-services.json` and will be visible in your APK. By default it is unrestricted -- anyone who extracts it can call Firebase APIs (e.g. create anonymous accounts, attempt sign-ins) from any context. Restricting the key to your app's signing certificates means requests from other apps or scripts using your key will be rejected by Google.
+
+**Collect your SHA-1 fingerprints:**
+
+```bash
+# Debug key (unique per developer machine)
+keytool -list -v \
+  -keystore ~/.android/debug.keystore \
+  -alias androiddebugkey -storepass android | grep SHA1
+
+# Release / upload key (your local keystore)
+keytool -list -v \
+  -keystore release-keystore.jks \
+  -alias release | grep SHA1
+```
+
+If you are using **Google Play App Signing** (required for new Play Store apps), also add
+the Play Store distribution key SHA-1. This is the key Google actually uses to sign APKs
+delivered to users -- it is different from your upload key:
+
+1. Open [Google Play Console](https://play.google.com/console)
+2. Your app -> **Setup** -> **App signing**
+3. Under "App signing key certificate", copy the **SHA-1 certificate fingerprint**
+
+**Run the hardening script:**
+
+```bash
+./scripts/firebase-harden.sh \
+  "A1:B2:C3:..."   `# debug key` \
+  "D4:E5:F6:..."   `# release / upload key` \
+  "G7:H8:I9:..."   `# Play Store distribution key (if applicable)`
+```
+
+You can rerun this script whenever you add a new signing key (e.g. a new developer's debug key). It fully replaces the restrictions each time, so always pass all the SHA-1s you want active.
+
+**Note**: These restrictions are separate from the SHA-1 fingerprints registered in the
+Firebase Console. Firebase Console fingerprints enable Google Sign-In. API key restrictions
+control who can call Google APIs at all. Both are needed for full protection.
 
 ---
 
