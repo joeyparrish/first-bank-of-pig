@@ -96,7 +96,7 @@ echo ""
 
 APP_ARGS=()
 for SHA1 in "$@"; do
-    APP_ARGS+=("--allowed-application=sha1_fingerprint=${SHA1},android_app_id=${ANDROID_PACKAGE}")
+    APP_ARGS+=("--allowed-application=sha1_fingerprint=${SHA1},package_name=${ANDROID_PACKAGE}")
 done
 
 # -----------------------------------------------------------------------------
