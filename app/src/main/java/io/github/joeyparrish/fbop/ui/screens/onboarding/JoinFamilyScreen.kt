@@ -60,8 +60,7 @@ fun JoinFamilyScreen(
     val credentialManager = remember { CredentialManager.create(context) }
 
     fun lookupCode() {
-        // Code length must agree with generateShortCode() in FirebaseRepository
-        if (inviteCode.length != 8) {
+        if (inviteCode.length != FirebaseRepository.CODE_LENGTH) {
             errorMessage = "Please enter an invite code"
             return
         }
@@ -249,7 +248,7 @@ fun JoinFamilyScreen(
 
                 OutlinedTextField(
                     value = inviteCode,
-                    onValueChange = { inviteCode = it.uppercase().take(8) }, // Code length must agree with generateShortCode() in FirebaseRepository
+                    onValueChange = { inviteCode = it.uppercase().take(FirebaseRepository.CODE_LENGTH) },
                     label = { Text(stringResource(R.string.invite_code_label)) },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(
@@ -273,7 +272,7 @@ fun JoinFamilyScreen(
 
                     Button(
                         onClick = { lookupCode() },
-                        enabled = !isLoading && inviteCode.length == 8, // Code length must agree with generateShortCode() in FirebaseRepository
+                        enabled = !isLoading && inviteCode.length == FirebaseRepository.CODE_LENGTH,
                         modifier = Modifier.weight(1f)
                     ) {
                         if (isLoading) {

@@ -17,6 +17,10 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 
 class FirebaseRepository {
+    companion object {
+        const val CODE_LENGTH = 8
+    }
+
     private val auth = FirebaseAuth.getInstance()
     private val db = FirebaseFirestore.getInstance()
 
@@ -289,7 +293,7 @@ class FirebaseRepository {
 
     private fun generateShortCode(): String {
         val chars = "ABCDEFGHJKMNPQRSTWXYZ23456789" // Excluding confusing characters
-        return (1..8).map { chars.random() }.joinToString("") // Code length: must agree with input validation in JoinFamilyScreen
+        return (1..CODE_LENGTH).map { chars.random() }.joinToString("")
     }
 
     // =========================================================================
