@@ -27,9 +27,11 @@
 #       -keystore release-keystore.jks \
 #       -alias release | grep SHA1
 #
-#   Play Store distribution key (what Google re-signs with, if using Play App Signing):
-#     Play Console -> Your app -> Setup -> App signing
-#     -> "App signing key certificate" -> SHA-1 certificate fingerprint
+#   Play Store distribution key (what Google re-signs with, if using Play App
+#   Signing):
+#     Play Console -> Your app -> Test and release -> App integrity
+#     -> Play app signing -> "App signing key certificate"
+#     -> SHA-1 certificate fingerprint
 #
 # Example:
 #   ./scripts/firebase-harden.sh \

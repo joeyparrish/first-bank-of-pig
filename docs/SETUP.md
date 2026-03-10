@@ -272,7 +272,7 @@ the Play Store distribution key SHA-1. This is the key Google actually uses to s
 delivered to users -- it is different from your upload key:
 
 1. Open [Google Play Console](https://play.google.com/console)
-2. Your app -> **Setup** -> **App signing**
+2. Your app -> **Test and release** -> **App integrity** -> **Play app signing**
 3. Under "App signing key certificate", copy the **SHA-1 certificate fingerprint**
 
 **Run the hardening script:**
@@ -381,7 +381,18 @@ Then build:
 # app/build/outputs/apk/release/app-release.apk
 ```
 
-**Don't forget** to add the release keystore's SHA-1 to Firebase for Google Sign-In to work in release builds!
+> [!NOTE]
+> **Don't forget** to add the release keystore's SHA-1 to Firebase for Google
+> Sign-In to work in local release builds!  If you are using **Google Play App
+> Signing** (required for new Play Store apps), also add the Play Store
+> distribution key SHA-1. This is the key Google actually uses to sign APKs
+> delivered to users -- it is different from your upload key.
+> To find your distribution key SHA1, see instructions in "Harden the API Key".
+
+> [!NOTE]
+> **Don't forget** to rerun ./scripts/firebase-harden.sh with all of your SHA1s
+> (debug, local release / upload, Play distribution)!  See also "Harden the API
+> Key".
 
 ### Other Useful Commands
 
