@@ -109,21 +109,35 @@ done
 # -----------------------------------------------------------------------------
 
 API_ARGS=(
-    "--api-target=service=identitytoolkit.googleapis.com"   # Firebase Auth
-    "--api-target=service=securetoken.googleapis.com"       # Token refresh
-    "--api-target=service=firebaseinstallations.googleapis.com"  # Firebase Installations
-    "--api-target=service=firebase.googleapis.com"          # Firebase Management
-    "--api-target=service=firestore.googleapis.com"         # Cloud Firestore
-    "--api-target=service=crashlytics.googleapis.com"       # Crashlytics
-    "--api-target=service=monitoring.googleapis.com"        # Cloud Monitoring
-    "--api-target=service=logging.googleapis.com"           # Cloud Logging
-    # Likely unused -- remove and test:
-    "--api-target=service=fcm.googleapis.com"               # Firebase Cloud Messaging
-    "--api-target=service=firebasestorage.googleapis.com"   # Firebase Storage
-    "--api-target=service=firebaseremoteconfig.googleapis.com"  # Remote Config
-    "--api-target=service=sqladmin.googleapis.com"          # Cloud SQL Admin
-    "--api-target=service=datastore.googleapis.com"         # Cloud Datastore
-    "--api-target=service=ml.googleapis.com"                # ML Kit
+    # Permissions we actually need:
+    "--api-target=service=firebase.googleapis.com"                      # Firebase Management
+    "--api-target=service=firebaseinstallations.googleapis.com"         # Firebase Installations
+    "--api-target=service=firestore.googleapis.com"                     # Cloud Firestore
+    "--api-target=service=identitytoolkit.googleapis.com"               # Firebase Auth
+    "--api-target=service=securetoken.googleapis.com"                   # Token refresh
+
+    # Added to the key at creation time, documented here, but not used and removed now:
+#   "--api-target=service=cloudconfig.googleapis.com"                   # Remote Config
+#   "--api-target=service=datastore.googleapis.com"                     # Cloud Datastore
+#   "--api-target=service=fcmregistrations.googleapis.com"              # Firebase Push Notification Device Registration
+#   "--api-target=service=firebaseappcheck.googleapis.com"              # Firebase App Check
+#   "--api-target=service=firebaseappdistribution.googleapis.com"       # Firebase app distribution tool
+#   "--api-target=service=firebaseapphosting.googleapis.com"            # Firebase app hosting (?)
+#   "--api-target=service=firebaseapptesters.googleapis.com"            # Firebase app distribution testing
+#   "--api-target=service=firebasedatabase.googleapis.com"              # Firebase Database
+#   "--api-target=service=firebasedataconnect.googleapis.com"           # Firebase + Cloud SQL
+#   "--api-target=service=firebasehosting.googleapis.com"               # Firebase Web Hosting
+#   "--api-target=service=firebaseinappmessaging.googleapis.com"        # Firebase in-app messaging
+#   "--api-target=service=firebaseml.googleapis.com"                    # ML cloud features
+#   "--api-target=service=firebaseremoteconfig.googleapis.com"          # Remote Config
+#   "--api-target=service=firebaseremoteconfigrealtime.googleapis.com"  # Remote config
+#   "--api-target=service=firebaserules.googleapis.com"                 # Firebase Rules Deployment
+#   "--api-target=service=firebasestorage.googleapis.com"               # Firebase Storage
+#   "--api-target=service=firebasevertexai.googleapis.com"              # Firebase + Gemini
+#   "--api-target=service=fpnv.googleapis.com"                          # Firebase Phone Number Verification
+#   "--api-target=service=mlkit.googleapis.com"                         # ML Kit
+#   "--api-target=service=play.googleapis.com"                          # Play Store publication
+#   "--api-target=service=sqladmin.googleapis.com"                      # Cloud SQL Admin
 )
 
 # -----------------------------------------------------------------------------
