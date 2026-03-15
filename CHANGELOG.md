@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.4.0
+
+ - Reject incomplete invite codes without talking to the server
+ - Prevent access-revoked dialogs on transient network errors
+ - Add additional watermark images for holidays
+
 ## v1.3.1
 
  - Optimize images to reduce bundle size
