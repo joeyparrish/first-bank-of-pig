@@ -6,9 +6,11 @@ transactions and balance. **No ads, and no logins for children.**
 
 ## Features
 
- - Parent Mode: Create family, add children, manage transactions (deposits/withdrawals), invite other parents
+ - Parent Mode: Create family, add children, manage transactions
+   (deposits/withdrawals), invite other parents
  - Kid Mode: View balance and transaction history (read-only)
- - Device Security: Kid devices register by scanning parent's QR code (no login required!); parents can manage kid devices and revoke access at any time
+ - Device Security: Kid devices register by scanning parent's QR code (no login
+   required!); parents can manage kid devices and revoke access at any time
  - Biometric Lock: Parent mode is protected by fingerprint/face/PIN
  - Real-time Sync: Instant updates across devices
  - Theme Support: System, light, and dark mode
