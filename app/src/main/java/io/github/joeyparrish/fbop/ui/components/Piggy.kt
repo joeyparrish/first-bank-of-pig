@@ -72,13 +72,23 @@ private val piggyVariants = listOf(
     PiggyVariant(R.drawable.pig_vulcan) { today ->
         today == LocalDate.of(today.year, 4, 5)
     },
+    // Halloween, October 31
+    // Our piggy as a witch
+    PiggyVariant(R.drawable.pig_halloween) { today ->
+        today == LocalDate.of(today.year, 10, 31)
+    },
     // St. Andrew's Day (National holiday in Scotland), November 30
-    // Our piggy bank riding a unicorn over thistles
+    // Our piggy riding a unicorn over thistles
     PiggyVariant(R.drawable.pig_unicorn) { today ->
         today == LocalDate.of(today.year, 11, 30)
     },
+    // Christmas, December 25
+    // Our piggy as Santa Claus
+    PiggyVariant(R.drawable.pig_christmas) { today ->
+        today == LocalDate.of(today.year, 12, 25)
+    },
     // Easter Sunday (western variant), various days in March & April
-    // Our pig in an easter bunny outfit
+    // Our piggy in an easter bunny outfit
     PiggyVariant(R.drawable.pig_easter) { today ->
         today == calculateEasterSunday(today.year)
     },
