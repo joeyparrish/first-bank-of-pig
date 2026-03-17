@@ -45,6 +45,11 @@ jobs:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
         run: echo "$KEYSTORE_BASE64" | base64 -d > release-keystore.jks
 
+      - name: Write Play service account credentials
+        env:
+          SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+        run: echo "$SERVICE_ACCOUNT_JSON" > play-service-account.json
+
       - name: Write keystore.properties
         env:
           STORE_PASSWORD: ${{ secrets.KEYSTORE_STORE_PASSWORD }}
@@ -55,11 +60,12 @@ jobs:
             echo "storePassword=$STORE_PASSWORD"
             echo "keyAlias=release"
             echo "keyPassword=$KEY_PASSWORD"
+            echo "playServiceAccount=../play-service-account.json"
           } > keystore.properties
 
-      - name: Build signed release APK
+      - name: Build signed release APK and upload to Play internal track
         run: |
-          ./gradlew assembleRelease
+          ./gradlew assembleRelease publishReleaseBundle
           cp app/build/outputs/apk/release/app-release.apk \
             first-bank-of-pig-${{ inputs.tag || github.ref_name }}.apk
 
